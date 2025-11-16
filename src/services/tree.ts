@@ -173,6 +173,14 @@ export function saveAllTrees(tree: TreeItem[]): void {
   }
 }
 
+export function resetAllTrees(): void {
+  try {
+    localStorage.removeItem('tree');
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 export function getForest(forestId: number): TreeItem[] {
   const all = getAllTrees();
   return all.filter((tree) => tree.forestId === forestId);

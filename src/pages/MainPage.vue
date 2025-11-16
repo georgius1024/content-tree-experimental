@@ -1,7 +1,17 @@
 <template>
   <div class="mx-auto max-w-2xl">
     <div class="rounded-lg border border-gray-200 bg-white shadow-sm">
-      <div class="p-4 border-b border-gray-100">
+      <div class="p-4">
+        <div class="flex items-center justify-between border-b border-gray-100 pb-3 mb-3">
+          <h2 class="text-sm font-medium text-gray-700">Content</h2>
+          <button
+            type="button"
+            class="rounded border border-gray-200 px-2 py-1 text-xs text-gray-700 hover:bg-gray-50"
+            @click="onResetTree"
+          >
+            Reset tree
+          </button>
+        </div>
         <TreeBreadcrumb
           :forest-id="forestId"
           :path="path"
@@ -70,7 +80,7 @@ import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import TreeBreadcrumb from '../components/TreeBreadcrumb.vue'
 import TreeList from '../components/TreeList.vue'
-import { CONTENT_FOREST, getForest, moveNode, putForest, deleteNode } from '../services/tree'
+import { CONTENT_FOREST, getForest, moveNode, putForest, deleteNode, resetAllTrees } from '../services/tree'
 import type { TreeItem } from '../types'
 import { Folder, BookOpenCheck, Pencil, Trash2 } from 'lucide-vue-next'
 
@@ -172,6 +182,14 @@ const onDeleteItem = (itemId: number) => {
   if (!ok) return
   deleteNode(forestId, itemId)
   refreshKey.value++
+}
+
+const onResetTree = () => {
+  const ok = window.confirm('Reset tree to the initial sample?')
+  if (!ok) return
+  resetAllTrees()
+  refreshKey.value++
+  goTo('/')
 }
 </script>
 
