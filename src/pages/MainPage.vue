@@ -6,6 +6,7 @@
           :forest-id="forestId"
           :path="path"
           @root-click="goTo('/')"
+          @breadcrumb-drop="onBreadcrumbDrop"
         >
           <template #item="{ item }">
             <button class="truncate max-w-40 inline-block align-middle hover:underline" @click="goTo(item.path)">
@@ -21,6 +22,8 @@
           :forest-id="forestId"
           class="pl-2 md:pl-4"
           @drop-node="onDropNode"
+          @drag-start="onDragStart"
+          @drag-end="onDragEnd"
         >
           <template #item="{ item }">
             <button
@@ -40,7 +43,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import TreeBreadcrumb from '../components/TreeBreadcrumb.vue'
 import TreeList from '../components/TreeList.vue'
@@ -56,7 +59,13 @@ const props = defineProps<Props>()
 const router = useRouter()
 
 const forestId = CONTENT_FOREST
-const forest = computed<TreeItem[]>(() => getForest(forestId))
+const refreshKey = ref(0)
+const forest = computed<TreeItem[]>(() => {
+  void refreshKey.value
+  return getForest(forestId)
+})
+
+const draggingNodeId = ref<number | null>(null)
 
 const currentParentId = computed<number | null>(() => {
   const ids = props.path.split('/').filter(Boolean).map((s) => Number(s)).filter((n) => Number.isFinite(n))
@@ -72,13 +81,31 @@ const children = computed<TreeItem[]>(() => {
 })
 
 const goTo = (nextPath: string) => {
+  console.log('goTo', nextPath, router.currentRoute.value.path)
   const normalized = nextPath.endsWith('/') ? nextPath : `${nextPath}/`
   router.push({ path: normalized })
 }
 
 const onDropNode = (payload: { nodeId: number; newParentId: number | null; newPosition: number }) => {
+  console.log('onDropNode', payload)
   if (currentParentId.value == null) return
   moveNode(forestId, payload.nodeId, payload.newParentId, payload.newPosition)
+  refreshKey.value++
+}
+
+const onDragStart = (payload: { nodeId: number }) => {
+  draggingNodeId.value = payload.nodeId
+}
+
+const onDragEnd = (_payload: { nodeId: number | null }) => {
+  draggingNodeId.value = null
+}
+
+const onBreadcrumbDrop = (payload: { newParentId: number | null; newPosition: number }) => {
+  if (draggingNodeId.value == null) return
+  moveNode(forestId, draggingNodeId.value, payload.newParentId, payload.newPosition)
+  draggingNodeId.value = null
+  refreshKey.value++
 }
 </script>
 

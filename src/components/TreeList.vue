@@ -1,92 +1,95 @@
 <template>
-  <ul
+  <Draggable
+    v-model="localItems"
+    item-key="id"
+    tag="ul"
     class="flex flex-col gap-1"
-    role="list"
-    @dragover.prevent="onListDragOver"
-    @drop.prevent="onListDrop"
+    :animation="200"
+    :swap-threshold="0.5"
+    chosen-class="opacity-60"
+    ghost-class="drag-ghost"
+    @change="onChange"
   >
     <li
-      v-for="(item, index) in items"
+      v-for="(item, index) in localItems"
       :key="item.id"
-      class="rounded hover:bg-gray-50 data-[drag-over=true]:bg-gray-100"
-      draggable="true"
-      @dragstart="onItemDragStart(item.id)"
-      @dragend="onItemDragEnd"
-      @dragover.prevent="onItemDragOver(index)"
-      @dragleave="onItemDragLeave(index)"
-      @drop.prevent="onItemDrop(index)"
-      :data-drag-over="dragOverIndex === index ? 'true' : 'false'"
+      class="rounded hover:bg-gray-50 cursor-pointer"
+      @click="onItemClick(item.id)"
     >
       <slot name="item" :item="item" :index="index">
-        <div class="px-2 py-1 text-sm">{{ item.name }}</div>
+        <div class="px-2 py-1 text-sm inline-flex items-center gap-2">
+          <Folder v-if="item.type !== 'leaf'" :size="16" class="text-gray-500" aria-hidden="true" />
+          <BookOpenCheck v-else :size="16" class="text-gray-500" aria-hidden="true" />
+          <span>{{ item.name }}</span>
+        </div>
       </slot>
     </li>
-  </ul>
+  </Draggable>
 </template>
+
 <script setup lang="ts">
-import { ref } from 'vue'
-import type { TreeItem } from '../types'
+import { ref, watch } from 'vue';
+import { VueDraggableNext as Draggable } from 'vue-draggable-next';
+import type { TreeItem } from '../types';
+import { Folder, BookOpenCheck } from 'lucide-vue-next';
 
 type Props = {
-  items: TreeItem[]
-  parentId: number | null
-  forestId: number
-}
+  items: TreeItem[];
+  parentId: number | null;
+  forestId: number;
+};
 
-const props = defineProps<Props>()
+const props = defineProps<Props>();
 
 const emit = defineEmits<{
-  (e: 'drag-start', payload: { nodeId: number }): void
-  (e: 'drag-end', payload: { nodeId: number | null }): void
-  (e: 'drop-node', payload: { nodeId: number; newParentId: number | null; newPosition: number }): void
-}>()
+  (
+    e: 'drop-node',
+    payload: { nodeId: number; newParentId: number | null; newPosition: number },
+  ): void;
+  (e: 'click', payload: { itemId: number }): void;
+}>();
 
-const draggingNodeId = ref<number | null>(null)
-const dragOverIndex = ref<number | null>(null)
+const localItems = ref<TreeItem[]>([]);
+watch(
+  () => props.items,
+  (next) => {
+    localItems.value = Array.isArray(next) ? [...next] : [];
+  },
+  { immediate: true },
+);
 
-const onItemDragStart = (nodeId: number) => {
-  draggingNodeId.value = nodeId
-  emit('drag-start', { nodeId })
-}
-
-const onItemDragEnd = () => {
-  emit('drag-end', { nodeId: draggingNodeId.value })
-  draggingNodeId.value = null
-  dragOverIndex.value = null
-}
-
-const onItemDragOver = (index: number) => {
-  dragOverIndex.value = index
-}
-
-const onItemDragLeave = (index: number) => {
-  if (dragOverIndex.value === index) {
-    dragOverIndex.value = null
+const onChange = (evt: { moved?: { oldIndex: number; newIndex: number } }) => {
+  // Ensure we have a valid move
+  if (!evt.moved) {
+    // Re-sync in case of no-op
+    localItems.value = [...props.items];
+    return;
   }
-}
-
-const onItemDrop = (index: number) => {
-  if (draggingNodeId.value == null) return
+  const { oldIndex, newIndex } = evt.moved;
+  const node = props.items[oldIndex];
+  if (!node) {
+    localItems.value = [...props.items];
+    return;
+  }
+  // Emit canonical mutation to parent
   emit('drop-node', {
-    nodeId: draggingNodeId.value,
+    nodeId: node.id,
     newParentId: props.parentId,
-    newPosition: index
-  })
-  dragOverIndex.value = null
-}
+    newPosition: newIndex + 1,
+  });
+  // Immediately re-sync to parent (source of truth)
+  localItems.value = [...props.items];
+};
 
-const onListDragOver = () => {
-  // Allow dropping at the end of the list
-  dragOverIndex.value = null
-}
-
-const onListDrop = () => {
-  if (draggingNodeId.value == null) return
-  emit('drop-node', {
-    nodeId: draggingNodeId.value,
-    newParentId: props.parentId,
-    newPosition: props.items.length
-  })
-}
+const onItemClick = (itemId: number) => {
+  emit('click', { itemId });
+};
 </script>
 
+<style scoped>
+.drag-ghost {
+  border: 2px dashed #d1d5db; /* gray-300 */
+  background: #f9fafb; /* gray-50 */
+  border-radius: 0.5rem;
+}
+</style>
