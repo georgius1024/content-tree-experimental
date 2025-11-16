@@ -1,18 +1,20 @@
 <template>
   <div class="p-4">
     <div v-if="root">
-      <Accordion :label="root.name" :open="true">
+      <Accordion :label="root.name" :open="true" caret-position="left">
         <TreeList
           :items="childrenOf(root.id)"
           :parent-id="root.id"
           :forest-id="resolvedForestId"
+          class="pl-2 md:pl-4"
         >
           <template #item="{ item }">
-            <Accordion v-if="hasChildren(item.id)" :label="item.name" :open="false">
+            <Accordion v-if="hasChildren(item.id)" :label="item.name" :open="false" caret-position="left">
               <TreeList
                 :items="childrenOf(item.id)"
                 :parent-id="item.id"
                 :forest-id="resolvedForestId"
+                class="pl-4 md:pl-6"
               />
             </Accordion>
             <div v-else class="px-2 py-1 text-sm">
