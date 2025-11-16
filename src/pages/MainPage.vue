@@ -17,9 +17,9 @@
               type="button"
               class="rounded border border-gray-200 px-2 py-1 text-xs text-gray-700 hover:bg-gray-50"
               @click="onAddObject"
-              title="Add object to selected parent"
+              title="Add course to selected parent"
             >
-              Add object
+              Add course
             </button>
             <button
               type="button"
@@ -170,8 +170,12 @@ const onDropInto = (payload: { nodeId: number; targetParentId: number }) => {
 
 const onEditItem = (itemId: number) => {
   const item = forest.value.find((n) => n.id === itemId && n.deletedAt === null)
-  if (!item || item.type === 'leaf') return
-  router.push({ path: `/edit${item.path}` })
+  if (!item) return
+  if (item.type === 'leaf') {
+    router.push({ path: `/course${item.path}` })
+    return
+  }
+  router.push({ path: `/folder${item.path}` })
 }
 
 const onDeleteItem = (itemId: number) => {
@@ -208,7 +212,7 @@ const onAddFolder = () => {
 }
 
 const onAddObject = () => {
-  const next = window.prompt('Object name')
+  const next = window.prompt('Course name')
   if (next == null) return
   const name = next.trim()
   if (name.length === 0) return

@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import MainPage from './pages/MainPage.vue'
 import FolderEditorPage from './pages/FolderEditorPage.vue'
+import CourseEditorPage from './pages/CourseEditorPage.vue'
 
 export const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,6 +16,11 @@ export const router = createRouter({
       path: '/folder/:path(.*)',
       name: 'folder-editor',
       component: FolderEditorPage
+    },
+    {
+      path: '/course/:path(.*)',
+      name: 'course-editor',
+      component: CourseEditorPage
     },
     {
       path: '/:path(.*)/',

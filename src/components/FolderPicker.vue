@@ -81,10 +81,12 @@ type Props = {
   currentFolderId: number | null
   value: number | null
   excludeDescendantsOf?: number | null
+  allowRoot?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  excludeDescendantsOf: null
+  excludeDescendantsOf: null,
+  allowRoot: true
 })
 
 const emit = defineEmits<{
@@ -133,6 +135,7 @@ const filteredFolders = computed<TreeItem[]>(() => {
 })
 
 const showRootOption = computed(() => {
+  if (!props.allowRoot) return false
   const query = searchQuery.value.trim().toLowerCase()
   if (!query) return true
   return 'root'.includes(query)
@@ -164,7 +167,9 @@ const selectedFolder = computed(() => {
 })
 
 const displayText = computed(() => {
-  if (!selectedFolder.value) return 'Root'
+  if (!selectedFolder.value) {
+    return props.allowRoot ? 'Root' : 'Select folder'
+  }
   return folderPath(selectedFolder.value)
 })
 
