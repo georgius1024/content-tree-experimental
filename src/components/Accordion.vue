@@ -6,12 +6,23 @@
       :aria-expanded="isOpen"
       @click="toggle"
     >
-      <div class="min-w-0 flex-1 text-left">
+      <div
+        class="min-w-0 flex-1 text-left"
+        :class="caretPosition === 'left' ? 'flex items-center gap-2' : ''"
+      >
+        <ChevronRight
+          v-if="caretPosition === 'left'"
+          class="shrink-0 transition-transform"
+          :class="isOpen ? 'rotate-90' : 'rotate-0'"
+          :size="18"
+          aria-hidden="true"
+        />
         <slot name="header">{{ label }}</slot>
       </div>
-      <ChevronDown
+      <ChevronRight
+        v-if="caretPosition === 'right'"
         class="shrink-0 transition-transform"
-        :class="isOpen ? 'rotate-180' : 'rotate-0'"
+        :class="isOpen ? 'rotate-90' : 'rotate-0'"
         :size="18"
         aria-hidden="true"
       />
@@ -28,7 +39,7 @@
   <script setup lang="ts">
   import { computed, ref, watch } from 'vue'
   import Collapsible from './Collapsible.vue'
-  import { ChevronDown } from 'lucide-vue-next'
+  import { ChevronRight } from 'lucide-vue-next'
   
   type TransitionFunction = 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out' | 'linear'
   
@@ -37,13 +48,15 @@
     open?: boolean
     duration?: number
     transition?: TransitionFunction
+    caretPosition?: 'left' | 'right'
   }
   
   const props = withDefaults(defineProps<Props>(), {
     label: '',
     open: false,
     duration: 200,
-    transition: 'linear'
+    transition: 'linear',
+    caretPosition: 'right'
   })
   
   const emit = defineEmits<{
@@ -70,5 +83,6 @@
   const duration = computed(() => props.duration)
   const transition = computed(() => props.transition)
   const label = computed(() => props.label)
+  const caretPosition = computed(() => props.caretPosition)
   </script>
 
