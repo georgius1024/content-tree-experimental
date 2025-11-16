@@ -5,6 +5,21 @@
     aria-label="Breadcrumb"
   >
     <ol class="flex items-center gap-1">
+      <li class="flex items-center gap-1">
+        <div
+          class="rounded px-1 py-0.5 hover:bg-gray-50 data-[drag-over=true]:bg-gray-100"
+        >
+          <button
+            type="button"
+            class="inline-flex items-center gap-1 align-middle rounded px-0.5 cursor-pointer hover:bg-gray-50"
+            aria-label="Root"
+            @click="onRootClick"
+          >
+            <FolderRoot :size="16" class="text-gray-500" aria-hidden="true" />
+          </button>
+        </div>
+        <span v-if="items.length > 0" class="text-gray-400">/</span>
+      </li>
       <li
         v-for="(crumb, index) in items"
         :key="crumb.id"
@@ -30,6 +45,7 @@
 import { computed, ref } from 'vue'
 import type { TreeItem } from '../types'
 import { getForest } from '../services/tree'
+import { FolderRoot } from 'lucide-vue-next'
 
 type Props = {
   forestId: number
@@ -40,6 +56,7 @@ const props = defineProps<Props>()
 
 const emit = defineEmits<{
   (e: 'breadcrumb-drop', payload: { newParentId: number | null; newPosition: number }): void
+  (e: 'root-click'): void
 }>()
 
 const dragOverIndex = ref<number | null>(null)
@@ -51,9 +68,8 @@ const items = computed<TreeItem[]>(() => {
     .filter(Boolean)
     .map((s) => Number(s))
     .filter((n) => Number.isFinite(n))
-  const idToItem = new Map<number, TreeItem>(
-    forest.filter((n) => n.deletedAt === null).map((n) => [n.id, n] as const)
-  )
+  const active = forest.filter((n) => n.deletedAt === null)
+  const idToItem = new Map<number, TreeItem>(active.map((n) => [n.id, n] as const))
   return ids
     .map((id) => idToItem.get(id))
     .filter((n): n is TreeItem => Boolean(n))
@@ -79,6 +95,10 @@ const onCrumbDrop = (crumb: TreeItem) => {
     newPosition: childrenCount
   })
   dragOverIndex.value = null
+}
+
+const onRootClick = () => {
+  emit('root-click')
 }
 </script>
 
