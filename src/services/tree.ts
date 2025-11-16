@@ -200,6 +200,18 @@ export function deleteForest(forestId: number): void {
   saveAllTrees(filtered);
 }
 
+export function sortTreeItems(a: TreeItem, b: TreeItem): number {
+  const aIsFolder = a.type !== 'leaf';
+  const bIsFolder = b.type !== 'leaf';
+  if (aIsFolder !== bIsFolder) {
+    return aIsFolder ? -1 : 1; // folders first
+  }
+  if (a.position !== b.position) {
+    return a.position - b.position;
+  }
+  return a.id - b.id;
+}
+
 function normalizeForest(tree: TreeItem[]): TreeItem[] {
   const parentIds = Array.from(
     new Set(tree.map((item) => (item.parentId ?? null)))
@@ -209,17 +221,7 @@ function normalizeForest(tree: TreeItem[]): TreeItem[] {
     const activeSiblings = tree
       .filter((item) => item.deletedAt === null)
       .filter((item) => (item.parentId ?? null) === parentId)
-      .sort((a, b) => {
-        const aIsFolder = a.type !== 'leaf';
-        const bIsFolder = b.type !== 'leaf';
-        if (aIsFolder !== bIsFolder) {
-          return aIsFolder ? -1 : 1; // folders first
-        }
-        if (a.position !== b.position) {
-          return a.position - b.position;
-        }
-        return a.id - b.id;
-      });
+      .sort(sortTreeItems);
     activeSiblings.forEach((item, index) => {
       idToPosition.set(item.id, index); // 0-based
     });
@@ -381,3 +383,33 @@ export function moveNode(
   putForest(forestId, updated);
 }
 
+export function updateNode(forestId: number, nodeId: number, name: string, newParentId: number | null): void {
+  const tree = getForest(forestId);
+  const node = tree.find((item) => item.id === nodeId && item.deletedAt === null);
+  if (!node) {
+    throw new Error('Node not found');
+  }
+  const nameChanged = name !== node.name;
+  const parentChanged = (node.parentId ?? null) !== newParentId;
+  if (!nameChanged && !parentChanged) {
+    return;
+  }
+  const nowIso = new Date().toISOString();
+  if (parentChanged) {
+    const targetSiblings = tree
+      .filter((item) => item.deletedAt === null)
+      .filter((item) => item.parentId === newParentId);
+    const maxPosition = targetSiblings.length === 0 ? -1 : targetSiblings.reduce((acc, item) => Math.max(acc, item.position), -1);
+    const newPosition = maxPosition + 1;
+    moveNode(forestId, nodeId, newParentId, newPosition);
+  }
+  if (nameChanged) {
+    const updated = tree.map((item) => {
+      if (item.id === nodeId) {
+        return { ...item, name, updatedAt: nowIso };
+      }
+      return item;
+    });
+    putForest(forestId, updated);
+  }
+}

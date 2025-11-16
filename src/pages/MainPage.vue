@@ -98,7 +98,7 @@ import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import TreeBreadcrumb from '../components/TreeBreadcrumb.vue'
 import TreeList from '../components/TreeList.vue'
-import { CONTENT_FOREST, getForest, moveNode, putForest, deleteNode, resetAllTrees, addNode } from '../services/tree'
+import { CONTENT_FOREST, getForest, moveNode, deleteNode, resetAllTrees, addNode, sortTreeItems } from '../services/tree'
 import type { TreeItem } from '../types'
 import { Folder, BookOpenCheck, Pencil, Trash2 } from 'lucide-vue-next'
 
@@ -128,14 +128,7 @@ const children = computed<TreeItem[]>(() => {
   return forest.value
     .filter((n) => n.deletedAt === null)
     .filter((n) => (n.parentId ?? null) === (currentParentId.value ?? null))
-    .sort((a, b) => {
-      const aIsFolder = a.type !== 'leaf'
-      const bIsFolder = b.type !== 'leaf'
-      if (aIsFolder !== bIsFolder) {
-        return aIsFolder ? -1 : 1
-      }
-      return (a.position - b.position) || (a.id - b.id)
-    })
+    .sort(sortTreeItems)
 })
 
 const goTo = (nextPath: string) => {
@@ -176,17 +169,9 @@ const onDropInto = (payload: { nodeId: number; targetParentId: number }) => {
 }
 
 const onEditItem = (itemId: number) => {
-  const forest = getForest(forestId)
-  const item = forest.find((n) => n.id === itemId && n.deletedAt === null)
-  if (!item) return
-  const next = window.prompt('Enter a new name', item.name)
-  if (next == null) return
-  const value = next.trim()
-  if (value.length === 0 || value === item.name) return
-  const now = new Date().toISOString()
-  const updated = forest.map((n) => (n.id === itemId ? { ...n, name: value, updatedAt: now } : n))
-  putForest(forestId, updated)
-  refreshKey.value++
+  const item = forest.value.find((n) => n.id === itemId && n.deletedAt === null)
+  if (!item || item.type === 'leaf') return
+  router.push({ path: `/edit${item.path}` })
 }
 
 const onDeleteItem = (itemId: number) => {
