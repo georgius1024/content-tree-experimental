@@ -4,13 +4,31 @@
       <div class="p-4">
         <div class="flex items-center justify-between border-b border-gray-100 pb-3 mb-3">
           <h2 class="text-sm font-medium text-gray-700">Content</h2>
-          <button
-            type="button"
-            class="rounded border border-gray-200 px-2 py-1 text-xs text-gray-700 hover:bg-gray-50"
-            @click="onResetTree"
-          >
-            Reset tree
-          </button>
+          <div class="flex items-center gap-2">
+            <button
+              type="button"
+              class="rounded border border-gray-200 px-2 py-1 text-xs text-gray-700 hover:bg-gray-50"
+              @click="onAddFolder"
+              title="Add sub-folder to selected parent"
+            >
+              Add folder
+            </button>
+            <button
+              type="button"
+              class="rounded border border-gray-200 px-2 py-1 text-xs text-gray-700 hover:bg-gray-50"
+              @click="onAddObject"
+              title="Add object to selected parent"
+            >
+              Add object
+            </button>
+            <button
+              type="button"
+              class="rounded border border-gray-200 px-2 py-1 text-xs text-gray-700 hover:bg-gray-50"
+              @click="onResetTree"
+            >
+              Reset tree
+            </button>
+          </div>
         </div>
         <TreeBreadcrumb
           :forest-id="forestId"
@@ -80,7 +98,7 @@ import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import TreeBreadcrumb from '../components/TreeBreadcrumb.vue'
 import TreeList from '../components/TreeList.vue'
-import { CONTENT_FOREST, getForest, moveNode, putForest, deleteNode, resetAllTrees } from '../services/tree'
+import { CONTENT_FOREST, getForest, moveNode, putForest, deleteNode, resetAllTrees, addNode } from '../services/tree'
 import type { TreeItem } from '../types'
 import { Folder, BookOpenCheck, Pencil, Trash2 } from 'lucide-vue-next'
 
@@ -190,6 +208,30 @@ const onResetTree = () => {
   resetAllTrees()
   refreshKey.value++
   goTo('/')
+}
+
+const onAddFolder = () => {
+  const next = window.prompt('Folder name')
+  if (next == null) return
+  const name = next.trim()
+  if (name.length === 0) return
+  addNode(forestId, currentParentId.value, {
+    name,
+    type: 'branch'
+  })
+  refreshKey.value++
+}
+
+const onAddObject = () => {
+  const next = window.prompt('Object name')
+  if (next == null) return
+  const name = next.trim()
+  if (name.length === 0) return
+  addNode(forestId, currentParentId.value, {
+    name,
+    type: 'leaf'
+  })
+  refreshKey.value++
 }
 </script>
 
