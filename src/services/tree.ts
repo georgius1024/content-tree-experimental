@@ -1,8 +1,9 @@
 import type { TreeItem, TreeItemPayload } from '@/types';
+export const CONTENT_FOREST = 1;
 const SampleTree: TreeItem[] = [
   {
     id: 1,
-    forestId: 1,
+    forestId: CONTENT_FOREST,
     parentId: null,
     position: 1,
     path: '/1/',
@@ -15,7 +16,7 @@ const SampleTree: TreeItem[] = [
   // Branches
   {
     id: 2,
-    forestId: 1,
+    forestId: CONTENT_FOREST,
     parentId: 1,
     position: 1,
     path: '/1/2/',
@@ -27,7 +28,7 @@ const SampleTree: TreeItem[] = [
   },
   {
     id: 3,
-    forestId: 1,
+    forestId: CONTENT_FOREST,
     parentId: 1,
     position: 2,
     path: '/1/3/',
@@ -39,7 +40,7 @@ const SampleTree: TreeItem[] = [
   },
   {
     id: 4,
-    forestId: 1,
+    forestId: CONTENT_FOREST,
     parentId: 1,
     position: 3,
     path: '/1/4/',
@@ -51,7 +52,7 @@ const SampleTree: TreeItem[] = [
   },
   {
     id: 5,
-    forestId: 1,
+    forestId: CONTENT_FOREST,
     parentId: 1,
     position: 4,
     path: '/1/5/',
@@ -64,7 +65,7 @@ const SampleTree: TreeItem[] = [
   // Leaves under Accounts
   {
     id: 6,
-    forestId: 1,
+    forestId: CONTENT_FOREST,
     parentId: 2,
     position: 1,
     path: '/1/2/6/',
@@ -76,7 +77,7 @@ const SampleTree: TreeItem[] = [
   },
   {
     id: 7,
-    forestId: 1,
+    forestId: CONTENT_FOREST,
     parentId: 2,
     position: 2,
     path: '/1/2/7/',
@@ -89,7 +90,7 @@ const SampleTree: TreeItem[] = [
   // Leaves under Credits
   {
     id: 8,
-    forestId: 1,
+    forestId: CONTENT_FOREST,
     parentId: 3,
     position: 1,
     path: '/1/3/8/',
@@ -101,7 +102,7 @@ const SampleTree: TreeItem[] = [
   },
   {
     id: 9,
-    forestId: 1,
+    forestId: CONTENT_FOREST,
     parentId: 3,
     position: 2,
     path: '/1/3/9/',
@@ -114,7 +115,7 @@ const SampleTree: TreeItem[] = [
   // Leaves under Payments
   {
     id: 10,
-    forestId: 1,
+    forestId: CONTENT_FOREST,
     parentId: 4,
     position: 1,
     path: '/1/4/10/',
@@ -127,7 +128,7 @@ const SampleTree: TreeItem[] = [
   // Leaves under Risks
   {
     id: 11,
-    forestId: 1,
+    forestId: CONTENT_FOREST,
     parentId: 5,
     position: 1,
     path: '/1/5/11/',
