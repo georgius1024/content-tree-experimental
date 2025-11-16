@@ -8,6 +8,7 @@
     :swap-threshold="0.5"
     chosen-class="opacity-60"
     ghost-class="drag-ghost"
+    @start="onStart"
     @change="onChange"
   >
     <li
@@ -15,6 +16,8 @@
       :key="item.id"
       class="rounded hover:bg-gray-50 cursor-pointer"
       @click="onItemClick(item.id)"
+      @dragover.prevent="onItemDragOver(item)"
+      @drop.stop.prevent="onItemDropInto(item)"
     >
       <slot name="item" :item="item" :index="index">
         <div class="px-2 py-1 text-sm inline-flex items-center gap-2">
@@ -47,9 +50,11 @@ const emit = defineEmits<{
     payload: { nodeId: number; newParentId: number | null; newPosition: number },
   ): void;
   (e: 'click', payload: { itemId: number }): void;
+  (e: 'drop-into', payload: { nodeId: number; targetParentId: number }): void;
 }>();
 
 const localItems = ref<TreeItem[]>([]);
+const draggingNodeId = ref<number | null>(null);
 watch(
   () => props.items,
   (next) => {
@@ -57,6 +62,16 @@ watch(
   },
   { immediate: true },
 );
+
+const onStart = (evt: { oldIndex?: number }) => {
+  const oldIndex = evt.oldIndex;
+  if (oldIndex == null) {
+    draggingNodeId.value = null;
+    return;
+  }
+  const node = localItems.value[oldIndex];
+  draggingNodeId.value = node ? node.id : null;
+};
 
 const onChange = (evt: { moved?: { oldIndex: number; newIndex: number } }) => {
   // Ensure we have a valid move
@@ -83,6 +98,18 @@ const onChange = (evt: { moved?: { oldIndex: number; newIndex: number } }) => {
 
 const onItemClick = (itemId: number) => {
   emit('click', { itemId });
+};
+
+const onItemDragOver = (_item: TreeItem) => {
+  // placeholder for visual feedback if needed
+};
+
+const onItemDropInto = (item: TreeItem) => {
+  if (draggingNodeId.value == null) return;
+  if (item.type === 'leaf') return;
+  emit('drop-into', { nodeId: draggingNodeId.value, targetParentId: item.id });
+  localItems.value = [...props.items];
+  draggingNodeId.value = null;
 };
 </script>
 

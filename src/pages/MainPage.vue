@@ -24,16 +24,19 @@
           @drop-node="onDropNode"
           @drag-start="onDragStart"
           @drag-end="onDragEnd"
+          @drop-into="onDropInto"
         >
           <template #item="{ item }">
             <button
-              class="px-2 py-1 text-sm text-left w-full hover:bg-gray-50 rounded"
-              @click="goTo(item.path)"
+              type="button"
+              class="px-2 py-1 text-sm text-left w-full rounded transition hover:bg-gray-50 group"
+              :class="item.type !== 'leaf' ? 'cursor-pointer' : ''"
+              @click="item.type !== 'leaf' && goTo(item.path)"
             >
               <span class="inline-flex items-center gap-2">
                 <Folder v-if="item.type !== 'leaf'" :size="16" class="text-gray-500" aria-hidden="true" />
                 <BookOpenCheck v-else :size="16" class="text-gray-500" aria-hidden="true" />
-                <span>{{ item.name }}</span>
+                <span :class="item.type !== 'leaf' ? 'group-hover:underline' : ''">{{ item.name }}</span>
               </span>
             </button>
           </template>
@@ -112,6 +115,15 @@ const onBreadcrumbDrop = (payload: { newParentId: number | null; newPosition: nu
   if (draggingNodeId.value == null) return
   moveNode(forestId, draggingNodeId.value, payload.newParentId, payload.newPosition)
   draggingNodeId.value = null
+  refreshKey.value++
+}
+
+const onDropInto = (payload: { nodeId: number; targetParentId: number }) => {
+  const forest = getForest(forestId)
+  const childrenCount = forest
+    .filter((n) => n.deletedAt === null)
+    .filter((n) => (n.parentId ?? null) === payload.targetParentId).length
+  moveNode(forestId, payload.nodeId, payload.targetParentId, childrenCount)
   refreshKey.value++
 }
 </script>
