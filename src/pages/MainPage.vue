@@ -33,11 +33,31 @@
               :class="item.type !== 'leaf' ? 'cursor-pointer' : ''"
               @click="item.type !== 'leaf' && goTo(item.path)"
             >
-              <span class="inline-flex items-center gap-2">
-                <Folder v-if="item.type !== 'leaf'" :size="16" class="text-gray-500" aria-hidden="true" />
-                <BookOpenCheck v-else :size="16" class="text-gray-500" aria-hidden="true" />
-                <span :class="item.type !== 'leaf' ? 'group-hover:underline' : ''">{{ item.name }}</span>
-              </span>
+              <div class="flex items-center justify-between">
+                <span class="inline-flex items-center gap-2">
+                  <Folder v-if="item.type !== 'leaf'" :size="16" class="text-gray-500" aria-hidden="true" />
+                  <BookOpenCheck v-else :size="16" class="text-gray-500" aria-hidden="true" />
+                  <span :class="item.type !== 'leaf' ? 'group-hover:underline' : ''">{{ item.name }}</span>
+                </span>
+                <span class="inline-flex items-center gap-1 opacity-0 group-hover:opacity-100 transition">
+                  <button
+                    type="button"
+                    class="rounded p-1 hover:bg-gray-100"
+                    aria-label="Edit"
+                    @click.stop="onEditItem(item.id)"
+                  >
+                    <Pencil :size="14" class="text-gray-500" aria-hidden="true" />
+                  </button>
+                  <button
+                    type="button"
+                    class="rounded p-1 hover:bg-gray-100"
+                    aria-label="Delete"
+                    @click.stop="onDeleteItem(item.id)"
+                  >
+                    <Trash2 :size="14" class="text-gray-500" aria-hidden="true" />
+                  </button>
+                </span>
+              </div>
             </button>
           </template>
         </TreeList>
@@ -50,9 +70,9 @@ import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import TreeBreadcrumb from '../components/TreeBreadcrumb.vue'
 import TreeList from '../components/TreeList.vue'
-import { CONTENT_FOREST, getForest, moveNode } from '../services/tree'
+import { CONTENT_FOREST, getForest, moveNode, putForest, deleteNode } from '../services/tree'
 import type { TreeItem } from '../types'
-import { Folder, BookOpenCheck } from 'lucide-vue-next'
+import { Folder, BookOpenCheck, Pencil, Trash2 } from 'lucide-vue-next'
 
 type Props = {
   path: string
@@ -124,6 +144,33 @@ const onDropInto = (payload: { nodeId: number; targetParentId: number }) => {
     .filter((n) => n.deletedAt === null)
     .filter((n) => (n.parentId ?? null) === payload.targetParentId).length
   moveNode(forestId, payload.nodeId, payload.targetParentId, childrenCount)
+  refreshKey.value++
+}
+
+const onEditItem = (itemId: number) => {
+  const forest = getForest(forestId)
+  const item = forest.find((n) => n.id === itemId && n.deletedAt === null)
+  if (!item) return
+  const next = window.prompt('Enter a new name', item.name)
+  if (next == null) return
+  const value = next.trim()
+  if (value.length === 0 || value === item.name) return
+  const now = new Date().toISOString()
+  const updated = forest.map((n) => (n.id === itemId ? { ...n, name: value, updatedAt: now } : n))
+  putForest(forestId, updated)
+  refreshKey.value++
+}
+
+const onDeleteItem = (itemId: number) => {
+  const forest = getForest(forestId)
+  const item = forest.find((n) => n.id === itemId && n.deletedAt === null)
+  if (!item) return
+  const message = item.type === 'leaf'
+    ? 'Delete this item?'
+    : 'Delete this folder and all its descendants?'
+  const ok = window.confirm(message)
+  if (!ok) return
+  deleteNode(forestId, itemId)
   refreshKey.value++
 }
 </script>
