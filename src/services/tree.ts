@@ -181,9 +181,56 @@ export function resetAllTrees(): void {
   }
 }
 
+function normalizePath(path: string): string {
+  // Fix double slashes: /1//19/ -> /1/19/
+  return path.replace(/\/+/g, '/').replace(/^\/\//, '/');
+}
+
 export function getForest(forestId: number): TreeItem[] {
   const all = getAllTrees();
-  return all.filter((tree) => tree.forestId === forestId);
+  const forest = all.filter((tree) => tree.forestId === forestId);
+  // Normalize any corrupted paths (fixes double slashes)
+  const needsFix = forest.some((item) => item.path.includes('//'));
+  if (needsFix) {
+    // First, normalize all paths
+    const pathMap = new Map<number, string>();
+    const fixed = forest.map((item) => {
+      const normalized = normalizePath(item.path);
+      pathMap.set(item.id, normalized);
+      return {
+        ...item,
+        path: normalized
+      };
+    });
+    
+    // Update descendant paths that reference corrupted parent paths
+    const fullyFixed = fixed.map((item) => {
+      // Check if this item's path needs to be updated based on parent path changes
+      const parent = fixed.find((p) => p.id === item.parentId);
+      if (parent && item.path.startsWith(parent.path)) {
+        // Path is already correct relative to parent
+        return item;
+      }
+      // Rebuild path from parent if parent exists
+      if (item.parentId != null) {
+        const parentPath = pathMap.get(item.parentId);
+        if (parentPath) {
+          const relative = item.path.split('/').filter(Boolean).pop();
+          return {
+            ...item,
+            path: `${parentPath}${relative}/`
+          };
+        }
+      }
+      return item;
+    });
+    
+    // Save the fixed paths back
+    const otherForests = all.filter((tree) => tree.forestId !== forestId);
+    saveAllTrees([...otherForests, ...fullyFixed]);
+    return fullyFixed;
+  }
+  return forest;
 }
 
 export function putForest(forestId: number, tree: TreeItem[]): void {
@@ -250,7 +297,9 @@ export function addNode(forestId: number, parentId: number| null, node: TreeItem
   const maxPosition = level.length === 0 ? -1 : level.reduce((acc, t) => Math.max(acc, t.position), -1);
   const position = maxPosition + 1; // 0-based
   const parent = tree.find((tree) => tree.id === parentId);
-  const path = `${parent ? parent.path : ''}${parent ? '/' : ''}${counter}/`;
+  // Ensure parent path is normalized (no double slashes) before constructing child path
+  const parentPath = parent ? normalizePath(parent.path) : '';
+  const path = parentPath ? `${parentPath}${counter}/` : `/${counter}/`;
   const newNode: TreeItem = {
     ...node,
     id: counter,
@@ -412,4 +461,13 @@ export function updateNode(forestId: number, nodeId: number, name: string, newPa
     });
     putForest(forestId, updated);
   }
+}
+
+export function attachObjectId(forestId: number, nodeId: number, objectId: string): void {
+  const tree = getForest(forestId);
+  const nowIso = new Date().toISOString();
+  const updated = tree.map((item) =>
+    item.id === nodeId ? { ...item, objectId, updatedAt: nowIso } : item
+  );
+  putForest(forestId, updated);
 }

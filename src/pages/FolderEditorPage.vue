@@ -2,7 +2,7 @@
   <div class="mx-auto max-w-2xl">
     <div class="rounded-lg border border-gray-200 bg-white shadow-sm">
       <div class="p-4 border-b border-gray-100">
-        <h1 class="text-lg font-semibold">Folder Editor</h1>
+        <h1 class="text-lg font-semibold">{{ isNew ? 'New Folder' : 'Folder Editor' }}</h1>
       </div>
       <div class="p-4 space-y-4">
         <div>
@@ -21,6 +21,7 @@
             :current-folder-id="nodeId"
             :exclude-descendants-of="nodeId"
             :value="selectedParentId"
+            :allow-root="true"
             @update:value="selectedParentId = $event"
           />
         </div>
@@ -34,10 +35,11 @@
           </button>
           <button
             type="button"
-            class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
+            class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            :disabled="!isValid"
             @click="onSave"
           >
-            Save
+            {{ isNew ? 'Create' : 'Save' }}
           </button>
         </div>
       </div>
@@ -48,7 +50,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { CONTENT_FOREST, getForest, updateNode } from '../services/tree'
+import { CONTENT_FOREST, getForest, updateNode, addNode } from '../services/tree'
 import type { TreeItem } from '../types'
 import FolderPicker from '../components/FolderPicker.vue'
 
@@ -62,10 +64,15 @@ const selectedParentId = ref<number | null>(null)
 
 const forest = computed<TreeItem[]>(() => getForest(forestId))
 
+const isNew = computed(() => route.path === '/folder/new')
+
 const node = computed<TreeItem | null>(() => {
   return nodeId.value != null ? forest.value.find((n) => n.id === nodeId.value && n.deletedAt === null) ?? null : null
 })
 
+const isValid = computed(() => {
+  return Boolean(name.value.trim())
+})
 
 const getNodeIdFromPath = (path: string): number | null => {
   const ids = path.split('/').filter(Boolean).map((s) => Number(s)).filter((n) => Number.isFinite(n))
@@ -74,28 +81,62 @@ const getNodeIdFromPath = (path: string): number | null => {
 }
 
 onMounted(() => {
-  const path = (route.params.path as string) || ''
-  const normalized = path.endsWith('/') ? path : `${path}/`
-  nodeId.value = getNodeIdFromPath(normalized)
-  if (node.value) {
-    name.value = node.value.name
-    selectedParentId.value = node.value.parentId ?? null
+  if (isNew.value) {
+    // Creation mode: get parent from query
+    const parentIdParam = route.query.parentId
+    if (parentIdParam) {
+      const parsed = Number(parentIdParam)
+      if (Number.isFinite(parsed)) {
+        selectedParentId.value = parsed
+      }
+    }
+    // Don't set nodeId for new items
+    nodeId.value = null
   } else {
-    router.push({ path: '/' })
+    // Edit mode: load existing node
+    const path = (route.params.path as string) || ''
+    const normalized = path.endsWith('/') ? path : `${path}/`
+    nodeId.value = getNodeIdFromPath(normalized)
+    if (node.value) {
+      name.value = node.value.name
+      selectedParentId.value = node.value.parentId ?? null
+    } else {
+      router.push({ path: '/' })
+    }
   }
 })
 
 const onSave = () => {
-  if (!nodeId.value || !name.value.trim()) return
-  updateNode(forestId, nodeId.value, name.value.trim(), selectedParentId.value)
-  const parentPath = selectedParentId.value
-    ? forest.value.find((n) => n.id === selectedParentId.value)?.path ?? '/'
-    : '/'
-  router.push({ path: parentPath })
+  if (!name.value.trim()) return
+
+  if (isNew.value) {
+    // Create new folder
+    addNode(forestId, selectedParentId.value, {
+      name: name.value.trim(),
+      type: 'branch'
+    })
+    const parentPath = selectedParentId.value
+      ? forest.value.find((n) => n.id === selectedParentId.value)?.path ?? '/'
+      : '/'
+    router.push({ path: parentPath })
+  } else {
+    // Update existing folder
+    if (!nodeId.value) return
+    updateNode(forestId, nodeId.value, name.value.trim(), selectedParentId.value)
+    const parentPath = selectedParentId.value
+      ? forest.value.find((n) => n.id === selectedParentId.value)?.path ?? '/'
+      : '/'
+    router.push({ path: parentPath })
+  }
 }
 
 const goBack = () => {
-  if (node.value) {
+  if (isNew.value) {
+    const parentPath = selectedParentId.value
+      ? forest.value.find((n) => n.id === selectedParentId.value)?.path ?? '/'
+      : '/'
+    router.push({ path: parentPath })
+  } else if (node.value) {
     router.push({ path: node.value.path })
   } else {
     router.push({ path: '/' })

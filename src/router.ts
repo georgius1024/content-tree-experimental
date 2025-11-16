@@ -13,9 +13,19 @@ export const router = createRouter({
       props: () => ({ path: '/' })
     },
     {
+      path: '/folder/new',
+      name: 'folder-editor-new',
+      component: FolderEditorPage
+    },
+    {
       path: '/folder/:path(.*)',
       name: 'folder-editor',
       component: FolderEditorPage
+    },
+    {
+      path: '/course/new',
+      name: 'course-editor-new',
+      component: CourseEditorPage
     },
     {
       path: '/course/:path(.*)',

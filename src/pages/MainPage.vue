@@ -98,9 +98,10 @@ import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import TreeBreadcrumb from '../components/TreeBreadcrumb.vue'
 import TreeList from '../components/TreeList.vue'
-import { CONTENT_FOREST, getForest, moveNode, deleteNode, resetAllTrees, addNode, sortTreeItems } from '../services/tree'
+import { CONTENT_FOREST, getForest, moveNode, deleteNode, resetAllTrees, sortTreeItems } from '../services/tree'
 import type { TreeItem } from '../types'
 import { Folder, BookOpenCheck, Pencil, Trash2 } from 'lucide-vue-next'
+import { softDeleteCourse, resetAllCourses } from '../services/courses'
 
 type Props = {
   path: string
@@ -187,6 +188,18 @@ const onDeleteItem = (itemId: number) => {
     : 'Delete this folder and all its descendants?'
   const ok = window.confirm(message)
   if (!ok) return
+
+  // Soft-delete courses for the node and all descendants about to be deleted
+  const affected = forest
+    .filter((n) => n.deletedAt === null)
+    .filter((n) => n.path.startsWith(item.path)) // includes item + descendants
+  const leavesWithCourses = affected.filter(
+    (n) => n.type === 'leaf' && typeof n.objectId === 'string' && n.objectId
+  )
+  leavesWithCourses.forEach((n) => {
+    softDeleteCourse(n.objectId as string)
+  })
+
   deleteNode(forestId, itemId)
   refreshKey.value++
 }
@@ -195,32 +208,24 @@ const onResetTree = () => {
   const ok = window.confirm('Reset tree to the initial sample?')
   if (!ok) return
   resetAllTrees()
+  resetAllCourses()
   refreshKey.value++
   goTo('/')
 }
 
 const onAddFolder = () => {
-  const next = window.prompt('Folder name')
-  if (next == null) return
-  const name = next.trim()
-  if (name.length === 0) return
-  addNode(forestId, currentParentId.value, {
-    name,
-    type: 'branch'
-  })
-  refreshKey.value++
+  const parentId = currentParentId.value
+  const query = parentId != null ? { parentId: parentId.toString() } : {}
+  router.push({ path: '/folder/new', query })
 }
 
 const onAddObject = () => {
-  const next = window.prompt('Course name')
-  if (next == null) return
-  const name = next.trim()
-  if (name.length === 0) return
-  addNode(forestId, currentParentId.value, {
-    name,
-    type: 'leaf'
-  })
-  refreshKey.value++
+  const parentId = currentParentId.value
+  if (parentId == null) {
+    alert('Please select a folder first')
+    return
+  }
+  router.push({ path: '/course/new', query: { parentId: parentId.toString() } })
 }
 </script>
 
