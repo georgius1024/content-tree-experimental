@@ -77,7 +77,14 @@ const children = computed<TreeItem[]>(() => {
   return forest.value
     .filter((n) => n.deletedAt === null)
     .filter((n) => (n.parentId ?? null) === (currentParentId.value ?? null))
-    .sort((a, b) => (a.position - b.position) || (a.id - b.id))
+    .sort((a, b) => {
+      const aIsFolder = a.type !== 'leaf'
+      const bIsFolder = b.type !== 'leaf'
+      if (aIsFolder !== bIsFolder) {
+        return aIsFolder ? -1 : 1
+      }
+      return (a.position - b.position) || (a.id - b.id)
+    })
 })
 
 const goTo = (nextPath: string) => {

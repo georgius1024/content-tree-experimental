@@ -75,7 +75,7 @@ const onChange = (evt: { moved?: { oldIndex: number; newIndex: number } }) => {
   emit('drop-node', {
     nodeId: node.id,
     newParentId: props.parentId,
-    newPosition: newIndex + 1,
+    newPosition: newIndex,
   });
   // Immediately re-sync to parent (source of truth)
   localItems.value = [...props.items];

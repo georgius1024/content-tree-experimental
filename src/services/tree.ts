@@ -5,7 +5,7 @@ const SampleTree: TreeItem[] = [
     id: 1,
     forestId: CONTENT_FOREST,
     parentId: null,
-    position: 1,
+    position: 0,
     path: '/1/',
     name: 'Banking',
     type: 'tree',
@@ -18,7 +18,7 @@ const SampleTree: TreeItem[] = [
     id: 2,
     forestId: CONTENT_FOREST,
     parentId: 1,
-    position: 1,
+    position: 0,
     path: '/1/2/',
     name: 'Accounts',
     type: 'branch',
@@ -30,7 +30,7 @@ const SampleTree: TreeItem[] = [
     id: 3,
     forestId: CONTENT_FOREST,
     parentId: 1,
-    position: 2,
+    position: 1,
     path: '/1/3/',
     name: 'Credits',
     type: 'branch',
@@ -42,7 +42,7 @@ const SampleTree: TreeItem[] = [
     id: 4,
     forestId: CONTENT_FOREST,
     parentId: 1,
-    position: 3,
+    position: 2,
     path: '/1/4/',
     name: 'Payments',
     type: 'branch',
@@ -54,7 +54,7 @@ const SampleTree: TreeItem[] = [
     id: 5,
     forestId: CONTENT_FOREST,
     parentId: 1,
-    position: 4,
+    position: 3,
     path: '/1/5/',
     name: 'Risks',
     type: 'branch',
@@ -67,7 +67,7 @@ const SampleTree: TreeItem[] = [
     id: 6,
     forestId: CONTENT_FOREST,
     parentId: 2,
-    position: 1,
+    position: 0,
     path: '/1/2/6/',
     name: 'Checking Accounts',
     type: 'leaf',
@@ -79,7 +79,7 @@ const SampleTree: TreeItem[] = [
     id: 7,
     forestId: CONTENT_FOREST,
     parentId: 2,
-    position: 2,
+    position: 1,
     path: '/1/2/7/',
     name: 'Savings Accounts',
     type: 'leaf',
@@ -92,7 +92,7 @@ const SampleTree: TreeItem[] = [
     id: 8,
     forestId: CONTENT_FOREST,
     parentId: 3,
-    position: 1,
+    position: 0,
     path: '/1/3/8/',
     name: 'Personal Loans',
     type: 'leaf',
@@ -104,7 +104,7 @@ const SampleTree: TreeItem[] = [
     id: 9,
     forestId: CONTENT_FOREST,
     parentId: 3,
-    position: 2,
+    position: 1,
     path: '/1/3/9/',
     name: 'Credit Cards',
     type: 'leaf',
@@ -117,7 +117,7 @@ const SampleTree: TreeItem[] = [
     id: 10,
     forestId: CONTENT_FOREST,
     parentId: 4,
-    position: 1,
+    position: 0,
     path: '/1/4/10/',
     name: 'Wire Transfers',
     type: 'leaf',
@@ -130,7 +130,7 @@ const SampleTree: TreeItem[] = [
     id: 11,
     forestId: CONTENT_FOREST,
     parentId: 5,
-    position: 1,
+    position: 0,
     path: '/1/5/11/',
     name: 'Credit Risk',
     type: 'leaf',
@@ -142,7 +142,7 @@ const SampleTree: TreeItem[] = [
     id: 12,
     forestId: 1,
     parentId: 5,
-    position: 2,
+    position: 1,
     path: '/1/5/12/',
     name: 'AML / KYC',
     type: 'leaf',
@@ -201,9 +201,19 @@ function normalizeForest(tree: TreeItem[]): TreeItem[] {
     const activeSiblings = tree
       .filter((item) => item.deletedAt === null)
       .filter((item) => (item.parentId ?? null) === parentId)
-      .sort((a, b) => (a.position - b.position) || (a.id - b.id));
+      .sort((a, b) => {
+        const aIsFolder = a.type !== 'leaf';
+        const bIsFolder = b.type !== 'leaf';
+        if (aIsFolder !== bIsFolder) {
+          return aIsFolder ? -1 : 1; // folders first
+        }
+        if (a.position !== b.position) {
+          return a.position - b.position;
+        }
+        return a.id - b.id;
+      });
     activeSiblings.forEach((item, index) => {
-      idToPosition.set(item.id, index + 1);
+      idToPosition.set(item.id, index); // 0-based
     });
   });
   return tree.map((item) => {
@@ -227,7 +237,8 @@ export function addNode(forestId: number, parentId: number| null, node: TreeItem
   const tree = getForest(forestId);
   const counter = getCounter();
   const level = tree.filter((tree) => tree.parentId === parentId).filter((tree) => tree.deletedAt === null);
-  const position = level.reduce((acc, tree) => Math.max(acc, tree.position), 0) + 1;
+  const maxPosition = level.length === 0 ? -1 : level.reduce((acc, t) => Math.max(acc, t.position), -1);
+  const position = maxPosition + 1; // 0-based
   const parent = tree.find((tree) => tree.id === parentId);
   const path = `${parent ? parent.path : ''}${parent ? '/' : ''}${counter}/`;
   const newNode: TreeItem = {
@@ -297,25 +308,28 @@ export function moveNode(
   const targetSiblings = tree
     .filter((item) => item.deletedAt === null)
     .filter((item) => item.parentId === newParentId);
-  const maxTargetPosition = targetSiblings.reduce((acc, item) => Math.max(acc, item.position), 0);
-  const clampedNewPosition = Math.max(1, Math.min(newPosition, maxTargetPosition + 1));
+  const maxTargetPosition = targetSiblings.length === 0 ? -1 : targetSiblings.reduce((acc, item) => Math.max(acc, item.position), -1);
+  const clampedNewPosition = Math.max(0, Math.min(newPosition, maxTargetPosition + 1));
   const newBasePath = newParent ? `${newParent.path}${node.id}/` : `/${node.id}/`;
-  const updatedAfterOldParentReorder = tree.map((item) => {
-    if (item.deletedAt !== null) {
-      return item;
-    }
-    if (item.parentId === oldParentId && item.position > node.position && item.id !== node.id) {
-      return { ...item, position: item.position - 1, updatedAt: nowIso };
-    }
-    return item;
-  });
+  const willBeInNewParentFlag = node.parentId !== newParentId;
+  const updatedAfterOldParentReorder = willBeInNewParentFlag
+    ? tree.map((item) => {
+        if (item.deletedAt !== null) {
+          return item;
+        }
+        if (item.parentId === oldParentId && item.position > node.position && item.id !== node.id) {
+          return { ...item, position: item.position - 1, updatedAt: nowIso };
+        }
+        return item;
+      })
+    : tree;
   const updatedAfterNewParentReorder = updatedAfterOldParentReorder.map((item) => {
     if (item.deletedAt !== null) {
       return item;
     }
     if (item.parentId === newParentId) {
       const isSameNode = item.id === node.id;
-      const willBeInNewParent = node.parentId !== newParentId;
+      const willBeInNewParent = willBeInNewParentFlag;
       if (willBeInNewParent) {
         if (item.position >= clampedNewPosition && !isSameNode) {
           return { ...item, position: item.position + 1, updatedAt: nowIso };
