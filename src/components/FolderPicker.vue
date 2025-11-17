@@ -1,79 +1,72 @@
 <template>
-  <div class="relative">
-    <button
-      type="button"
-      class="w-full px-3 py-2 border border-gray-300 rounded-md text-left bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center justify-between"
-      @click="showModal = true"
-    >
-      <span class="truncate text-sm">
-        {{ displayText }}
-      </span>
-      <span class="ml-2 text-gray-400">⋯</span>
-    </button>
+  <Combobox
+    v-model="selectedFolder"
+    as="div"
+    nullable
+  >
+    <div class="relative">
+      <ComboboxInput
+        :model-value="searchQuery"
+        class="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md text-left bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+        :display-value="() => displayText"
+        @input="handleInputChange"
+        @change="handleInputChange"
+      />
+      <ComboboxButton class="absolute inset-y-0 right-0 flex items-center pr-2">
+        <ChevronsUpDown
+          class="h-5 w-5 text-gray-400"
+          aria-hidden="true"
+        />
+      </ComboboxButton>
 
-    <!-- Modal -->
-    <div
-      v-if="showModal"
-      class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-200 bg-opacity-50"
-      @click.self="showModal = false"
-    >
-      <div class="bg-white rounded-lg shadow-xl w-full max-w-md max-h-[80vh] flex flex-col">
-        <!-- Header -->
-        <div class="p-4 border-b border-gray-200 flex items-center justify-between">
-          <h2 class="text-lg font-semibold">{{ t('folderPicker.selectFolder') }}</h2>
-          <button
-            type="button"
-            class="text-gray-400 hover:text-gray-600"
-            @click="showModal = false"
+      <ComboboxOptions
+        v-if="allFilteredOptions.length > 0"
+        class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+      >
+        <ComboboxOption
+          v-for="option in allFilteredOptions"
+          :key="option.id ?? 'root'"
+          v-slot="{ active, selected }"
+          :value="option.folder"
+          as="template"
+        >
+          <li
+            class="relative cursor-pointer select-none px-3 py-2"
+            :class="{
+              'bg-blue-600 text-white': active,
+              'bg-gray-100': selected && !active,
+              'text-gray-900': !active
+            }"
           >
-            ✕
-          </button>
-        </div>
-
-        <!-- Search -->
-        <div class="p-4 border-b border-gray-200">
-          <input
-            v-model="searchQuery"
-            type="text"
-            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            :placeholder="t('folderPicker.searchPlaceholder')"
-            @keyup.esc="showModal = false"
-          />
-        </div>
-
-        <!-- Results -->
-        <div class="flex-1 overflow-y-auto p-2">
-          <ul class="space-y-1">
-            <li
-              v-if="showRootOption"
-              class="px-3 py-2 rounded hover:bg-gray-50 cursor-pointer text-sm font-medium"
-              :class="{ 'bg-blue-50': props.value === null }"
-              @click="selectRoot"
-            >
-              {{ t('folderPicker.root') }}
-            </li>
-            <li v-if="filteredFolders.length === 0 && !showRootOption" class="px-3 py-2 text-sm text-gray-500 text-center">
-              {{ t('folderPicker.noFoldersFound') }}
-            </li>
-            <li
-              v-for="folder in filteredFolders"
-              :key="folder.id"
-              class="px-3 py-2 rounded hover:bg-gray-50 cursor-pointer text-sm"
-              :class="{ 'bg-blue-50': props.value === folder.id }"
-              @click="selectFolder(folder)"
-            >
-              <div v-html="highlightedPath(folder)" />
-            </li>
-          </ul>
+            <span class="block truncate text-sm">
+              <span v-html="option.highlightedText" />
+            </span>
+          </li>
+        </ComboboxOption>
+      </ComboboxOptions>
+      <div
+        v-if="allFilteredOptions.length === 0 && searchQuery.trim()"
+        class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+      >
+        <div class="px-3 py-2 text-sm text-gray-500 text-center">
+          {{ t('folderPicker.noFoldersFound') }}
         </div>
       </div>
     </div>
-  </div>
+  </Combobox>
 </template>
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import {
+  Combobox,
+  ComboboxInput,
+  ComboboxButton,
+  ComboboxOptions,
+  ComboboxOption
+} from '@headlessui/vue'
+import { ChevronsUpDown } from 'lucide-vue-next'
 import type { TreeItem } from '../types'
 import { getForest, sortTreeItems } from '../services/tree'
 
@@ -96,7 +89,6 @@ const emit = defineEmits<{
   (e: 'update:value', value: number | null): void
 }>()
 
-const showModal = ref(false)
 const searchQuery = ref('')
 
 const forest = computed<TreeItem[]>(() => getForest(props.forestId))
@@ -126,33 +118,7 @@ const folderPath = (folder: TreeItem): string => {
   return pathItems.length > 0 ? pathItems.join(' / ') : folder.name
 }
 
-const filteredFolders = computed<TreeItem[]>(() => {
-  const query = searchQuery.value.trim().toLowerCase()
-  if (!query) {
-    return availableFolders.value
-  }
-  return availableFolders.value.filter((folder) => {
-    const path = folderPath(folder).toLowerCase()
-    return path.includes(query)
-  })
-})
-
-const showRootOption = computed(() => {
-  if (!props.allowRoot) return false
-  const query = searchQuery.value.trim().toLowerCase()
-  if (!query) return true
-  return 'root'.includes(query)
-})
-
-const highlightedPath = (folder: TreeItem): string => {
-  const path = folderPath(folder)
-  const query = searchQuery.value.trim()
-  if (!query) {
-    return escapeHtml(path)
-  }
-  const regex = new RegExp(`(${escapeRegex(query)})`, 'gi')
-  return escapeHtml(path).replace(regex, '<mark class="bg-gray-200">$1</mark>')
-}
+const rootText = computed(() => t('folderPicker.root'))
 
 const escapeHtml = (text: string): string => {
   const div = document.createElement('div')
@@ -164,34 +130,98 @@ const escapeRegex = (text: string): string => {
   return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 }
 
-const selectedFolder = computed(() => {
-  if (props.value == null) return null
-  return forest.value.find((n) => n.id === props.value && n.deletedAt === null) ?? null
+const highlightText = (text: string, query: string): string => {
+  if (!query.trim()) {
+    return escapeHtml(text)
+  }
+  const regex = new RegExp(`(${escapeRegex(query)})`, 'gi')
+  return escapeHtml(text).replace(regex, '<mark class="bg-yellow-200">$1</mark>')
+}
+
+const matchesQuery = (text: string, query: string): boolean => {
+  if (!query.trim()) return true
+  return text.toLowerCase().includes(query.toLowerCase())
+}
+
+const filteredFolders = computed<TreeItem[]>(() => {
+  const query = searchQuery.value.trim()
+  if (!query) {
+    return availableFolders.value
+  }
+  return availableFolders.value.filter((folder) => {
+    const path = folderPath(folder)
+    return matchesQuery(path, query) || matchesQuery(folder.name, query)
+  })
+})
+
+const shouldShowRoot = computed(() => {
+  if (!props.allowRoot) return false
+  const query = searchQuery.value.trim().toLowerCase()
+  if (!query) return true
+  // Ищем корень по слову "root" и по переводу
+  const rootTextLower = rootText.value.toLowerCase()
+  return matchesQuery(rootTextLower, query) || matchesQuery('root', query)
+})
+
+type FilteredOption = {
+  id: string | number
+  folder: TreeItem | null
+  highlightedText: string
+}
+
+const allFilteredOptions = computed<FilteredOption[]>(() => {
+  const options: FilteredOption[] = []
+  const query = searchQuery.value.trim()
+
+  // Добавляем корень если нужно
+  if (shouldShowRoot.value) {
+    options.push({
+      id: 'root',
+      folder: null,
+      highlightedText: highlightText(rootText.value, query)
+    })
+  }
+
+  // Добавляем папки
+  filteredFolders.value.forEach((folder) => {
+    const path = folderPath(folder)
+    options.push({
+      id: folder.id,
+      folder,
+      highlightedText: highlightText(path, query)
+    })
+  })
+
+  return options
+})
+
+const selectedFolder = computed({
+  get(): TreeItem | null {
+    if (props.value == null) return null
+    return forest.value.find((n) => n.id === props.value && n.deletedAt === null) ?? null
+  },
+  set(value: TreeItem | null) {
+    emit('update:value', value?.id ?? null)
+    // После выбора очищаем поиск и показываем выбранное значение
+    searchQuery.value = ''
+  }
 })
 
 const displayText = computed(() => {
   if (!selectedFolder.value) {
-    return props.allowRoot ? t('folderPicker.root') : t('folderPicker.selectFolderButton')
+    return props.allowRoot ? rootText.value : t('folderPicker.selectFolderButton')
   }
   return folderPath(selectedFolder.value)
 })
 
-const selectFolder = (folder: TreeItem) => {
-  emit('update:value', folder.id)
-  showModal.value = false
-  searchQuery.value = ''
-}
-
-const selectRoot = () => {
-  emit('update:value', null)
-  showModal.value = false
-  searchQuery.value = ''
+const handleInputChange = (event: Event) => {
+  const target = event.target as HTMLInputElement
+  searchQuery.value = target.value
 }
 
 watch(() => props.value, () => {
-  if (props.value == null && showModal.value) {
-    emit('update:value', null)
-  }
+  // Когда значение меняется извне, очищаем поиск
+  searchQuery.value = ''
 })
 </script>
 
@@ -201,4 +231,3 @@ mark {
   background-color: #fef08a;
 }
 </style>
-
