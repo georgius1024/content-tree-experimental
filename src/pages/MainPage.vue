@@ -102,7 +102,7 @@ import type { TreeItem } from '../types'
 import { Folder, BookOpenCheck, Pencil, Trash2 } from 'lucide-vue-next'
 import { softDeleteCourse, resetAllCourses } from '../services/courses'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 type Props = {
   path: string
@@ -208,8 +208,9 @@ const onDeleteItem = (itemId: number) => {
 const onResetTree = () => {
   const ok = window.confirm(t('mainPage.resetConfirm'))
   if (!ok) return
-  resetAllTrees()
-  resetAllCourses()
+  const currentLocale = locale.value as 'en' | 'ru'
+  resetAllTrees(currentLocale)
+  resetAllCourses(currentLocale)
   refreshKey.value++
   goTo('/')
 }

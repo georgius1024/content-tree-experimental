@@ -1,156 +1,19 @@
 import type { TreeItem, TreeItemPayload } from '@/types';
-export const CONTENT_FOREST = 1;
-const SampleTree: TreeItem[] = [
-  {
-    id: 1,
-    forestId: CONTENT_FOREST,
-    parentId: null,
-    position: 0,
-    path: '/1/',
-    name: 'Banking',
-    type: 'tree',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    deletedAt: null,
-  },
-  // Branches
-  {
-    id: 2,
-    forestId: CONTENT_FOREST,
-    parentId: 1,
-    position: 0,
-    path: '/1/2/',
-    name: 'Accounts',
-    type: 'branch',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    deletedAt: null,
-  },
-  {
-    id: 3,
-    forestId: CONTENT_FOREST,
-    parentId: 1,
-    position: 1,
-    path: '/1/3/',
-    name: 'Credits',
-    type: 'branch',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    deletedAt: null,
-  },
-  {
-    id: 4,
-    forestId: CONTENT_FOREST,
-    parentId: 1,
-    position: 2,
-    path: '/1/4/',
-    name: 'Payments',
-    type: 'branch',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    deletedAt: null,
-  },
-  {
-    id: 5,
-    forestId: CONTENT_FOREST,
-    parentId: 1,
-    position: 3,
-    path: '/1/5/',
-    name: 'Risks',
-    type: 'branch',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    deletedAt: null,
-  },
-  // Leaves under Accounts
-  {
-    id: 6,
-    forestId: CONTENT_FOREST,
-    parentId: 2,
-    position: 0,
-    path: '/1/2/6/',
-    name: 'Checking Accounts',
-    type: 'leaf',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    deletedAt: null,
-  },
-  {
-    id: 7,
-    forestId: CONTENT_FOREST,
-    parentId: 2,
-    position: 1,
-    path: '/1/2/7/',
-    name: 'Savings Accounts',
-    type: 'leaf',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    deletedAt: null,
-  },
-  // Leaves under Credits
-  {
-    id: 8,
-    forestId: CONTENT_FOREST,
-    parentId: 3,
-    position: 0,
-    path: '/1/3/8/',
-    name: 'Personal Loans',
-    type: 'leaf',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    deletedAt: null,
-  },
-  {
-    id: 9,
-    forestId: CONTENT_FOREST,
-    parentId: 3,
-    position: 1,
-    path: '/1/3/9/',
-    name: 'Credit Cards',
-    type: 'leaf',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    deletedAt: null,
-  },
-  // Leaves under Payments
-  {
-    id: 10,
-    forestId: CONTENT_FOREST,
-    parentId: 4,
-    position: 0,
-    path: '/1/4/10/',
-    name: 'Wire Transfers',
-    type: 'leaf',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    deletedAt: null,
-  },
-  // Leaves under Risks
-  {
-    id: 11,
-    forestId: CONTENT_FOREST,
-    parentId: 5,
-    position: 0,
-    path: '/1/5/11/',
-    name: 'Credit Risk',
-    type: 'leaf',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    deletedAt: null,
-  },
-  {
-    id: 12,
-    forestId: 1,
-    parentId: 5,
-    position: 1,
-    path: '/1/5/12/',
-    name: 'AML / KYC',
-    type: 'leaf',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    deletedAt: null,
-  },
-];
+import { getSampleTrees } from './samples';
+
+export { CONTENT_FOREST } from './samples';
+
+function getCurrentLocale(): 'en' | 'ru' {
+  if (typeof window === 'undefined') {
+    return 'en';
+  }
+  const saved = window.localStorage.getItem('locale');
+  if (saved === 'ru' || saved === 'en') {
+    return saved;
+  }
+  const browserLang = window.navigator.language?.split('-')[0]?.toLowerCase();
+  return browserLang === 'ru' ? 'ru' : 'en';
+}
 
 export function getAllTrees(): TreeItem[] {
   try {
@@ -158,10 +21,12 @@ export function getAllTrees(): TreeItem[] {
     if (stored) {
       return JSON.parse(stored);
     }
-    return SampleTree;
+    const locale = getCurrentLocale();
+    return getSampleTrees(locale);
   } catch (error) {
     console.error(error);
-    return SampleTree;
+    const locale = getCurrentLocale();
+    return getSampleTrees(locale);
   }
 }
 
@@ -173,9 +38,11 @@ export function saveAllTrees(tree: TreeItem[]): void {
   }
 }
 
-export function resetAllTrees(): void {
+export function resetAllTrees(locale?: 'en' | 'ru'): void {
   try {
-    localStorage.removeItem('tree');
+    const currentLocale = locale ?? getCurrentLocale();
+    const sampleTrees = getSampleTrees(currentLocale);
+    saveAllTrees(sampleTrees);
   } catch (error) {
     console.error(error);
   }

@@ -1,4 +1,5 @@
 import type { Course } from '@/types';
+import { getSampleCourses } from './samples';
 
 const STORAGE_KEY = 'courses';
 
@@ -33,9 +34,23 @@ export function saveAllCourses(courses: Course[]): void {
   }
 }
 
-export function resetAllCourses(): void {
+function getCurrentLocale(): 'en' | 'ru' {
+  if (typeof window === 'undefined') {
+    return 'en';
+  }
+  const saved = window.localStorage.getItem('locale');
+  if (saved === 'ru' || saved === 'en') {
+    return saved;
+  }
+  const browserLang = window.navigator.language?.split('-')[0]?.toLowerCase();
+  return browserLang === 'ru' ? 'ru' : 'en';
+}
+
+export function resetAllCourses(locale?: 'en' | 'ru'): void {
   try {
-    localStorage.removeItem(STORAGE_KEY);
+    const currentLocale = locale ?? getCurrentLocale();
+    const sampleCourses = getSampleCourses(currentLocale);
+    saveAllCourses(sampleCourses);
   } catch {
     // noop
   }
