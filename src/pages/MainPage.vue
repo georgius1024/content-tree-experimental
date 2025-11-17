@@ -1,10 +1,7 @@
 <template>
-  <div class="mx-auto max-w-2xl">
-    <div class="rounded-lg border border-gray-200 bg-white shadow-sm">
-      <div class="p-4">
-        <div class="flex items-center justify-between border-b border-gray-100 pb-3 mb-3">
-          <h2 class="text-sm font-medium text-gray-700">{{ t('mainPage.title') }}</h2>
-          <div class="flex items-center gap-2">
+  <div class="rounded-lg border border-gray-200 bg-white shadow-sm">
+    <Toolbar :title="t('mainPage.title')">
+      <template #end>
             <button
               type="button"
               class="rounded border border-gray-200 px-2 py-1 text-xs text-gray-700 hover:bg-gray-50"
@@ -28,9 +25,10 @@
             >
               {{ t('mainPage.resetTree') }}
             </button>
-          </div>
-        </div>
-        <TreeBreadcrumb
+      </template>
+    </Toolbar>
+    <div class="p-4">
+      <TreeBreadcrumb
           :forest-id="forestId"
           :path="path"
           @root-click="goTo('/')"
@@ -42,8 +40,8 @@
             </button>
           </template>
         </TreeBreadcrumb>
-      </div>
-      <div class="p-2">
+    </div>
+    <div class="p-2">
         <TreeList
           :items="children"
           :parent-id="currentParentId"
@@ -91,12 +89,12 @@
         </TreeList>
       </div>
     </div>
-  </div>
 </template>
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import Toolbar from '../components/Toolbar.vue'
 import TreeBreadcrumb from '../components/TreeBreadcrumb.vue'
 import TreeList from '../components/TreeList.vue'
 import { CONTENT_FOREST, getForest, moveNode, deleteNode, resetAllTrees, sortTreeItems } from '../services/tree'
