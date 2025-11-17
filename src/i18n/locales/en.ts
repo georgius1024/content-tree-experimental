@@ -51,5 +51,23 @@ export default {
   localePicker: {
     label: 'Language:',
   },
+  richTextEditor: {
+    bold: 'Bold',
+    italic: 'Italic',
+    underline: 'Underline',
+    strike: 'Strikethrough',
+    bulletList: 'Bullet list',
+    orderedList: 'Ordered list',
+    link: 'Link',
+    unlink: 'Remove link',
+    heading1: 'Heading 1',
+    heading2: 'Heading 2',
+    heading3: 'Heading 3',
+    paragraph: 'Paragraph',
+    blockquote: 'Quote',
+    codeBlock: 'Code block',
+    undo: 'Undo',
+    redo: 'Redo',
+  },
 }
 

@@ -51,5 +51,23 @@ export default {
   localePicker: {
     label: 'Язык:',
   },
+  richTextEditor: {
+    bold: 'Жирный',
+    italic: 'Курсив',
+    underline: 'Подчёркнутый',
+    strike: 'Зачёркнутый',
+    bulletList: 'Маркированный список',
+    orderedList: 'Нумерованный список',
+    link: 'Ссылка',
+    unlink: 'Удалить ссылку',
+    heading1: 'Заголовок 1',
+    heading2: 'Заголовок 2',
+    heading3: 'Заголовок 3',
+    paragraph: 'Абзац',
+    blockquote: 'Цитата',
+    codeBlock: 'Блок кода',
+    undo: 'Отменить',
+    redo: 'Повторить',
+  },
 }
 
