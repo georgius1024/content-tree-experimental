@@ -17,11 +17,49 @@ export type TreeItemPayload = Omit<
   'id' | 'forestId' | 'parentId' | 'createdAt' | 'updatedAt' | 'deletedAt' | 'path' | 'position' | 'objectId'
 >;
 
+// Input rule types for questions
+export type InputRuleType = 'single' | 'multiple';
+
+export type InputRule = {
+  type: InputRuleType; // 'single' for 1:n (one correct answer), 'multiple' for m:n (multiple correct answers)
+  correctOptions: number[]; // Indices of correct options (0-based)
+};
+
+// Slide step
+export type Slide = {
+  id: string; // UUID
+  type: 'slide';
+  name: string;
+  content: string; // HTML content
+};
+
+// Question step
+export type Question = {
+  id: string; // UUID
+  type: 'question';
+  name: string;
+  slide: string; // HTML content (question text/content)
+  options: string[]; // Array of answer options
+  inputRule: InputRule; // Rule for validating answers
+};
+
+// Step is either a Slide or Question
+export type Step = Slide | Question;
+
+// Section contains a set of steps
+export type Section = {
+  id: string; // UUID
+  name: string;
+  steps: Step[]; // Ordered array of slides and questions
+};
+
+// Course with structure
 export type Course = {
   id: string; // UUID
   author: string;
   fullName: string;
   description: string;
+  structure: Section[]; // Course structure with sections
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;

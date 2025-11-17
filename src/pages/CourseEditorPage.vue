@@ -202,7 +202,8 @@ const onSave = () => {
     const course = createCourse({
       author: author.value,
       fullName: fullName.value || name.value.trim(),
-      description: description.value
+      description: description.value,
+      structure: [] // Start with empty structure
     })
 
     // Create the tree node
@@ -244,7 +245,8 @@ const onSave = () => {
       const created = createCourse({
         author: author.value,
         fullName: fullName.value || name.value.trim(),
-        description: description.value
+        description: description.value,
+        structure: [] // Start with empty structure
       })
       attachObjectId(forestId, nodeId.value, created.id)
     }

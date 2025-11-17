@@ -68,6 +68,7 @@ export function createCourse(
     author: payload.author,
     fullName: payload.fullName,
     description: payload.description,
+    structure: payload.structure ?? [], // Default to empty structure if not provided
     createdAt: nowIso(),
     updatedAt: nowIso(),
     deletedAt: null,
