@@ -4,79 +4,102 @@
       <div class="p-4 border-b border-gray-100">
         <h1 class="text-lg font-semibold">{{ isNew ? t('courseEditor.newTitle') : t('courseEditor.title') }}</h1>
       </div>
-      <div class="p-4 space-y-4">
-        <!-- Tree name (used in tree) -->
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('courseEditor.nameLabel') }}</label>
-          <input
-            v-model="name"
-            type="text"
-            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            :placeholder="t('courseEditor.namePlaceholder')"
-          />
-        </div>
-
-        <!-- Course details -->
-        <div class="grid grid-cols-1 gap-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('courseEditor.fullName') }}</label>
-            <input
-              v-model="fullName"
-              type="text"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              :placeholder="t('courseEditor.fullNamePlaceholder')"
-            />
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('courseEditor.author') }}</label>
-            <input
-              v-model="author"
-              type="text"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              :placeholder="t('courseEditor.authorPlaceholder')"
-            />
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('courseEditor.description') }}</label>
-            <RichTextEditor
-              v-model="description"
-              :placeholder="t('courseEditor.descriptionPlaceholder')"
-            />
-          </div>
-        </div>
-
-        <!-- Folder (must be non-root) -->
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('common.folder') }}</label>
-          <FolderPicker
-            :forest-id="forestId"
-            :current-folder-id="nodeId"
-            :value="selectedParentId"
-            :allow-root="false"
-            @update:value="selectedParentId = $event"
-          />
-          <p v-if="!selectedParentId" class="mt-1 text-xs text-red-500">
-            {{ t('courseEditor.folderRequired') }}
-          </p>
-        </div>
-
-        <div class="flex gap-2 justify-end">
-          <button
+      <TabGroup :selected-index="selectedTab" @change="selectedTab = $event">
+        <TabList class="flex border-b border-gray-200">
+          <Tab
+            v-for="(tab, index) in tabs"
+            :key="index"
+            as="button"
             type="button"
-            class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
-            @click="goBack"
+            class="px-4 py-2 text-sm font-medium focus:outline-none transition-colors"
+            :class="
+              selectedTab === index
+                ? 'border-b-2 border-blue-500 text-blue-600'
+                : 'text-gray-500 hover:text-gray-700'
+            "
           >
-            {{ t('common.cancel') }}
-          </button>
-          <button
-            type="button"
-            class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-            :disabled="!isValid"
-            @click="onSave"
-          >
-            {{ isNew ? t('common.create') : t('common.save') }}
-          </button>
-        </div>
+            {{ tab.label }}
+          </Tab>
+        </TabList>
+        <TabPanels class="p-4">
+          <TabPanel class="space-y-4">
+            <!-- Tree name (used in tree) -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('courseEditor.nameLabel') }}</label>
+              <input
+                v-model="name"
+                type="text"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                :placeholder="t('courseEditor.namePlaceholder')"
+              />
+            </div>
+
+            <!-- Course details -->
+            <div class="grid grid-cols-1 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('courseEditor.fullName') }}</label>
+                <input
+                  v-model="fullName"
+                  type="text"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  :placeholder="t('courseEditor.fullNamePlaceholder')"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('courseEditor.author') }}</label>
+                <input
+                  v-model="author"
+                  type="text"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  :placeholder="t('courseEditor.authorPlaceholder')"
+                />
+              </div>
+            </div>
+
+            <!-- Folder (must be non-root) -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('common.folder') }}</label>
+              <FolderPicker
+                :forest-id="forestId"
+                :current-folder-id="nodeId"
+                :value="selectedParentId"
+                :allow-root="false"
+                @update:value="selectedParentId = $event"
+              />
+              <p v-if="!selectedParentId" class="mt-1 text-xs text-red-500">
+                {{ t('courseEditor.folderRequired') }}
+              </p>
+            </div>
+          </TabPanel>
+          <TabPanel>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('courseEditor.description') }}</label>
+              <RichTextEditor
+                key="description-editor"
+                v-model="description"
+                :placeholder="t('courseEditor.descriptionPlaceholder')"
+              />
+            </div>
+          </TabPanel>
+        </TabPanels>
+      </TabGroup>
+
+      <div class="p-4 border-t border-gray-200 flex gap-2 justify-end">
+        <button
+          type="button"
+          class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+          @click="goBack"
+        >
+          {{ t('common.cancel') }}
+        </button>
+        <button
+          type="button"
+          class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          :disabled="!isValid"
+          @click="onSave"
+        >
+          {{ isNew ? t('common.create') : t('common.save') }}
+        </button>
       </div>
     </div>
   </div>
@@ -86,6 +109,7 @@
 import { computed, onMounted, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { TabGroup, TabList, Tab, TabPanels, TabPanel } from '@headlessui/vue'
 import { CONTENT_FOREST, getForest, updateNode, attachObjectId, addNode } from '../services/tree'
 import type { TreeItem } from '../types'
 import FolderPicker from '../components/FolderPicker.vue'
@@ -93,6 +117,13 @@ import RichTextEditor from '../components/RichTextEditor.vue'
 import { getCourse, createCourse, updateCourse } from '../services/courses'
 
 const { t } = useI18n()
+
+const selectedTab = ref(0)
+
+const tabs = computed(() => [
+  { label: t('courseEditor.tabGeneral') },
+  { label: t('courseEditor.tabDescription') }
+])
 
 const router = useRouter()
 const route = useRoute()

@@ -37,7 +37,7 @@
         :title="t('richTextEditor.underline')"
         @click="editor.chain().focus().toggleUnderline().run()"
       >
-        <Underline :size="16" class="text-gray-700" />
+        <UnderlineIcon :size="16" class="text-gray-700" />
       </button>
       <button
         type="button"
@@ -193,6 +193,7 @@ import { useI18n } from 'vue-i18n'
 import {
   Bold,
   Italic,
+  Underline as UnderlineIcon,
   Strikethrough,
   List,
   ListOrdered,
@@ -220,6 +221,10 @@ const editor = useEditor({
       heading: {
         levels: [1, 2, 3],
       },
+      // Exclude link as we add it separately with custom configuration
+      link: false,
+      // Exclude underline as we add it separately
+      underline: false,
     }),
     Underline,
     Link.configure({

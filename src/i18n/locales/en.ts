@@ -40,6 +40,8 @@ export default {
     description: 'Description',
     descriptionPlaceholder: 'Course description',
     folderRequired: 'Parent folder is required.',
+    tabGeneral: 'General',
+    tabDescription: 'Description',
   },
   folderPicker: {
     selectFolder: 'Select Folder',

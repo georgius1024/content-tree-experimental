@@ -40,6 +40,8 @@ export default {
     description: 'Описание',
     descriptionPlaceholder: 'Описание курса',
     folderRequired: 'Родительская папка обязательна.',
+    tabGeneral: 'Основное',
+    tabDescription: 'Описание',
   },
   folderPicker: {
     selectFolder: 'Выбрать папку',
