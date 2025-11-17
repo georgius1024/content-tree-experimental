@@ -20,7 +20,7 @@
       <div class="bg-white rounded-lg shadow-xl w-full max-w-md max-h-[80vh] flex flex-col">
         <!-- Header -->
         <div class="p-4 border-b border-gray-200 flex items-center justify-between">
-          <h2 class="text-lg font-semibold">Select Folder</h2>
+          <h2 class="text-lg font-semibold">{{ t('folderPicker.selectFolder') }}</h2>
           <button
             type="button"
             class="text-gray-400 hover:text-gray-600"
@@ -36,7 +36,7 @@
             v-model="searchQuery"
             type="text"
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Search folders..."
+            :placeholder="t('folderPicker.searchPlaceholder')"
             @keyup.esc="showModal = false"
           />
         </div>
@@ -50,10 +50,10 @@
               :class="{ 'bg-blue-50': props.value === null }"
               @click="selectRoot"
             >
-              Root
+              {{ t('folderPicker.root') }}
             </li>
             <li v-if="filteredFolders.length === 0 && !showRootOption" class="px-3 py-2 text-sm text-gray-500 text-center">
-              No folders found
+              {{ t('folderPicker.noFoldersFound') }}
             </li>
             <li
               v-for="folder in filteredFolders"
@@ -73,8 +73,11 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import type { TreeItem } from '../types'
 import { getForest, sortTreeItems } from '../services/tree'
+
+const { t } = useI18n()
 
 type Props = {
   forestId: number
@@ -168,7 +171,7 @@ const selectedFolder = computed(() => {
 
 const displayText = computed(() => {
   if (!selectedFolder.value) {
-    return props.allowRoot ? 'Root' : 'Select folder'
+    return props.allowRoot ? t('folderPicker.root') : t('folderPicker.selectFolderButton')
   }
   return folderPath(selectedFolder.value)
 })

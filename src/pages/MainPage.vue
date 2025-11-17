@@ -3,30 +3,30 @@
     <div class="rounded-lg border border-gray-200 bg-white shadow-sm">
       <div class="p-4">
         <div class="flex items-center justify-between border-b border-gray-100 pb-3 mb-3">
-          <h2 class="text-sm font-medium text-gray-700">Content</h2>
+          <h2 class="text-sm font-medium text-gray-700">{{ t('mainPage.title') }}</h2>
           <div class="flex items-center gap-2">
             <button
               type="button"
               class="rounded border border-gray-200 px-2 py-1 text-xs text-gray-700 hover:bg-gray-50"
               @click="onAddFolder"
-              title="Add sub-folder to selected parent"
+              :title="t('mainPage.addSubFolderTitle')"
             >
-              Add folder
+              {{ t('mainPage.addFolder') }}
             </button>
             <button
               type="button"
               class="rounded border border-gray-200 px-2 py-1 text-xs text-gray-700 hover:bg-gray-50"
               @click="onAddObject"
-              title="Add course to selected parent"
+              :title="t('mainPage.addCourseTitle')"
             >
-              Add course
+              {{ t('mainPage.addCourse') }}
             </button>
             <button
               type="button"
               class="rounded border border-gray-200 px-2 py-1 text-xs text-gray-700 hover:bg-gray-50"
               @click="onResetTree"
             >
-              Reset tree
+              {{ t('mainPage.resetTree') }}
             </button>
           </div>
         </div>
@@ -71,7 +71,7 @@
                   <button
                     type="button"
                     class="rounded p-1 hover:bg-gray-100"
-                    aria-label="Edit"
+                    :aria-label="t('common.edit')"
                     @click.stop="onEditItem(item.id)"
                   >
                     <Pencil :size="14" class="text-gray-500" aria-hidden="true" />
@@ -79,7 +79,7 @@
                   <button
                     type="button"
                     class="rounded p-1 hover:bg-gray-100"
-                    aria-label="Delete"
+                    :aria-label="t('common.delete')"
                     @click.stop="onDeleteItem(item.id)"
                   >
                     <Trash2 :size="14" class="text-gray-500" aria-hidden="true" />
@@ -96,12 +96,15 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import TreeBreadcrumb from '../components/TreeBreadcrumb.vue'
 import TreeList from '../components/TreeList.vue'
 import { CONTENT_FOREST, getForest, moveNode, deleteNode, resetAllTrees, sortTreeItems } from '../services/tree'
 import type { TreeItem } from '../types'
 import { Folder, BookOpenCheck, Pencil, Trash2 } from 'lucide-vue-next'
 import { softDeleteCourse, resetAllCourses } from '../services/courses'
+
+const { t } = useI18n()
 
 type Props = {
   path: string
@@ -184,8 +187,8 @@ const onDeleteItem = (itemId: number) => {
   const item = forest.find((n) => n.id === itemId && n.deletedAt === null)
   if (!item) return
   const message = item.type === 'leaf'
-    ? 'Delete this item?'
-    : 'Delete this folder and all its descendants?'
+    ? t('mainPage.deleteConfirm')
+    : t('mainPage.deleteFolderConfirm')
   const ok = window.confirm(message)
   if (!ok) return
 
@@ -205,7 +208,7 @@ const onDeleteItem = (itemId: number) => {
 }
 
 const onResetTree = () => {
-  const ok = window.confirm('Reset tree to the initial sample?')
+  const ok = window.confirm(t('mainPage.resetConfirm'))
   if (!ok) return
   resetAllTrees()
   resetAllCourses()
@@ -222,7 +225,7 @@ const onAddFolder = () => {
 const onAddObject = () => {
   const parentId = currentParentId.value
   if (parentId == null) {
-    alert('Please select a folder first')
+    alert(t('mainPage.selectFolderFirst'))
     return
   }
   router.push({ path: '/course/new', query: { parentId: parentId.toString() } })

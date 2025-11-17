@@ -2,20 +2,20 @@
   <div class="mx-auto max-w-2xl">
     <div class="rounded-lg border border-gray-200 bg-white shadow-sm">
       <div class="p-4 border-b border-gray-100">
-        <h1 class="text-lg font-semibold">{{ isNew ? 'New Folder' : 'Folder Editor' }}</h1>
+        <h1 class="text-lg font-semibold">{{ isNew ? t('folderEditor.newTitle') : t('folderEditor.title') }}</h1>
       </div>
       <div class="p-4 space-y-4">
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+          <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('common.name') }}</label>
           <input
             v-model="name"
             type="text"
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Folder name"
+            :placeholder="t('folderEditor.namePlaceholder')"
           />
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Parent</label>
+          <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('common.parent') }}</label>
           <FolderPicker
             :forest-id="forestId"
             :current-folder-id="nodeId"
@@ -31,7 +31,7 @@
             class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
             @click="goBack"
           >
-            Cancel
+            {{ t('common.cancel') }}
           </button>
           <button
             type="button"
@@ -39,7 +39,7 @@
             :disabled="!isValid"
             @click="onSave"
           >
-            {{ isNew ? 'Create' : 'Save' }}
+            {{ isNew ? t('common.create') : t('common.save') }}
           </button>
         </div>
       </div>
@@ -50,9 +50,12 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { CONTENT_FOREST, getForest, updateNode, addNode } from '../services/tree'
 import type { TreeItem } from '../types'
 import FolderPicker from '../components/FolderPicker.vue'
+
+const { t } = useI18n()
 
 const router = useRouter()
 const route = useRoute()

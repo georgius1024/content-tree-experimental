@@ -2,54 +2,54 @@
   <div class="mx-auto max-w-2xl">
     <div class="rounded-lg border border-gray-200 bg-white shadow-sm">
       <div class="p-4 border-b border-gray-100">
-        <h1 class="text-lg font-semibold">{{ isNew ? 'New Course' : 'Course Editor' }}</h1>
+        <h1 class="text-lg font-semibold">{{ isNew ? t('courseEditor.newTitle') : t('courseEditor.title') }}</h1>
       </div>
       <div class="p-4 space-y-4">
         <!-- Tree name (used in tree) -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Name (tree)</label>
+          <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('courseEditor.nameLabel') }}</label>
           <input
             v-model="name"
             type="text"
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Short tree name"
+            :placeholder="t('courseEditor.namePlaceholder')"
           />
         </div>
 
         <!-- Course details -->
         <div class="grid grid-cols-1 gap-4">
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Full name</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('courseEditor.fullName') }}</label>
             <input
               v-model="fullName"
               type="text"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Human-friendly full name"
+              :placeholder="t('courseEditor.fullNamePlaceholder')"
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Author</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('courseEditor.author') }}</label>
             <input
               v-model="author"
               type="text"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Author"
+              :placeholder="t('courseEditor.authorPlaceholder')"
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('courseEditor.description') }}</label>
             <textarea
               v-model="description"
               rows="4"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Course description"
+              :placeholder="t('courseEditor.descriptionPlaceholder')"
             />
           </div>
         </div>
 
         <!-- Folder (must be non-root) -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Folder</label>
+          <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('common.folder') }}</label>
           <FolderPicker
             :forest-id="forestId"
             :current-folder-id="nodeId"
@@ -58,7 +58,7 @@
             @update:value="selectedParentId = $event"
           />
           <p v-if="!selectedParentId" class="mt-1 text-xs text-red-500">
-            Parent folder is required.
+            {{ t('courseEditor.folderRequired') }}
           </p>
         </div>
 
@@ -68,7 +68,7 @@
             class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
             @click="goBack"
           >
-            Cancel
+            {{ t('common.cancel') }}
           </button>
           <button
             type="button"
@@ -76,7 +76,7 @@
             :disabled="!isValid"
             @click="onSave"
           >
-            {{ isNew ? 'Create' : 'Save' }}
+            {{ isNew ? t('common.create') : t('common.save') }}
           </button>
         </div>
       </div>
@@ -87,10 +87,13 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { CONTENT_FOREST, getForest, updateNode, attachObjectId, addNode } from '../services/tree'
 import type { TreeItem } from '../types'
 import FolderPicker from '../components/FolderPicker.vue'
 import { getCourse, createCourse, updateCourse } from '../services/courses'
+
+const { t } = useI18n()
 
 const router = useRouter()
 const route = useRoute()
