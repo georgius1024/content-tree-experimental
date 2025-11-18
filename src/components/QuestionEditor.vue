@@ -7,7 +7,8 @@
         <span class="text-red-500">*</span>
       </label>
       <input
-        :model-value="localQuestion.name"
+        :key="`question-name-${props.modelValue.id}`"
+        :value="localQuestion.name"
         type="text"
         :readonly="props.readonly"
         :disabled="props.readonly"

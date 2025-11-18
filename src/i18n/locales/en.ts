@@ -97,5 +97,11 @@ export default {
       optionRequired: 'Option text cannot be empty',
     },
   },
+  stepList: {
+    noSteps: 'No steps yet. Add your first step.',
+    addSlide: 'Add Slide',
+    addQuestion: 'Add Question',
+    unnamedStep: 'Unnamed step',
+  },
 }
 

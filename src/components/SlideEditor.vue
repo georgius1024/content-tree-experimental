@@ -3,7 +3,8 @@
     <div>
       <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('slideEditor.name') }}</label>
       <input
-        :model-value="localSlide.name"
+        :key="`slide-name-${props.modelValue.id}`"
+        :value="localSlide.name"
         type="text"
         :readonly="props.readonly"
         :disabled="props.readonly"

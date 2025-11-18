@@ -97,5 +97,11 @@ export default {
       optionRequired: 'Текст варианта не может быть пустым',
     },
   },
+  stepList: {
+    noSteps: 'Пока нет шагов. Добавьте первый шаг.',
+    addSlide: 'Добавить слайд',
+    addQuestion: 'Добавить вопрос',
+    unnamedStep: 'Безымянный шаг',
+  },
 }
 

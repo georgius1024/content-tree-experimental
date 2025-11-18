@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import TreeBreadcrumb from './TreeBreadcrumb.vue'
-import { CONTENT_FOREST } from '../../services/samples'
+import { CONTENT_FOREST } from '../services/samples'
 
 const meta = {
   title: 'UI/TreeBreadcrumb',
