@@ -1,7 +1,7 @@
 <template>
-  <div class="space-y-4">
+  <div class="flex flex-col h-full space-y-4 min-h-0">
     <!-- Name input -->
-    <div>
+    <div class="flex-shrink-0">
       <label class="block text-sm font-medium text-gray-700 mb-1">
         {{ t('questionEditor.name') }}
         <span class="text-red-500">*</span>
@@ -28,18 +28,20 @@
     </div>
 
     <!-- Question text (rich text editor) -->
-    <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('questionEditor.questionText') }}</label>
-      <RichTextEditor
-        :model-value="localQuestion.slide"
-        :placeholder="t('questionEditor.questionTextPlaceholder')"
-        :readonly="props.readonly"
-        @update:model-value="updateSlide"
-      />
+    <div class="flex flex-col flex-1 min-h-0">
+      <label class="block text-sm font-medium text-gray-700 mb-1 flex-shrink-0">{{ t('questionEditor.questionText') }}</label>
+      <div class="flex flex-col flex-1 min-h-0 border rounded-md border-gray-300">
+        <RichTextEditor
+          :model-value="localQuestion.slide"
+          :placeholder="t('questionEditor.questionTextPlaceholder')"
+          :readonly="props.readonly"
+          @update:model-value="updateSlide"
+        />
+      </div>
     </div>
 
     <!-- Input rule type selector -->
-    <div>
+    <div class="flex-shrink-0">
       <label class="block text-sm font-medium text-gray-700 mb-2">{{ t('questionEditor.inputRule') }}</label>
       <div class="flex gap-4">
         <label class="flex items-center gap-2" :class="props.readonly ? '' : 'cursor-pointer'">
@@ -66,7 +68,7 @@
     </div>
 
     <!-- Answers section -->
-    <div>
+    <div class="flex-shrink-0">
       <label class="block text-sm font-medium text-gray-700 mb-2">
         {{ t('questionEditor.options') }}
         <span class="text-red-500">*</span>

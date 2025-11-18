@@ -23,7 +23,7 @@
           leave-from="opacity-100 scale-100"
           leave-to="opacity-0 scale-95"
         >
-          <DialogPanel class="w-full max-w-3xl bg-white rounded-lg shadow-xl max-h-[90vh] flex flex-col">
+          <DialogPanel class="w-full max-w-3xl h-full max-h-[90vh] bg-white rounded-lg shadow-xl flex flex-col">
             <div class="flex items-center justify-between p-6 border-b">
               <DialogTitle class="text-lg font-semibold">
                 {{ isCreating ? t('stepEditorModal.createTitle') : t('stepEditorModal.editTitle') }}

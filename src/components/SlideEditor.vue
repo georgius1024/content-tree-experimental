@@ -1,6 +1,6 @@
 <template>
-  <div class="space-y-4">
-    <div>
+  <div class="flex flex-col h-full space-y-4 min-h-0">
+    <div class="flex-shrink-0">
       <label class="block text-sm font-medium text-gray-700 mb-1">
         {{ t('slideEditor.name') }}
         <span class="text-red-500">*</span>
@@ -25,14 +25,14 @@
         {{ validationErrors.name }}
       </p>
     </div>
-    <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">
+    <div class="flex flex-col flex-1 min-h-0">
+      <label class="block text-sm font-medium text-gray-700 mb-1 flex-shrink-0">
         {{ t('slideEditor.content') }}
         <span class="text-red-500">*</span>
       </label>
       <div 
         :class="[
-          'border rounded-md',
+          'border rounded-md flex flex-col flex-1 min-h-0',
           validationErrors.content ? 'border-red-500' : 'border-gray-300'
         ]"
       >
@@ -43,7 +43,7 @@
           @update:model-value="updateContent"
         />
       </div>
-      <p v-if="validationErrors.content" class="mt-1 text-xs text-red-500">
+      <p v-if="validationErrors.content" class="mt-1 text-xs text-red-500 flex-shrink-0">
         {{ validationErrors.content }}
       </p>
     </div>

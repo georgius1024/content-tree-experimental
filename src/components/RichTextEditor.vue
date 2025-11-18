@@ -299,13 +299,23 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
+.rich-text-editor {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
 .rich-text-editor :deep(.ProseMirror) {
   min-height: 150px;
+  flex: 1;
   padding: 0.5rem 0.75rem;
   border: 1px solid rgb(209 213 219);
   border-top: none;
   border-radius: 0 0 0.375rem 0.375rem;
   outline: none;
+  overflow-y: auto;
+  box-sizing: border-box;
 }
 
 .rich-text-editor.readonly-mode :deep(.ProseMirror) {
@@ -324,6 +334,7 @@ onBeforeUnmount(() => {
   color: rgb(156 163 175);
   pointer-events: none;
   height: 0;
+  clear: both;
 }
 
 /* Content styles are now in shared rich-text.css */
