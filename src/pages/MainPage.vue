@@ -18,13 +18,6 @@
             >
               {{ t('mainPage.addCourse') }}
             </button>
-            <button
-              type="button"
-              class="rounded border border-gray-200 px-2 py-1 text-xs text-gray-700 hover:bg-gray-50"
-              @click="onResetTree"
-            >
-              {{ t('mainPage.resetTree') }}
-            </button>
       </template>
     </Toolbar>
     <div class="p-4">
@@ -67,11 +60,11 @@ import { useI18n } from 'vue-i18n'
 import Toolbar from '../components/Toolbar.vue'
 import TreeBreadcrumb from '../components/TreeBreadcrumb.vue'
 import ContentList from '../components/ContentList.vue'
-import { CONTENT_FOREST, getForest, moveNode, deleteNode, resetAllTrees, sortTreeItems } from '../services/tree'
+import { CONTENT_FOREST, getForest, moveNode, deleteNode, sortTreeItems } from '../services/tree'
 import type { TreeItem } from '../types'
-import { softDeleteCourse, resetAllCourses } from '../services/courses'
+import { softDeleteCourse } from '../services/courses'
 
-const { t, locale } = useI18n()
+const { t } = useI18n()
 
 type Props = {
   path: string
@@ -207,21 +200,6 @@ const onDeleteItem = async (payload: { itemId: number }) => {
 
     await deleteNode(forestId, itemId)
     await loadForest()
-  } finally {
-    isLoading.value = false
-  }
-}
-
-const onResetTree = async () => {
-  const ok = window.confirm(t('mainPage.resetConfirm'))
-  if (!ok) return
-  isLoading.value = true
-  try {
-    const currentLocale = locale.value as 'en' | 'ru'
-    await resetAllTrees(currentLocale)
-    resetAllCourses(currentLocale)
-    await loadForest()
-    goTo('/')
   } finally {
     isLoading.value = false
   }

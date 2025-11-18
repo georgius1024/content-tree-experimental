@@ -1,8 +1,24 @@
 <script setup lang="ts">
+import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import Toolbar from './components/Toolbar.vue';
 import Container from './components/Container.vue';
 import LocalePicker from './components/LocalePicker.vue';
 import { BookOpen } from 'lucide-vue-next';
+import { resetAllTrees } from './services/tree';
+import { resetAllCourses } from './services/courses';
+
+const { t, locale } = useI18n();
+const router = useRouter();
+
+const onResetTree = async () => {
+  const ok = window.confirm(t('mainPage.resetConfirm'));
+  if (!ok) return;
+  const currentLocale = locale.value as 'en' | 'ru';
+  await resetAllTrees(currentLocale);
+  resetAllCourses(currentLocale);
+  router.push({ path: '/' });
+};
 </script>
 
 <template>
@@ -15,6 +31,13 @@ import { BookOpen } from 'lucide-vue-next';
         </div>
       </template>
       <template #end>
+        <button
+          type="button"
+          class="rounded border border-gray-200 px-2 py-1 text-xs text-gray-700 hover:bg-gray-50"
+          @click="onResetTree"
+        >
+          {{ t('mainPage.resetTree') }}
+        </button>
         <LocalePicker />
       </template>
     </Toolbar>
