@@ -71,5 +71,11 @@ export default {
     undo: 'Undo',
     redo: 'Redo',
   },
+  slideEditor: {
+    name: 'Slide name',
+    namePlaceholder: 'Enter slide name',
+    content: 'Content',
+    contentPlaceholder: 'Enter slide content',
+  },
 }
 

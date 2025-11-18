@@ -217,12 +217,17 @@ export function moveNode(
   if (node.parentId === newParentId && newPosition === node.position) {
     return;
   }
+  // Prevent moving a node into itself
+  if (newParentId === nodeId) {
+    throw new Error('Cannot move a node into itself');
+  }
   const isDescendant = (candidate: { path: string }) => candidate.path.startsWith(`${node.path}`);
   if (newParentId !== null) {
     const newParent = tree.find((item) => item.id === newParentId && item.deletedAt === null);
     if (!newParent) {
       throw new Error('New parent not found');
     }
+    // Prevent moving a node into its own descendant (would create cycle)
     if (isDescendant(newParent)) {
       throw new Error('Cannot move a node into its own descendant');
     }

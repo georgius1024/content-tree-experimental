@@ -71,5 +71,11 @@ export default {
     undo: 'Отменить',
     redo: 'Повторить',
   },
+  slideEditor: {
+    name: 'Название слайда',
+    namePlaceholder: 'Введите название слайда',
+    content: 'Содержимое',
+    contentPlaceholder: 'Введите содержимое слайда',
+  },
 }
 

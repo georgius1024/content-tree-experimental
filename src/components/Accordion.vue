@@ -10,19 +10,35 @@
         class="min-w-0 flex-1 text-left"
         :class="caretPosition === 'left' ? 'flex items-center gap-2' : ''"
       >
+        <!-- Left indicator -->
         <ChevronRight
-          v-if="caretPosition === 'left'"
+          v-if="caretPosition === 'left' && indicatorType === 'chevron'"
           class="shrink-0 transition-transform"
           :class="isOpen ? 'rotate-90' : 'rotate-0'"
           :size="18"
           aria-hidden="true"
         />
+        <component
+          v-else-if="caretPosition === 'left' && indicatorType === 'folder'"
+          :is="isOpen ? FolderOpen : Folder"
+          class="shrink-0 transition-all"
+          :size="18"
+          aria-hidden="true"
+        />
         <slot name="header">{{ label }}</slot>
       </div>
+      <!-- Right indicator -->
       <ChevronRight
-        v-if="caretPosition === 'right'"
+        v-if="caretPosition === 'right' && indicatorType === 'chevron'"
         class="shrink-0 transition-transform"
         :class="isOpen ? 'rotate-90' : 'rotate-0'"
+        :size="18"
+        aria-hidden="true"
+      />
+      <component
+        v-else-if="caretPosition === 'right' && indicatorType === 'folder'"
+        :is="isOpen ? FolderOpen : Folder"
+        class="shrink-0 transition-all"
         :size="18"
         aria-hidden="true"
       />
@@ -39,7 +55,7 @@
   <script setup lang="ts">
   import { computed, ref, watch } from 'vue'
   import Collapsible from './Collapsible.vue'
-  import { ChevronRight } from 'lucide-vue-next'
+  import { ChevronRight, Folder, FolderOpen } from 'lucide-vue-next'
   
   type TransitionFunction = 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out' | 'linear'
   
@@ -49,6 +65,7 @@
     duration?: number
     transition?: TransitionFunction
     caretPosition?: 'left' | 'right'
+    indicatorType?: 'chevron' | 'folder'
   }
   
   const props = withDefaults(defineProps<Props>(), {
@@ -56,7 +73,8 @@
     open: false,
     duration: 200,
     transition: 'linear',
-    caretPosition: 'right'
+    caretPosition: 'right',
+    indicatorType: 'chevron'
   })
   
   const emit = defineEmits<{
