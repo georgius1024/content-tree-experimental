@@ -15,7 +15,8 @@ function getCurrentLocale(): 'en' | 'ru' {
   return browserLang === 'ru' ? 'ru' : 'en';
 }
 
-export function getAllTrees(): TreeItem[] {
+export async function getAllTrees(): Promise<TreeItem[]> {
+  await new Promise(resolve => setTimeout(resolve, 100));
   try {
     const stored = localStorage.getItem('tree');
     if (stored) {
@@ -30,7 +31,8 @@ export function getAllTrees(): TreeItem[] {
   }
 }
 
-export function saveAllTrees(tree: TreeItem[]): void {
+export async function saveAllTrees(tree: TreeItem[]): Promise<void> {
+  await new Promise(resolve => setTimeout(resolve, 100));
   try {
     localStorage.setItem('tree', JSON.stringify(tree));
   } catch (error) {
@@ -38,11 +40,11 @@ export function saveAllTrees(tree: TreeItem[]): void {
   }
 }
 
-export function resetAllTrees(locale?: 'en' | 'ru'): void {
+export async function resetAllTrees(locale?: 'en' | 'ru'): Promise<void> {
   try {
     const currentLocale = locale ?? getCurrentLocale();
     const sampleTrees = getSampleTrees(currentLocale);
-    saveAllTrees(sampleTrees);
+    await saveAllTrees(sampleTrees);
   } catch (error) {
     console.error(error);
   }
@@ -53,8 +55,8 @@ function normalizePath(path: string): string {
   return path.replace(/\/+/g, '/').replace(/^\/\//, '/');
 }
 
-export function getForest(forestId: number): TreeItem[] {
-  const all = getAllTrees();
+export async function getForest(forestId: number): Promise<TreeItem[]> {
+  const all = await getAllTrees();
   const forest = all.filter((tree) => tree.forestId === forestId);
   // Normalize any corrupted paths (fixes double slashes)
   const needsFix = forest.some((item) => item.path.includes('//'));
@@ -94,24 +96,24 @@ export function getForest(forestId: number): TreeItem[] {
     
     // Save the fixed paths back
     const otherForests = all.filter((tree) => tree.forestId !== forestId);
-    saveAllTrees([...otherForests, ...fullyFixed]);
+    await saveAllTrees([...otherForests, ...fullyFixed]);
     return fullyFixed;
   }
   return forest;
 }
 
-export function putForest(forestId: number, tree: TreeItem[]): void {
+export async function putForest(forestId: number, tree: TreeItem[]): Promise<void> {
   const normalized = normalizeForest(tree);
-  const all = getAllTrees();
+  const all = await getAllTrees();
   const filtered = all.filter((tree) => tree.forestId !== forestId);
   const updated = [...filtered, ...normalized];
-  saveAllTrees(updated);
+  await saveAllTrees(updated);
 }
 
-export function deleteForest(forestId: number): void {
-  const all = getAllTrees();
+export async function deleteForest(forestId: number): Promise<void> {
+  const all = await getAllTrees();
   const filtered = all.filter((tree) => tree.forestId !== forestId);
-  saveAllTrees(filtered);
+  await saveAllTrees(filtered);
 }
 
 export function sortTreeItems(a: TreeItem, b: TreeItem): number {
@@ -152,14 +154,14 @@ function normalizeForest(tree: TreeItem[]): TreeItem[] {
   });
 }
 
-export function getCounter(): number {
-  const all = getAllTrees();
+export async function getCounter(): Promise<number> {
+  const all = await getAllTrees();
   return all.reduce((acc, tree) => Math.max(acc, tree.id), 0) + 1;
 }
 
-export function addNode(forestId: number, parentId: number| null, node: TreeItemPayload): void {
-  const tree = getForest(forestId);
-  const counter = getCounter();
+export async function addNode(forestId: number, parentId: number| null, node: TreeItemPayload): Promise<void> {
+  const tree = await getForest(forestId);
+  const counter = await getCounter();
   const level = tree.filter((tree) => tree.parentId === parentId).filter((tree) => tree.deletedAt === null);
   const maxPosition = level.length === 0 ? -1 : level.reduce((acc, t) => Math.max(acc, t.position), -1);
   const position = maxPosition + 1; // 0-based
@@ -179,11 +181,11 @@ export function addNode(forestId: number, parentId: number| null, node: TreeItem
     deletedAt: null,
   };
   tree.push(newNode);
-  putForest(forestId, tree);
+  await putForest(forestId, tree);
 }
 
-export function deleteNode(forestId: number, nodeId: number): void {
-  const tree = getForest(forestId);
+export async function deleteNode(forestId: number, nodeId: number): Promise<void> {
+  const tree = await getForest(forestId);
   const node = tree.find((item) => item.id === nodeId);
   if (!node) {
     throw new Error('Node not found');
@@ -200,16 +202,16 @@ export function deleteNode(forestId: number, nodeId: number): void {
     }
     return item;
   });
-  putForest(forestId, updated);
+  await putForest(forestId, updated);
 }
 
-export function moveNode(
+export async function moveNode(
   forestId: number,
   nodeId: number,
   newParentId: number | null,
   newPosition: number
-): void {
-  const tree = getForest(forestId);
+): Promise<void> {
+  const tree = await getForest(forestId);
   const node = tree.find((item) => item.id === nodeId && item.deletedAt === null);
   if (!node) {
     throw new Error('Node not found');
@@ -301,11 +303,11 @@ export function moveNode(
     }
     return item;
   });
-  putForest(forestId, updated);
+  await putForest(forestId, updated);
 }
 
-export function updateNode(forestId: number, nodeId: number, name: string, newParentId: number | null): void {
-  const tree = getForest(forestId);
+export async function updateNode(forestId: number, nodeId: number, name: string, newParentId: number | null): Promise<void> {
+  const tree = await getForest(forestId);
   const node = tree.find((item) => item.id === nodeId && item.deletedAt === null);
   if (!node) {
     throw new Error('Node not found');
@@ -322,7 +324,7 @@ export function updateNode(forestId: number, nodeId: number, name: string, newPa
       .filter((item) => item.parentId === newParentId);
     const maxPosition = targetSiblings.length === 0 ? -1 : targetSiblings.reduce((acc, item) => Math.max(acc, item.position), -1);
     const newPosition = maxPosition + 1;
-    moveNode(forestId, nodeId, newParentId, newPosition);
+    await moveNode(forestId, nodeId, newParentId, newPosition);
   }
   if (nameChanged) {
     const updated = tree.map((item) => {
@@ -331,15 +333,15 @@ export function updateNode(forestId: number, nodeId: number, name: string, newPa
       }
       return item;
     });
-    putForest(forestId, updated);
+    await putForest(forestId, updated);
   }
 }
 
-export function attachObjectId(forestId: number, nodeId: number, objectId: string): void {
-  const tree = getForest(forestId);
+export async function attachObjectId(forestId: number, nodeId: number, objectId: string): Promise<void> {
+  const tree = await getForest(forestId);
   const nowIso = new Date().toISOString();
   const updated = tree.map((item) =>
     item.id === nodeId ? { ...item, objectId, updatedAt: nowIso } : item
   );
-  putForest(forestId, updated);
+  await putForest(forestId, updated);
 }

@@ -42,7 +42,11 @@
         </TreeBreadcrumb>
     </div>
     <div class="p-2">
+        <div v-if="isLoading" class="flex items-center justify-center py-8 text-gray-500 text-sm">
+          {{ t('mainPage.loading') }}
+        </div>
         <ContentList
+          v-else
           :items="children"
           :parent-id="currentParentId"
           :forest-id="forestId"
@@ -57,7 +61,7 @@
     </div>
 </template>
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import Toolbar from '../components/Toolbar.vue'
@@ -77,11 +81,9 @@ const props = defineProps<Props>()
 const router = useRouter()
 
 const forestId = CONTENT_FOREST
+const isLoading = ref(false)
+const forest = ref<TreeItem[]>([])
 const refreshKey = ref(0)
-const forest = computed<TreeItem[]>(() => {
-  void refreshKey.value
-  return getForest(forestId)
-})
 
 const draggingNodeId = ref<number | null>(null)
 
@@ -99,33 +101,66 @@ const children = computed<TreeItem[]>(() => {
     .sort(sortTreeItems)
 })
 
+const loadForest = async () => {
+  isLoading.value = true
+  try {
+    forest.value = await getForest(forestId)
+    refreshKey.value++
+  } finally {
+    isLoading.value = false
+  }
+}
+
+onMounted(() => {
+  loadForest()
+})
+
+watch(() => props.path, () => {
+  loadForest()
+})
+
 const goTo = (nextPath: string) => {
   console.log('goTo', nextPath, router.currentRoute.value.path)
   const normalized = nextPath.endsWith('/') ? nextPath : `${nextPath}/`
   router.push({ path: normalized })
 }
 
-const onDropNode = (payload: { nodeId: number; newParentId: number | null; newPosition: number }) => {
+const onDropNode = async (payload: { nodeId: number; newParentId: number | null; newPosition: number }) => {
   console.log('onDropNode', payload)
   if (currentParentId.value == null) return
-  moveNode(forestId, payload.nodeId, payload.newParentId, payload.newPosition)
-  refreshKey.value++
+  isLoading.value = true
+  try {
+    await moveNode(forestId, payload.nodeId, payload.newParentId, payload.newPosition)
+    await loadForest()
+  } finally {
+    isLoading.value = false
+  }
 }
 
-const onBreadcrumbDrop = (payload: { newParentId: number | null; newPosition: number }) => {
+const onBreadcrumbDrop = async (payload: { newParentId: number | null; newPosition: number }) => {
   if (draggingNodeId.value == null) return
-  moveNode(forestId, draggingNodeId.value, payload.newParentId, payload.newPosition)
-  draggingNodeId.value = null
-  refreshKey.value++
+  isLoading.value = true
+  try {
+    await moveNode(forestId, draggingNodeId.value, payload.newParentId, payload.newPosition)
+    draggingNodeId.value = null
+    await loadForest()
+  } finally {
+    isLoading.value = false
+  }
 }
 
-const onDropInto = (payload: { nodeId: number; targetParentId: number }) => {
-  const forest = getForest(forestId)
-  const childrenCount = forest
-    .filter((n) => n.deletedAt === null)
-    .filter((n) => (n.parentId ?? null) === payload.targetParentId).length
-  moveNode(forestId, payload.nodeId, payload.targetParentId, childrenCount)
-  refreshKey.value++
+const onDropInto = async (payload: { nodeId: number; targetParentId: number }) => {
+  isLoading.value = true
+  try {
+    const currentForest = await getForest(forestId)
+    const childrenCount = currentForest
+      .filter((n) => n.deletedAt === null)
+      .filter((n) => (n.parentId ?? null) === payload.targetParentId).length
+    await moveNode(forestId, payload.nodeId, payload.targetParentId, childrenCount)
+    await loadForest()
+  } finally {
+    isLoading.value = false
+  }
 }
 
 const onItemClick = (payload: { itemId: number }) => {
@@ -146,10 +181,10 @@ const onEditItem = (payload: { itemId: number }) => {
   router.push({ path: `/folder${item.path}` })
 }
 
-const onDeleteItem = (payload: { itemId: number }) => {
+const onDeleteItem = async (payload: { itemId: number }) => {
   const itemId = payload.itemId
-  const forest = getForest(forestId)
-  const item = forest.find((n) => n.id === itemId && n.deletedAt === null)
+  const currentForest = await getForest(forestId)
+  const item = currentForest.find((n) => n.id === itemId && n.deletedAt === null)
   if (!item) return
   const message = item.type === 'leaf'
     ? t('mainPage.deleteConfirm')
@@ -157,29 +192,39 @@ const onDeleteItem = (payload: { itemId: number }) => {
   const ok = window.confirm(message)
   if (!ok) return
 
-  // Soft-delete courses for the node and all descendants about to be deleted
-  const affected = forest
-    .filter((n) => n.deletedAt === null)
-    .filter((n) => n.path.startsWith(item.path)) // includes item + descendants
-  const leavesWithCourses = affected.filter(
-    (n) => n.type === 'leaf' && typeof n.objectId === 'string' && n.objectId
-  )
-  leavesWithCourses.forEach((n) => {
-    softDeleteCourse(n.objectId as string)
-  })
+  isLoading.value = true
+  try {
+    // Soft-delete courses for the node and all descendants about to be deleted
+    const affected = currentForest
+      .filter((n) => n.deletedAt === null)
+      .filter((n) => n.path.startsWith(item.path)) // includes item + descendants
+    const leavesWithCourses = affected.filter(
+      (n) => n.type === 'leaf' && typeof n.objectId === 'string' && n.objectId
+    )
+    leavesWithCourses.forEach((n) => {
+      softDeleteCourse(n.objectId as string)
+    })
 
-  deleteNode(forestId, itemId)
-  refreshKey.value++
+    await deleteNode(forestId, itemId)
+    await loadForest()
+  } finally {
+    isLoading.value = false
+  }
 }
 
-const onResetTree = () => {
+const onResetTree = async () => {
   const ok = window.confirm(t('mainPage.resetConfirm'))
   if (!ok) return
-  const currentLocale = locale.value as 'en' | 'ru'
-  resetAllTrees(currentLocale)
-  resetAllCourses(currentLocale)
-  refreshKey.value++
-  goTo('/')
+  isLoading.value = true
+  try {
+    const currentLocale = locale.value as 'en' | 'ru'
+    await resetAllTrees(currentLocale)
+    resetAllCourses(currentLocale)
+    await loadForest()
+    goTo('/')
+  } finally {
+    isLoading.value = false
+  }
 }
 
 const onAddFolder = () => {

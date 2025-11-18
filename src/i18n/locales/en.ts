@@ -23,6 +23,7 @@ export default {
     selectFolderFirst: 'Please select a folder first',
     addSubFolderTitle: 'Add sub-folder to selected parent',
     addCourseTitle: 'Add course to selected parent',
+    loading: 'Loading...',
   },
   folderEditor: {
     title: 'Folder Editor',

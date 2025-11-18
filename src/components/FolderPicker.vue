@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, watch, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import GeneralFolderPicker from './GeneralFolderPicker.vue'
 import type { TreeItem } from '../types'
@@ -37,7 +37,19 @@ const emit = defineEmits<{
   (e: 'update:value', value: number | null): void
 }>()
 
-const forest = computed<TreeItem[]>(() => getForest(props.forestId))
+const forest = ref<TreeItem[]>([])
+
+const loadForest = async () => {
+  forest.value = await getForest(props.forestId)
+}
+
+onMounted(() => {
+  loadForest()
+})
+
+watch(() => props.forestId, () => {
+  loadForest()
+})
 
 const availableFolders = computed<TreeItem[]>(() => {
   const excludeId = props.excludeDescendantsOf

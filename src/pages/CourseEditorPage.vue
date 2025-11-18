@@ -137,7 +137,11 @@ const author = ref('')
 const fullName = ref('')
 const description = ref('')
 
-const forest = computed<TreeItem[]>(() => getForest(forestId))
+const forest = ref<TreeItem[]>([])
+
+const loadForest = async () => {
+  forest.value = await getForest(forestId)
+}
 
 const isNew = computed(() => route.path === '/course/new')
 
@@ -155,7 +159,8 @@ const getNodeIdFromPath = (path: string): number | null => {
   return lastId != null ? lastId : null
 }
 
-onMounted(() => {
+onMounted(async () => {
+  await loadForest()
   if (isNew.value) {
     // Creation mode: get parent from query
     const parentIdParam = route.query.parentId
@@ -194,7 +199,7 @@ onMounted(() => {
   }
 })
 
-const onSave = () => {
+const onSave = async () => {
   if (!name.value.trim() || selectedParentId.value == null) return
 
   if (isNew.value) {
@@ -207,14 +212,14 @@ const onSave = () => {
     })
 
     // Create the tree node
-    addNode(forestId, selectedParentId.value, {
+    await addNode(forestId, selectedParentId.value, {
       name: name.value.trim(),
       type: 'leaf'
     })
 
     // Find the newly created node and attach the course ID
-    const updatedForest = getForest(forestId)
-    const newNode = updatedForest
+    await loadForest()
+    const newNode = forest.value
       .filter((n) => n.deletedAt === null)
       .filter((n) => n.parentId === selectedParentId.value)
       .filter((n) => n.name === name.value.trim())
@@ -222,7 +227,7 @@ const onSave = () => {
       .sort((a, b) => b.id - a.id)[0] // Get the most recently created (highest ID)
 
     if (newNode) {
-      attachObjectId(forestId, newNode.id, course.id)
+      await attachObjectId(forestId, newNode.id, course.id)
     }
 
     const parentPath = selectedParentId.value
@@ -248,11 +253,11 @@ const onSave = () => {
         description: description.value,
         structure: [] // Start with empty structure
       })
-      attachObjectId(forestId, nodeId.value, created.id)
+      await attachObjectId(forestId, nodeId.value, created.id)
     }
 
     // Update tree (name + parent)
-    updateNode(forestId, nodeId.value, name.value.trim(), selectedParentId.value)
+    await updateNode(forestId, nodeId.value, name.value.trim(), selectedParentId.value)
 
     const parentPath = selectedParentId.value
       ? forest.value.find((n) => n.id === selectedParentId.value)?.path ?? '/'

@@ -65,7 +65,11 @@ const nodeId = ref<number | null>(null)
 const name = ref('')
 const selectedParentId = ref<number | null>(null)
 
-const forest = computed<TreeItem[]>(() => getForest(forestId))
+const forest = ref<TreeItem[]>([])
+
+const loadForest = async () => {
+  forest.value = await getForest(forestId)
+}
 
 const isNew = computed(() => route.path === '/folder/new')
 
@@ -83,7 +87,8 @@ const getNodeIdFromPath = (path: string): number | null => {
   return lastId != null ? lastId : null
 }
 
-onMounted(() => {
+onMounted(async () => {
+  await loadForest()
   if (isNew.value) {
     // Creation mode: get parent from query
     const parentIdParam = route.query.parentId
@@ -109,12 +114,12 @@ onMounted(() => {
   }
 })
 
-const onSave = () => {
+const onSave = async () => {
   if (!name.value.trim()) return
 
   if (isNew.value) {
     // Create new folder
-    addNode(forestId, selectedParentId.value, {
+    await addNode(forestId, selectedParentId.value, {
       name: name.value.trim(),
       type: 'branch'
     })
@@ -125,7 +130,7 @@ const onSave = () => {
   } else {
     // Update existing folder
     if (!nodeId.value) return
-    updateNode(forestId, nodeId.value, name.value.trim(), selectedParentId.value)
+    await updateNode(forestId, nodeId.value, name.value.trim(), selectedParentId.value)
     const parentPath = selectedParentId.value
       ? forest.value.find((n) => n.id === selectedParentId.value)?.path ?? '/'
       : '/'

@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, watch, onMounted } from 'vue'
 import GeneralTreeBreadcrumb from './GeneralTreeBreadcrumb.vue'
 import type { TreeItem } from '../types'
 import { getForest } from '../services/tree'
@@ -29,14 +29,27 @@ const emit = defineEmits<{
   (e: 'root-click'): void
 }>()
 
+const forest = ref<TreeItem[]>([])
+
+const loadForest = async () => {
+  forest.value = await getForest(props.forestId)
+}
+
+onMounted(() => {
+  loadForest()
+})
+
+watch(() => [props.forestId, props.path], () => {
+  loadForest()
+})
+
 const items = computed<TreeItem[]>(() => {
-  const forest = getForest(props.forestId)
   const ids = props.path
     .split('/')
     .filter(Boolean)
     .map((s) => Number(s))
     .filter((n) => Number.isFinite(n))
-  const active = forest.filter((n) => n.deletedAt === null)
+  const active = forest.value.filter((n) => n.deletedAt === null)
   const idToItem = new Map<number, TreeItem>(active.map((n) => [n.id, n] as const))
   return ids
     .map((id) => idToItem.get(id))
@@ -44,8 +57,7 @@ const items = computed<TreeItem[]>(() => {
 })
 
 const getChildrenCount = (parentId: number): number => {
-  const forest = getForest(props.forestId)
-  return forest
+  return forest.value
     .filter((item) => item.deletedAt === null)
     .filter((item) => (item.parentId ?? null) === parentId).length
 }

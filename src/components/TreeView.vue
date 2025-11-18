@@ -39,8 +39,8 @@ const hasChildren = (parentId: number) => {
   return tree.value.some((item) => isActive(item) && item.parentId === parentId)
 }
 
-onMounted(() => {
-  tree.value = treeService.getForest(resolvedForestId.value)
+onMounted(async () => {
+  tree.value = await treeService.getForest(resolvedForestId.value)
 })
 </script>
 

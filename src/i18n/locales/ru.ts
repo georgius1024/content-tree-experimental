@@ -23,6 +23,7 @@ export default {
     selectFolderFirst: 'Пожалуйста, сначала выберите папку',
     addSubFolderTitle: 'Добавить подпапку к выбранному родителю',
     addCourseTitle: 'Добавить курс к выбранному родителю',
+    loading: 'Загрузка...',
   },
   folderEditor: {
     title: 'Редактор папки',
