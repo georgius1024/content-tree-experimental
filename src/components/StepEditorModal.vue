@@ -44,6 +44,7 @@
                 :key="slideEditorKey"
                 :model-value="localSlide"
                 @update:model-value="updateSlide"
+                @update:valid="slideValid = $event"
               />
               <QuestionEditor
                 v-if="isQuestion && localQuestion"
@@ -65,7 +66,8 @@
               <button
                 v-if="isSlide"
                 type="button"
-                class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
+                class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                :disabled="!slideValid"
                 @click="handleSaveSlide"
               >
                 {{ t('common.save') }}
@@ -113,6 +115,7 @@ const emit = defineEmits<{
 
 const localSlide = ref<Slide | null>(null)
 const localQuestion = ref<Question | null>(null)
+const slideValid = ref(false)
 const questionValid = ref(false)
 
 const isCreating = computed(() => props.step === null)
@@ -154,6 +157,7 @@ watch(
           }
           localSlide.value = null
         }
+        slideValid.value = true
         questionValid.value = true
       } else {
         // Creating new step
@@ -180,6 +184,7 @@ watch(
           localSlide.value = null
           questionValid.value = false
         }
+        slideValid.value = false
       }
     }
   }
@@ -198,7 +203,7 @@ const handleClose = () => {
 }
 
 const handleSaveSlide = () => {
-  if (!localSlide.value) return
+  if (!localSlide.value || !slideValid.value) return
   emit('save', localSlide.value)
   emit('update:open', false)
 }

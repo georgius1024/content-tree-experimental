@@ -44,6 +44,7 @@ export default {
     folderRequired: 'Родительская папка обязательна.',
     tabGeneral: 'Основное',
     tabDescription: 'Описание',
+    tabStructure: 'Структура',
   },
   folderPicker: {
     selectFolder: 'Выбрать папку',
@@ -78,6 +79,10 @@ export default {
     namePlaceholder: 'Введите название слайда',
     content: 'Содержимое',
     contentPlaceholder: 'Введите содержимое слайда',
+    validation: {
+      nameRequired: 'Название слайда обязательно',
+      contentRequired: 'Содержимое слайда обязательно',
+    },
   },
   questionEditor: {
     name: 'Название вопроса',

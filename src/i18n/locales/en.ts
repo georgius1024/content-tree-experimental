@@ -44,6 +44,7 @@ export default {
     folderRequired: 'Parent folder is required.',
     tabGeneral: 'General',
     tabDescription: 'Description',
+    tabStructure: 'Structure',
   },
   folderPicker: {
     selectFolder: 'Select Folder',
@@ -78,6 +79,10 @@ export default {
     namePlaceholder: 'Enter slide name',
     content: 'Content',
     contentPlaceholder: 'Enter slide content',
+    validation: {
+      nameRequired: 'Slide name is required',
+      contentRequired: 'Slide content is required',
+    },
   },
   questionEditor: {
     name: 'Question name',
