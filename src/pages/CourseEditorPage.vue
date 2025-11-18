@@ -312,7 +312,7 @@ const onSave = async () => {
 
   if (isNew.value) {
     // Create new course
-    const course = createCourse({
+    const course = await createCourse({
       author: author.value,
       fullName: fullName.value || name.value.trim(),
       description: description.value,
@@ -349,14 +349,14 @@ const onSave = async () => {
     // Upsert course
     const existingId = node.value?.objectId
     if (typeof existingId === 'string' && existingId) {
-      updateCourse(existingId, {
+      await updateCourse(existingId, {
         author: author.value,
         fullName: fullName.value,
         description: description.value,
         structure: courseStructure.value
       })
     } else {
-      const created = createCourse({
+      const created = await createCourse({
         author: author.value,
         fullName: fullName.value || name.value.trim(),
         description: description.value,
@@ -406,10 +406,10 @@ const genUuid = (): string => {
   return `${s4()}${s4()}-${s4()}-${s4()}-${s4()}-${s4()}${s4()}${s4()}`
 }
 
-const handleStructureUpdate = (structure: Section[]) => {
+const handleStructureUpdate = async (structure: Section[]) => {
   courseStructure.value = structure
   if (courseId.value) {
-    updateCourse(courseId.value, { structure })
+    await updateCourse(courseId.value, { structure })
   }
 }
 

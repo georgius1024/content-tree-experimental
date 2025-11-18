@@ -16,7 +16,7 @@ const onResetTree = async () => {
   if (!ok) return;
   const currentLocale = locale.value as 'en' | 'ru';
   await resetAllTrees(currentLocale);
-  resetAllCourses(currentLocale);
+  await resetAllCourses(currentLocale);
   router.push({ path: '/' });
 };
 </script>

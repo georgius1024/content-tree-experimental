@@ -33,6 +33,7 @@ export async function getAllTrees(): Promise<TreeItem[]> {
 
 export async function saveAllTrees(tree: TreeItem[]): Promise<void> {
   await new Promise(resolve => setTimeout(resolve, 100));
+  console.log('saveAllTrees', tree);
   try {
     localStorage.setItem('tree', JSON.stringify(tree));
   } catch (error) {
@@ -327,7 +328,9 @@ export async function updateNode(forestId: number, nodeId: number, name: string,
     await moveNode(forestId, nodeId, newParentId, newPosition);
   }
   if (nameChanged) {
-    const updated = tree.map((item) => {
+    // Re-fetch the forest in case parent was changed (which would have updated the tree)
+    const currentTree = await getForest(forestId);
+    const updated = currentTree.map((item) => {
       if (item.id === nodeId) {
         return { ...item, name, updatedAt: nowIso };
       }

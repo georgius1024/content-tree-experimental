@@ -26,7 +26,8 @@ export function getAllCourses(): Course[] {
   }
 }
 
-export function saveAllCourses(courses: Course[]): void {
+export async function saveAllCourses(courses: Course[]): Promise<void> {
+  await new Promise(resolve => setTimeout(resolve, 100));
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(courses));
   } catch {
@@ -46,11 +47,11 @@ function getCurrentLocale(): 'en' | 'ru' {
   return browserLang === 'ru' ? 'ru' : 'en';
 }
 
-export function resetAllCourses(locale?: 'en' | 'ru'): void {
+export async function resetAllCourses(locale?: 'en' | 'ru'): Promise<void> {
   try {
     const currentLocale = locale ?? getCurrentLocale();
     const sampleCourses = getSampleCourses(currentLocale);
-    saveAllCourses(sampleCourses);
+    await saveAllCourses(sampleCourses);
   } catch {
     // noop
   }
@@ -60,9 +61,9 @@ export function getCourse(id: string): Course | null {
   return getAllCourses().find((c) => c.id === id) ?? null;
 }
 
-export function createCourse(
+export async function createCourse(
   payload: Omit<Course, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'>
-): Course {
+): Promise<Course> {
   const course: Course = {
     id: genUuid(),
     author: payload.author,
@@ -74,14 +75,14 @@ export function createCourse(
     deletedAt: null,
   };
   const all = getAllCourses();
-  saveAllCourses([...all, course]);
+  await saveAllCourses([...all, course]);
   return course;
 }
 
-export function updateCourse(
+export async function updateCourse(
   id: string,
   attrs: Partial<Omit<Course, 'id' | 'createdAt'>>
-): void {
+): Promise<void> {
   const all = getAllCourses();
   const updated = all.map((c) =>
     c.id === id
@@ -92,14 +93,14 @@ export function updateCourse(
         }
       : c
   );
-  saveAllCourses(updated);
+  await saveAllCourses(updated);
 }
 
-export function softDeleteCourse(id: string): void {
+export async function softDeleteCourse(id: string): Promise<void> {
   const all = getAllCourses();
   const updated = all.map((c) =>
     c.id === id ? { ...c, deletedAt: nowIso(), updatedAt: nowIso() } : c
   );
-  saveAllCourses(updated);
+  await saveAllCourses(updated);
 }
 

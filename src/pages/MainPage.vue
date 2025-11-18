@@ -207,9 +207,9 @@ const onDeleteItem = async (payload: { itemId: number }) => {
     const leavesWithCourses = affected.filter(
       (n) => n.type === 'leaf' && typeof n.objectId === 'string' && n.objectId
     )
-    leavesWithCourses.forEach((n) => {
-      softDeleteCourse(n.objectId as string)
-    })
+    await Promise.all(
+      leavesWithCourses.map((n) => softDeleteCourse(n.objectId as string))
+    )
 
     await deleteNode(forestId, itemId)
     await loadForest()
