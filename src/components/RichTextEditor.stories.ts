@@ -19,8 +19,9 @@ type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   args: {
+    modelValue: '',
     placeholder: 'Start typing...',
-  },
+  } as any,
   render: (args) => ({
     components: { RichTextEditor, RichTextView },
     setup() {
@@ -99,6 +100,7 @@ export const WithInitialContent: Story = {
 }
 
 export const WithComplexContent: Story = {
+  args: {} as any,
   render: () => ({
     components: { RichTextEditor, RichTextView },
     setup() {
@@ -121,6 +123,41 @@ export const WithComplexContent: Story = {
     template: `
       <div class="max-w-2xl">
         <RichTextEditor v-model="content" />
+        <div class="mt-6 p-4 bg-gray-50 rounded border border-gray-200">
+          <p class="text-sm font-semibold text-gray-700 mb-3">Preview (RichTextView):</p>
+          <div class="bg-white p-4 rounded border border-gray-200">
+            <RichTextView :content="content" />
+          </div>
+        </div>
+        <div class="mt-4 p-4 bg-gray-50 rounded border border-gray-200">
+          <p class="text-sm font-semibold text-gray-700 mb-2">HTML Output:</p>
+          <pre class="text-xs bg-white p-3 rounded border border-gray-200 overflow-x-auto">{{ content }}</pre>
+        </div>
+      </div>
+    `,
+  }),
+}
+
+export const ReadOnly: Story = {
+  args: {} as any,
+  render: () => ({
+    components: { RichTextEditor, RichTextView },
+    setup() {
+      const content = ref(`
+        <h1>Read-Only Mode</h1>
+        <p>This editor is in <strong>read-only</strong> mode. The toolbar is hidden and the content cannot be edited.</p>
+        <p>You can see the formatted content with <em>italic</em>, <u>underlined</u>, and <strong>bold</strong> text.</p>
+        <ul>
+          <li>First bullet point</li>
+          <li>Second bullet point</li>
+        </ul>
+        <blockquote>This is a blockquote in read-only mode.</blockquote>
+      `)
+      return { content }
+    },
+    template: `
+      <div class="max-w-2xl">
+        <RichTextEditor v-model="content" :readonly="true" />
         <div class="mt-6 p-4 bg-gray-50 rounded border border-gray-200">
           <p class="text-sm font-semibold text-gray-700 mb-3">Preview (RichTextView):</p>
           <div class="bg-white p-4 rounded border border-gray-200">

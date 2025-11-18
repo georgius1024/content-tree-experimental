@@ -78,3 +78,22 @@ export const WithRichContent: Story = {
   }),
 }
 
+export const ReadOnly: Story = {
+  args: {} as any,
+  render: () => ({
+    components: { SlideEditor },
+    setup() {
+      const slide = ref(createSlide(
+        'Read-Only Slide',
+        '<p>This slide is in <strong>read-only</strong> mode. All controls are visible but disabled.</p>'
+      ))
+      return { slide }
+    },
+    template: `
+      <div class="max-w-3xl">
+        <SlideEditor v-model="slide" :readonly="true" />
+      </div>
+    `,
+  }),
+}
+

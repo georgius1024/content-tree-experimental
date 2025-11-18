@@ -144,3 +144,29 @@ export const WithRichContent: Story = {
   }),
 }
 
+export const ReadOnly: Story = {
+  args: {} as any,
+  render: () => ({
+    components: { QuestionEditor },
+    setup() {
+      const question = ref(createQuestion(
+        'What is the capital of France?',
+        '<p>Select the correct answer:</p>',
+        ['London', 'Berlin', 'Paris', 'Madrid'],
+        'single',
+        [2]
+      ))
+      return { question }
+    },
+    template: `
+      <div class="max-w-3xl p-4">
+        <QuestionEditor v-model="question" :readonly="true" />
+        <div class="mt-8 p-4 bg-gray-100 rounded-md">
+          <h3 class="text-sm font-semibold mb-2">JSON Output:</h3>
+          <pre class="text-xs overflow-auto">{{ JSON.stringify(question, null, 2) }}</pre>
+        </div>
+      </div>
+    `,
+  }),
+}
+

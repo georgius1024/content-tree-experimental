@@ -5,7 +5,9 @@
       <input
         :model-value="localSlide.name"
         type="text"
-        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        :readonly="props.readonly"
+        :disabled="props.readonly"
+        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-50 disabled:cursor-not-allowed"
         :placeholder="t('slideEditor.namePlaceholder')"
         @input="updateName(($event.target as HTMLInputElement).value)"
       />
@@ -15,6 +17,7 @@
       <RichTextEditor
         :model-value="localSlide.content"
         :placeholder="t('slideEditor.contentPlaceholder')"
+        :readonly="props.readonly"
         @update:model-value="updateContent"
       />
     </div>
@@ -31,6 +34,7 @@ const { t } = useI18n()
 
 type Props = {
   modelValue: Slide
+  readonly?: boolean
 }
 
 const props = defineProps<Props>()

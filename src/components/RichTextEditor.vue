@@ -1,8 +1,8 @@
 <template>
-  <div class="rich-text-editor">
+  <div :class="['rich-text-editor', { 'readonly-mode': props.readonly }]">
     <!-- Toolbar -->
     <div
-      v-if="editor"
+      v-if="editor && !props.readonly"
       class="flex flex-wrap items-center gap-1 p-2 border-b border-gray-200 bg-gray-50 rounded-t-md"
     >
       <!-- Text formatting -->
@@ -179,7 +179,10 @@
     </div>
 
     <!-- Editor content -->
-    <EditorContent :editor="editor" class="rich-text-content" />
+    <EditorContent 
+      :editor="editor" 
+      class="rich-text-content"
+    />
   </div>
 </template>
 
@@ -207,6 +210,7 @@ import {
 const props = defineProps<{
   modelValue: string
   placeholder?: string
+  readonly?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -235,8 +239,11 @@ const editor = useEditor({
     }),
   ],
   content: props.modelValue,
+  editable: !props.readonly,
   onUpdate: ({ editor }) => {
-    emit('update:modelValue', editor.getHTML())
+    if (!props.readonly) {
+      emit('update:modelValue', editor.getHTML())
+    }
   },
   editorProps: {
     attributes: {
@@ -272,8 +279,18 @@ watch(
     if (isSame) {
       return
     }
-    editor.value?.commands.setContent(value, false)
+    editor.value?.commands.setContent(value)
   },
+)
+
+watch(
+  () => props.readonly,
+  (readonly) => {
+    if (editor.value) {
+      editor.value.setEditable(!readonly)
+    }
+  },
+  { immediate: true }
 )
 
 onBeforeUnmount(() => {
@@ -289,6 +306,11 @@ onBeforeUnmount(() => {
   border-top: none;
   border-radius: 0 0 0.375rem 0.375rem;
   outline: none;
+}
+
+.rich-text-editor.readonly-mode :deep(.ProseMirror) {
+  border-top: 1px solid rgb(209 213 219);
+  border-radius: 0.375rem;
 }
 
 .rich-text-editor :deep(.ProseMirror:focus) {
