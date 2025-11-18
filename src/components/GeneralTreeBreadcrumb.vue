@@ -16,6 +16,7 @@
             @click="onRootClick"
           >
             <FolderRoot :size="16" class="text-gray-500" aria-hidden="true" />
+            <span class="text-sm text-gray-700">{{ t('common.root') }}</span>
           </button>
         </div>
         <span v-if="items.length > 0" class="text-gray-400">/</span>
@@ -26,7 +27,7 @@
         class="flex items-center gap-1"
       >
         <div
-          class="rounded px-1 py-0.5 hover:bg-gray-50 data-[drag-over=true]:bg-gray-100 cursor-default"
+          class="rounded px-1 py-0 hover:bg-gray-50 data-[drag-over=true]:bg-gray-100 cursor-default"
           @dragover.prevent="onCrumbDragOver(index)"
           @dragleave="onCrumbDragLeave(index)"
           @drop.prevent="onCrumbDrop(crumb)"
@@ -44,6 +45,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import type { TreeItem } from '../types'
 import { FolderRoot } from 'lucide-vue-next'
 
@@ -55,6 +57,7 @@ type Props = {
 }
 
 const props = defineProps<Props>()
+const { t } = useI18n()
 
 const dragOverIndex = ref<number | null>(null)
 

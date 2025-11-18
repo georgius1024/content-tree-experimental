@@ -9,7 +9,7 @@ export default {
     parent: 'Родитель',
     folder: 'Папка',
     course: 'Курс',
-    root: 'Корень',
+    root: 'Начало',
     drag: 'Перетащите для изменения порядка',
   },
   mainPage: {
@@ -47,7 +47,7 @@ export default {
   },
   folderPicker: {
     selectFolder: 'Выбрать папку',
-    root: 'Корень',
+    root: 'Начало',
     searchPlaceholder: 'Поиск папок...',
     noFoldersFound: 'Папки не найдены',
     selectFolderButton: 'Выбрать папку',

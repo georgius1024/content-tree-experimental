@@ -1,6 +1,6 @@
 <template>
   <div class="rounded-lg border border-gray-200 bg-white shadow-sm">
-    <Toolbar :title="t('mainPage.title')">
+    <!-- <Toolbar :title="t('mainPage.title')">
       <template #end>
             <button
               type="button"
@@ -19,8 +19,8 @@
               {{ t('mainPage.addCourse') }}
             </button>
       </template>
-    </Toolbar>
-    <div class="p-4">
+    </Toolbar> -->
+    <div class="px-4 py-2 border-b border-gray-200">
       <TreeBreadcrumb
           :forest-id="forestId"
           :path="path"
@@ -34,7 +34,7 @@
           </template>
         </TreeBreadcrumb>
     </div>
-    <div class="p-2">
+    <div class="py-2">
         <div v-if="isLoading" class="flex items-center justify-center py-8 text-gray-500 text-sm">
           {{ t('mainPage.loading') }}
         </div>
@@ -43,7 +43,7 @@
           :items="children"
           :parent-id="currentParentId"
           :forest-id="forestId"
-          class="pl-2 md:pl-4"
+          class="px-2"
           @drop-node="onDropNode"
           @click="onItemClick"
           @edit="onEditItem"
@@ -143,9 +143,22 @@ const onBreadcrumbDrop = async (payload: { newParentId: number | null; newPositi
 }
 
 const onDropInto = async (payload: { nodeId: number; targetParentId: number }) => {
+  // Prevent false alarm: don't try to move a node into itself
+  if (payload.nodeId === payload.targetParentId) {
+    return
+  }
   isLoading.value = true
   try {
     const currentForest = await getForest(forestId)
+    const node = currentForest.find((n) => n.id === payload.nodeId && n.deletedAt === null)
+    if (!node) return
+    
+    // Prevent moving a node into its own descendant
+    const targetParent = currentForest.find((n) => n.id === payload.targetParentId && n.deletedAt === null)
+    if (targetParent && targetParent.path.startsWith(node.path)) {
+      return
+    }
+    
     const childrenCount = currentForest
       .filter((n) => n.deletedAt === null)
       .filter((n) => (n.parentId ?? null) === payload.targetParentId).length
