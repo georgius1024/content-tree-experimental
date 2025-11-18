@@ -175,7 +175,92 @@ const enSamples: SampleData = {
       author: 'Banking Academy',
       fullName: 'Checking Accounts Fundamentals',
       description: 'Learn the basics of checking accounts, including opening, managing, and understanding account features.',
-      structure: [],
+      structure: [
+        {
+          id: 'section-1-checking-en',
+          name: 'Introduction to Checking Accounts',
+          steps: [
+            {
+              id: 'slide-1-checking-en',
+              type: 'slide',
+              name: 'What is a Checking Account?',
+              content: '<h2>What is a Checking Account?</h2><p>A checking account is a type of bank account that allows you to deposit and withdraw money easily. It\'s designed for frequent transactions and provides immediate access to your funds.</p><p><strong>Key Features:</strong></p><ul><li>Easy access to your money via checks, debit cards, or online transfers</li><li>No limit on the number of transactions</li><li>Typically earns little or no interest</li><li>May require a minimum balance</li></ul>',
+            },
+            {
+              id: 'question-1-checking-en',
+              type: 'question',
+              name: 'Checking Account Basics',
+              slide: '<p>What is the primary purpose of a checking account?</p>',
+              options: [
+                'Long-term savings with high interest',
+                'Easy access to funds for daily transactions',
+                'Investment in stocks and bonds',
+                'Retirement planning',
+              ],
+              inputRule: {
+                type: 'single',
+                correctOptions: [1],
+              },
+            },
+            {
+              id: 'slide-2-checking-en',
+              type: 'slide',
+              name: 'Types of Checking Accounts',
+              content: '<h2>Types of Checking Accounts</h2><p>Banks offer various types of checking accounts to meet different needs:</p><ul><li><strong>Basic Checking:</strong> Simple account with minimal fees, ideal for everyday use</li><li><strong>Interest-Bearing Checking:</strong> Earns interest but may require higher minimum balance</li><li><strong>Student Checking:</strong> Designed for students with lower fees and requirements</li><li><strong>Premium Checking:</strong> Offers additional benefits like waived fees and perks</li></ul>',
+            },
+            {
+              id: 'question-2-checking-en',
+              type: 'question',
+              name: 'Account Types',
+              slide: '<p>Which checking account type is best suited for students?</p>',
+              options: [
+                'Premium Checking',
+                'Interest-Bearing Checking',
+                'Student Checking',
+                'Basic Checking',
+              ],
+              inputRule: {
+                type: 'single',
+                correctOptions: [2],
+              },
+            },
+          ],
+        },
+        {
+          id: 'section-2-checking-en',
+          name: 'Opening and Managing Your Account',
+          steps: [
+            {
+              id: 'slide-3-checking-en',
+              type: 'slide',
+              name: 'How to Open a Checking Account',
+              content: '<h2>How to Open a Checking Account</h2><p>Opening a checking account is straightforward. Here\'s what you need:</p><ol><li><strong>Choose a bank:</strong> Compare fees, features, and branch locations</li><li><strong>Gather required documents:</strong> Government-issued ID, Social Security number, proof of address</li><li><strong>Make initial deposit:</strong> Most banks require a minimum opening deposit</li><li><strong>Complete application:</strong> Fill out forms online or in person</li></ol><p>Once approved, you\'ll receive your account number, checks, and debit card.</p>',
+            },
+            {
+              id: 'question-3-checking-en',
+              type: 'question',
+              name: 'Required Documents',
+              slide: '<p>Which documents are typically required to open a checking account? Select all that apply.</p>',
+              options: [
+                'Government-issued ID',
+                'Social Security number',
+                'Proof of address',
+                'Employment contract',
+              ],
+              inputRule: {
+                type: 'multiple',
+                correctOptions: [0, 1, 2],
+              },
+            },
+            {
+              id: 'slide-4-checking-en',
+              type: 'slide',
+              name: 'Managing Your Account',
+              content: '<h2>Managing Your Checking Account</h2><p>Effective account management helps avoid fees and maintain good banking relationships:</p><ul><li><strong>Monitor your balance:</strong> Check regularly via mobile app or online banking</li><li><strong>Set up alerts:</strong> Get notified of low balances or large transactions</li><li><strong>Reconcile monthly:</strong> Match your records with bank statements</li><li><strong>Understand fees:</strong> Know your account\'s fee structure and how to avoid them</li><li><strong>Use direct deposit:</strong> Many banks waive fees with direct deposit</li></ul>',
+            },
+          ],
+        },
+      ],
       createdAt: nowIso(),
       updatedAt: nowIso(),
       deletedAt: null,
@@ -195,7 +280,120 @@ const enSamples: SampleData = {
       author: 'Banking Academy',
       fullName: 'Personal Loans Overview',
       description: 'Understanding personal loans, application process, and repayment options.',
-      structure: [],
+      structure: [
+        {
+          id: 'section-1-loans-en',
+          name: 'Introduction to Personal Loans',
+          steps: [
+            {
+              id: 'slide-1-loans-en',
+              type: 'slide',
+              name: 'What is a Personal Loan?',
+              content: '<h2>What is a Personal Loan?</h2><p>A personal loan is an unsecured loan that you can use for various purposes, such as debt consolidation, home improvements, medical expenses, or major purchases. Unlike secured loans, personal loans don\'t require collateral.</p><p><strong>Key Characteristics:</strong></p><ul><li><strong>Unsecured:</strong> No collateral required</li><li><strong>Fixed Interest Rate:</strong> Predictable monthly payments</li><li><strong>Fixed Term:</strong> Repayment period typically 1-7 years</li><li><strong>Lump Sum:</strong> Receive the full amount upfront</li></ul>',
+            },
+            {
+              id: 'question-1-loans-en',
+              type: 'question',
+              name: 'Personal Loan Basics',
+              slide: '<p>What is a key characteristic of personal loans?</p>',
+              options: [
+                'They require collateral',
+                'They are unsecured loans',
+                'They have variable interest rates only',
+                'They must be repaid in one payment',
+              ],
+              inputRule: {
+                type: 'single',
+                correctOptions: [1],
+              },
+            },
+            {
+              id: 'slide-2-loans-en',
+              type: 'slide',
+              name: 'Types of Personal Loans',
+              content: '<h2>Types of Personal Loans</h2><p>Different types of personal loans serve different needs:</p><ul><li><strong>Debt Consolidation Loans:</strong> Combine multiple debts into one payment</li><li><strong>Home Improvement Loans:</strong> Finance renovations and repairs</li><li><strong>Medical Loans:</strong> Cover unexpected medical expenses</li><li><strong>Wedding Loans:</strong> Finance wedding expenses</li><li><strong>Vacation Loans:</strong> Fund travel and vacations</li></ul>',
+            },
+          ],
+        },
+        {
+          id: 'section-2-loans-en',
+          name: 'Application and Approval',
+          steps: [
+            {
+              id: 'slide-3-loans-en',
+              type: 'slide',
+              name: 'Loan Application Process',
+              content: '<h2>Loan Application Process</h2><p>The personal loan application process typically involves:</p><ol><li><strong>Check Your Credit:</strong> Review your credit score and report</li><li><strong>Compare Lenders:</strong> Research rates, terms, and fees</li><li><strong>Gather Documents:</strong> Income proof, ID, bank statements</li><li><strong>Submit Application:</strong> Online or in-person application</li><li><strong>Review Offer:</strong> Compare loan terms and conditions</li><li><strong>Accept and Receive Funds:</strong> Funds typically deposited within 1-7 days</li></ol>',
+            },
+            {
+              id: 'question-2-loans-en',
+              type: 'question',
+              name: 'Application Steps',
+              slide: '<p>What should you do first when applying for a personal loan?</p>',
+              options: [
+                'Submit the application immediately',
+                'Check your credit score and report',
+                'Accept the first offer you receive',
+                'Skip comparing lenders',
+              ],
+              inputRule: {
+                type: 'single',
+                correctOptions: [1],
+              },
+            },
+            {
+              id: 'slide-4-loans-en',
+              type: 'slide',
+              name: 'Factors Affecting Approval',
+              content: '<h2>Factors Affecting Loan Approval</h2><p>Lenders evaluate several factors when considering your loan application:</p><ul><li><strong>Credit Score:</strong> Higher scores increase approval chances</li><li><strong>Income:</strong> Stable, sufficient income demonstrates repayment ability</li><li><strong>Debt-to-Income Ratio:</strong> Lower ratio shows better financial health</li><li><strong>Employment History:</strong> Stable employment history preferred</li><li><strong>Credit History:</strong> Past repayment behavior matters</li></ul>',
+            },
+            {
+              id: 'question-3-loans-en',
+              type: 'question',
+              name: 'Approval Factors',
+              slide: '<p>Which factors affect personal loan approval? Select all that apply.</p>',
+              options: [
+                'Credit score',
+                'Income level',
+                'Debt-to-income ratio',
+                'Hair color',
+              ],
+              inputRule: {
+                type: 'multiple',
+                correctOptions: [0, 1, 2],
+              },
+            },
+          ],
+        },
+        {
+          id: 'section-3-loans-en',
+          name: 'Repayment and Management',
+          steps: [
+            {
+              id: 'slide-5-loans-en',
+              type: 'slide',
+              name: 'Repayment Options',
+              content: '<h2>Repayment Options</h2><p>Understanding your repayment options helps manage your loan effectively:</p><ul><li><strong>Fixed Monthly Payments:</strong> Same amount each month for the loan term</li><li><strong>Early Repayment:</strong> Pay off loan early, but check for prepayment penalties</li><li><strong>Automatic Payments:</strong> Set up autopay to avoid missed payments</li><li><strong>Payment Extensions:</strong> Some lenders offer hardship programs</li><li><strong>Refinancing:</strong> Consider refinancing if rates drop significantly</li></ul>',
+            },
+            {
+              id: 'question-4-loans-en',
+              type: 'question',
+              name: 'Repayment',
+              slide: '<p>What should you check before paying off a personal loan early?</p>',
+              options: [
+                'Nothing, early repayment is always free',
+                'Prepayment penalties',
+                'Your credit score',
+                'Other loan offers',
+              ],
+              inputRule: {
+                type: 'single',
+                correctOptions: [1],
+              },
+            },
+          ],
+        },
+      ],
       createdAt: nowIso(),
       updatedAt: nowIso(),
       deletedAt: null,
@@ -205,7 +403,92 @@ const enSamples: SampleData = {
       author: 'Banking Academy',
       fullName: 'Credit Cards Essentials',
       description: 'Master credit card features, benefits, and responsible usage.',
-      structure: [],
+      structure: [
+        {
+          id: 'section-1-cards-en',
+          name: 'Understanding Credit Cards',
+          steps: [
+            {
+              id: 'slide-1-cards-en',
+              type: 'slide',
+              name: 'What is a Credit Card?',
+              content: '<h2>What is a Credit Card?</h2><p>A credit card is a payment card that allows you to borrow money from a financial institution to make purchases. Unlike a debit card, you\'re spending borrowed money that you must repay.</p><p><strong>Key Components:</strong></p><ul><li><strong>Credit Limit:</strong> Maximum amount you can borrow</li><li><strong>Annual Percentage Rate (APR):</strong> Interest rate charged on outstanding balances</li><li><strong>Minimum Payment:</strong> Smallest amount you must pay each month</li><li><strong>Grace Period:</strong> Time to pay without interest charges</li></ul>',
+            },
+            {
+              id: 'question-1-cards-en',
+              type: 'question',
+              name: 'Credit Card Basics',
+              slide: '<p>What happens if you only pay the minimum payment each month?</p>',
+              options: [
+                'You avoid all interest charges',
+                'You pay off the balance quickly',
+                'You accumulate interest on the remaining balance',
+                'Your credit limit increases automatically',
+              ],
+              inputRule: {
+                type: 'single',
+                correctOptions: [2],
+              },
+            },
+            {
+              id: 'slide-2-cards-en',
+              type: 'slide',
+              name: 'Types of Credit Cards',
+              content: '<h2>Types of Credit Cards</h2><p>Different credit cards serve different purposes:</p><ul><li><strong>Rewards Cards:</strong> Earn points, miles, or cash back on purchases</li><li><strong>Balance Transfer Cards:</strong> Low or 0% APR for transferring existing debt</li><li><strong>Secured Cards:</strong> Require a security deposit, good for building credit</li><li><strong>Business Cards:</strong> Designed for business expenses and tracking</li><li><strong>Student Cards:</strong> Lower credit limits, designed for students</li></ul>',
+            },
+          ],
+        },
+        {
+          id: 'section-2-cards-en',
+          name: 'Using Credit Cards Wisely',
+          steps: [
+            {
+              id: 'slide-3-cards-en',
+              type: 'slide',
+              name: 'Building Good Credit',
+              content: '<h2>Building Good Credit with Credit Cards</h2><p>Credit cards can help build your credit score when used responsibly:</p><ul><li><strong>Pay on time:</strong> Payment history is 35% of your credit score</li><li><strong>Keep balances low:</strong> Use less than 30% of your credit limit</li><li><strong>Don\'t close old accounts:</strong> Length of credit history matters</li><li><strong>Monitor your credit:</strong> Check reports regularly for errors</li></ul>',
+            },
+            {
+              id: 'question-2-cards-en',
+              type: 'question',
+              name: 'Credit Utilization',
+              slide: '<p>What is the recommended credit utilization ratio for maintaining good credit?</p>',
+              options: [
+                'Less than 30%',
+                '50-70%',
+                '80-100%',
+                'It doesn\'t matter',
+              ],
+              inputRule: {
+                type: 'single',
+                correctOptions: [0],
+              },
+            },
+            {
+              id: 'slide-4-cards-en',
+              type: 'slide',
+              name: 'Avoiding Credit Card Debt',
+              content: '<h2>Avoiding Credit Card Debt</h2><p>Prevent debt accumulation with these strategies:</p><ul><li><strong>Pay in full:</strong> Pay off the entire balance each month</li><li><strong>Set a budget:</strong> Only charge what you can afford to pay</li><li><strong>Track spending:</strong> Monitor purchases regularly</li><li><strong>Emergency use only:</strong> Reserve for true emergencies if needed</li><li><strong>Understand fees:</strong> Know late fees, over-limit fees, and annual fees</li></ul>',
+            },
+            {
+              id: 'question-3-cards-en',
+              type: 'question',
+              name: 'Debt Prevention',
+              slide: '<p>Which strategies help avoid credit card debt? Select all that apply.</p>',
+              options: [
+                'Pay only the minimum payment',
+                'Pay the full balance each month',
+                'Set a spending budget',
+                'Track your purchases regularly',
+              ],
+              inputRule: {
+                type: 'multiple',
+                correctOptions: [1, 2, 3],
+              },
+            },
+          ],
+        },
+      ],
       createdAt: nowIso(),
       updatedAt: nowIso(),
       deletedAt: null,
@@ -225,7 +508,92 @@ const enSamples: SampleData = {
       author: 'Banking Academy',
       fullName: 'Credit Risk Management',
       description: 'Fundamentals of credit risk assessment, analysis, and mitigation strategies.',
-      structure: [],
+      structure: [
+        {
+          id: 'section-1-risk-en',
+          name: 'Introduction to Credit Risk',
+          steps: [
+            {
+              id: 'slide-1-risk-en',
+              type: 'slide',
+              name: 'What is Credit Risk?',
+              content: '<h2>What is Credit Risk?</h2><p>Credit risk is the possibility of loss resulting from a borrower\'s failure to repay a loan or meet contractual obligations. It\'s one of the most significant risks banks face.</p><p><strong>Types of Credit Risk:</strong></p><ul><li><strong>Default Risk:</strong> Borrower fails to make required payments</li><li><strong>Concentration Risk:</strong> Too much exposure to one borrower or sector</li><li><strong>Country Risk:</strong> Risk from lending to foreign entities</li><li><strong>Settlement Risk:</strong> Risk during transaction settlement</li></ul>',
+            },
+            {
+              id: 'question-1-risk-en',
+              type: 'question',
+              name: 'Credit Risk Types',
+              slide: '<p>What type of credit risk occurs when a bank has too much exposure to a single borrower?</p>',
+              options: [
+                'Default Risk',
+                'Concentration Risk',
+                'Country Risk',
+                'Settlement Risk',
+              ],
+              inputRule: {
+                type: 'single',
+                correctOptions: [1],
+              },
+            },
+            {
+              id: 'slide-2-risk-en',
+              type: 'slide',
+              name: 'Credit Risk Assessment',
+              content: '<h2>Credit Risk Assessment</h2><p>Banks use various methods to assess credit risk:</p><ul><li><strong>Credit Scoring:</strong> Statistical models to predict default probability</li><li><strong>Financial Analysis:</strong> Review of financial statements and ratios</li><li><strong>Collateral Evaluation:</strong> Assessment of pledged assets</li><li><strong>Credit History:</strong> Analysis of past repayment behavior</li><li><strong>Industry Analysis:</strong> Understanding sector-specific risks</li></ul>',
+            },
+          ],
+        },
+        {
+          id: 'section-2-risk-en',
+          name: 'Risk Mitigation Strategies',
+          steps: [
+            {
+              id: 'slide-3-risk-en',
+              type: 'slide',
+              name: 'Diversification',
+              content: '<h2>Diversification as Risk Mitigation</h2><p>Diversification spreads risk across different borrowers, sectors, and geographic regions:</p><ul><li><strong>Portfolio Diversification:</strong> Spread loans across various industries</li><li><strong>Geographic Diversification:</strong> Avoid concentration in one region</li><li><strong>Borrower Diversification:</strong> Limit exposure to individual borrowers</li><li><strong>Product Diversification:</strong> Mix of secured and unsecured loans</li></ul>',
+            },
+            {
+              id: 'question-2-risk-en',
+              type: 'question',
+              name: 'Diversification',
+              slide: '<p>How does diversification help mitigate credit risk?</p>',
+              options: [
+                'By concentrating loans in one profitable sector',
+                'By spreading risk across different borrowers and sectors',
+                'By lending only to high-risk borrowers',
+                'By avoiding all types of loans',
+              ],
+              inputRule: {
+                type: 'single',
+                correctOptions: [1],
+              },
+            },
+            {
+              id: 'slide-4-risk-en',
+              type: 'slide',
+              name: 'Credit Risk Monitoring',
+              content: '<h2>Credit Risk Monitoring</h2><p>Ongoing monitoring is essential for effective risk management:</p><ul><li><strong>Regular Reviews:</strong> Periodic assessment of borrower financial health</li><li><strong>Early Warning Systems:</strong> Indicators of potential default</li><li><strong>Stress Testing:</strong> Scenario analysis under adverse conditions</li><li><strong>Portfolio Analysis:</strong> Aggregate risk assessment</li><li><strong>Regulatory Compliance:</strong> Adherence to capital requirements</li></ul>',
+            },
+            {
+              id: 'question-3-risk-en',
+              type: 'question',
+              name: 'Monitoring Methods',
+              slide: '<p>Which methods are used for credit risk monitoring? Select all that apply.</p>',
+              options: [
+                'Regular borrower reviews',
+                'Early warning systems',
+                'Stress testing',
+                'Ignoring portfolio changes',
+              ],
+              inputRule: {
+                type: 'multiple',
+                correctOptions: [0, 1, 2],
+              },
+            },
+          ],
+        },
+      ],
       createdAt: nowIso(),
       updatedAt: nowIso(),
       deletedAt: null,
@@ -409,7 +777,92 @@ const ruSamples: SampleData = {
       author: 'Банковская Академия',
       fullName: 'Основы текущих счетов',
       description: 'Изучите основы текущих счетов, включая открытие, управление и понимание функций счета.',
-      structure: [],
+      structure: [
+        {
+          id: 'section-1-checking-ru',
+          name: 'Введение в текущие счета',
+          steps: [
+            {
+              id: 'slide-1-checking-ru',
+              type: 'slide',
+              name: 'Что такое текущий счет?',
+              content: '<h2>Что такое текущий счет?</h2><p>Текущий счет — это тип банковского счета, который позволяет легко вносить и снимать деньги. Он предназначен для частых транзакций и обеспечивает немедленный доступ к вашим средствам.</p><p><strong>Ключевые особенности:</strong></p><ul><li>Легкий доступ к деньгам через чеки, дебетовые карты или онлайн-переводы</li><li>Нет ограничений на количество транзакций</li><li>Обычно приносит мало или вообще не приносит процентов</li><li>Может требовать минимальный баланс</li></ul>',
+            },
+            {
+              id: 'question-1-checking-ru',
+              type: 'question',
+              name: 'Основы текущих счетов',
+              slide: '<p>Какова основная цель текущего счета?</p>',
+              options: [
+                'Долгосрочные сбережения с высокими процентами',
+                'Легкий доступ к средствам для ежедневных транзакций',
+                'Инвестиции в акции и облигации',
+                'Планирование выхода на пенсию',
+              ],
+              inputRule: {
+                type: 'single',
+                correctOptions: [1],
+              },
+            },
+            {
+              id: 'slide-2-checking-ru',
+              type: 'slide',
+              name: 'Типы текущих счетов',
+              content: '<h2>Типы текущих счетов</h2><p>Банки предлагают различные типы текущих счетов для удовлетворения различных потребностей:</p><ul><li><strong>Базовый текущий счет:</strong> Простой счет с минимальными комиссиями, идеален для повседневного использования</li><li><strong>Процентный текущий счет:</strong> Приносит проценты, но может требовать более высокий минимальный баланс</li><li><strong>Студенческий счет:</strong> Предназначен для студентов с более низкими комиссиями и требованиями</li><li><strong>Премиум счет:</strong> Предлагает дополнительные преимущества, такие как отмена комиссий и привилегии</li></ul>',
+            },
+            {
+              id: 'question-2-checking-ru',
+              type: 'question',
+              name: 'Типы счетов',
+              slide: '<p>Какой тип текущего счета лучше всего подходит для студентов?</p>',
+              options: [
+                'Премиум счет',
+                'Процентный текущий счет',
+                'Студенческий счет',
+                'Базовый текущий счет',
+              ],
+              inputRule: {
+                type: 'single',
+                correctOptions: [2],
+              },
+            },
+          ],
+        },
+        {
+          id: 'section-2-checking-ru',
+          name: 'Открытие и управление счетом',
+          steps: [
+            {
+              id: 'slide-3-checking-ru',
+              type: 'slide',
+              name: 'Как открыть текущий счет',
+              content: '<h2>Как открыть текущий счет</h2><p>Открытие текущего счета — это просто. Вот что вам нужно:</p><ol><li><strong>Выберите банк:</strong> Сравните комиссии, функции и расположение отделений</li><li><strong>Соберите необходимые документы:</strong> Удостоверение личности государственного образца, номер СНИЛС, подтверждение адреса</li><li><strong>Внесите первоначальный взнос:</strong> Большинство банков требуют минимальный первоначальный взнос</li><li><strong>Заполните заявку:</strong> Заполните формы онлайн или лично</li></ol><p>После одобрения вы получите номер счета, чеки и дебетовую карту.</p>',
+            },
+            {
+              id: 'question-3-checking-ru',
+              type: 'question',
+              name: 'Необходимые документы',
+              slide: '<p>Какие документы обычно требуются для открытия текущего счета? Выберите все подходящие варианты.</p>',
+              options: [
+                'Удостоверение личности государственного образца',
+                'Номер СНИЛС',
+                'Подтверждение адреса',
+                'Трудовой договор',
+              ],
+              inputRule: {
+                type: 'multiple',
+                correctOptions: [0, 1, 2],
+              },
+            },
+            {
+              id: 'slide-4-checking-ru',
+              type: 'slide',
+              name: 'Управление вашим счетом',
+              content: '<h2>Управление текущим счетом</h2><p>Эффективное управление счетом помогает избежать комиссий и поддерживать хорошие отношения с банком:</p><ul><li><strong>Следите за балансом:</strong> Регулярно проверяйте через мобильное приложение или онлайн-банкинг</li><li><strong>Настройте уведомления:</strong> Получайте уведомления о низком балансе или крупных транзакциях</li><li><strong>Сверяйте ежемесячно:</strong> Сопоставляйте свои записи с банковскими выписками</li><li><strong>Понимайте комиссии:</strong> Знайте структуру комиссий вашего счета и как их избежать</li><li><strong>Используйте прямой депозит:</strong> Многие банки отменяют комиссии при прямом депозите</li></ul>',
+            },
+          ],
+        },
+      ],
       createdAt: nowIso(),
       updatedAt: nowIso(),
       deletedAt: null,
@@ -429,7 +882,120 @@ const ruSamples: SampleData = {
       author: 'Банковская Академия',
       fullName: 'Обзор потребительских кредитов',
       description: 'Понимание потребительских кредитов, процесса подачи заявки и вариантов погашения.',
-      structure: [],
+      structure: [
+        {
+          id: 'section-1-loans-ru',
+          name: 'Введение в потребительские кредиты',
+          steps: [
+            {
+              id: 'slide-1-loans-ru',
+              type: 'slide',
+              name: 'Что такое потребительский кредит?',
+              content: '<h2>Что такое потребительский кредит?</h2><p>Потребительский кредит — это необеспеченный кредит, который можно использовать для различных целей, таких как консолидация долгов, ремонт дома, медицинские расходы или крупные покупки. В отличие от обеспеченных кредитов, потребительские кредиты не требуют залога.</p><p><strong>Ключевые характеристики:</strong></p><ul><li><strong>Необеспеченный:</strong> Залог не требуется</li><li><strong>Фиксированная процентная ставка:</strong> Предсказуемые ежемесячные платежи</li><li><strong>Фиксированный срок:</strong> Период погашения обычно 1-7 лет</li><li><strong>Единовременная сумма:</strong> Получение полной суммы сразу</li></ul>',
+            },
+            {
+              id: 'question-1-loans-ru',
+              type: 'question',
+              name: 'Основы потребительских кредитов',
+              slide: '<p>Какая ключевая характеристика потребительских кредитов?</p>',
+              options: [
+                'Они требуют залога',
+                'Они являются необеспеченными кредитами',
+                'Они имеют только переменные процентные ставки',
+                'Они должны быть погашены одним платежом',
+              ],
+              inputRule: {
+                type: 'single',
+                correctOptions: [1],
+              },
+            },
+            {
+              id: 'slide-2-loans-ru',
+              type: 'slide',
+              name: 'Типы потребительских кредитов',
+              content: '<h2>Типы потребительских кредитов</h2><p>Разные типы потребительских кредитов служат разным целям:</p><ul><li><strong>Кредиты на консолидацию долгов:</strong> Объединяют несколько долгов в один платеж</li><li><strong>Кредиты на ремонт:</strong> Финансируют ремонт и улучшения</li><li><strong>Медицинские кредиты:</strong> Покрывают неожиданные медицинские расходы</li><li><strong>Свадебные кредиты:</strong> Финансируют свадебные расходы</li><li><strong>Туристические кредиты:</strong> Финансируют путешествия и отпуска</li></ul>',
+            },
+          ],
+        },
+        {
+          id: 'section-2-loans-ru',
+          name: 'Подача заявки и одобрение',
+          steps: [
+            {
+              id: 'slide-3-loans-ru',
+              type: 'slide',
+              name: 'Процесс подачи заявки на кредит',
+              content: '<h2>Процесс подачи заявки на кредит</h2><p>Процесс подачи заявки на потребительский кредит обычно включает:</p><ol><li><strong>Проверьте свой кредит:</strong> Просмотрите свой кредитный рейтинг и отчет</li><li><strong>Сравните кредиторов:</strong> Изучите ставки, условия и комиссии</li><li><strong>Соберите документы:</strong> Подтверждение дохода, удостоверение личности, банковские выписки</li><li><strong>Подайте заявку:</strong> Онлайн или лично</li><li><strong>Изучите предложение:</strong> Сравните условия кредита</li><li><strong>Примите и получите средства:</strong> Средства обычно переводятся в течение 1-7 дней</li></ol>',
+            },
+            {
+              id: 'question-2-loans-ru',
+              type: 'question',
+              name: 'Шаги подачи заявки',
+              slide: '<p>Что нужно сделать в первую очередь при подаче заявки на потребительский кредит?</p>',
+              options: [
+                'Немедленно подать заявку',
+                'Проверить свой кредитный рейтинг и отчет',
+                'Принять первое предложение',
+                'Пропустить сравнение кредиторов',
+              ],
+              inputRule: {
+                type: 'single',
+                correctOptions: [1],
+              },
+            },
+            {
+              id: 'slide-4-loans-ru',
+              type: 'slide',
+              name: 'Факторы, влияющие на одобрение',
+              content: '<h2>Факторы, влияющие на одобрение кредита</h2><p>Кредиторы оценивают несколько факторов при рассмотрении вашей заявки:</p><ul><li><strong>Кредитный рейтинг:</strong> Более высокие баллы увеличивают шансы на одобрение</li><li><strong>Доход:</strong> Стабильный, достаточный доход демонстрирует способность к погашению</li><li><strong>Соотношение долга к доходу:</strong> Более низкое соотношение показывает лучшее финансовое здоровье</li><li><strong>Трудовой стаж:</strong> Предпочтительна стабильная трудовая история</li><li><strong>Кредитная история:</strong> Важно прошлое поведение по погашению</li></ul>',
+            },
+            {
+              id: 'question-3-loans-ru',
+              type: 'question',
+              name: 'Факторы одобрения',
+              slide: '<p>Какие факторы влияют на одобрение потребительского кредита? Выберите все подходящие варианты.</p>',
+              options: [
+                'Кредитный рейтинг',
+                'Уровень дохода',
+                'Соотношение долга к доходу',
+                'Цвет волос',
+              ],
+              inputRule: {
+                type: 'multiple',
+                correctOptions: [0, 1, 2],
+              },
+            },
+          ],
+        },
+        {
+          id: 'section-3-loans-ru',
+          name: 'Погашение и управление',
+          steps: [
+            {
+              id: 'slide-5-loans-ru',
+              type: 'slide',
+              name: 'Варианты погашения',
+              content: '<h2>Варианты погашения</h2><p>Понимание ваших вариантов погашения помогает эффективно управлять кредитом:</p><ul><li><strong>Фиксированные ежемесячные платежи:</strong> Та же сумма каждый месяц на срок кредита</li><li><strong>Досрочное погашение:</strong> Погасите кредит досрочно, но проверьте штрафы за досрочное погашение</li><li><strong>Автоматические платежи:</strong> Настройте автоплатеж, чтобы избежать пропущенных платежей</li><li><strong>Продление платежей:</strong> Некоторые кредиторы предлагают программы помощи</li><li><strong>Рефинансирование:</strong> Рассмотрите рефинансирование, если ставки значительно снизятся</li></ul>',
+            },
+            {
+              id: 'question-4-loans-ru',
+              type: 'question',
+              name: 'Погашение',
+              slide: '<p>Что нужно проверить перед досрочным погашением потребительского кредита?</p>',
+              options: [
+                'Ничего, досрочное погашение всегда бесплатно',
+                'Штрафы за досрочное погашение',
+                'Ваш кредитный рейтинг',
+                'Другие предложения по кредитам',
+              ],
+              inputRule: {
+                type: 'single',
+                correctOptions: [1],
+              },
+            },
+          ],
+        },
+      ],
       createdAt: nowIso(),
       updatedAt: nowIso(),
       deletedAt: null,
@@ -439,7 +1005,92 @@ const ruSamples: SampleData = {
       author: 'Банковская Академия',
       fullName: 'Основы кредитных карт',
       description: 'Освойте функции кредитных карт, преимущества и ответственное использование.',
-      structure: [],
+      structure: [
+        {
+          id: 'section-1-cards-ru',
+          name: 'Понимание кредитных карт',
+          steps: [
+            {
+              id: 'slide-1-cards-ru',
+              type: 'slide',
+              name: 'Что такое кредитная карта?',
+              content: '<h2>Что такое кредитная карта?</h2><p>Кредитная карта — это платежная карта, которая позволяет вам занимать деньги у финансового учреждения для совершения покупок. В отличие от дебетовой карты, вы тратите заемные деньги, которые должны вернуть.</p><p><strong>Ключевые компоненты:</strong></p><ul><li><strong>Кредитный лимит:</strong> Максимальная сумма, которую вы можете занять</li><li><strong>Годовая процентная ставка (ГПС):</strong> Процентная ставка, взимаемая с непогашенных остатков</li><li><strong>Минимальный платеж:</strong> Наименьшая сумма, которую вы должны платить каждый месяц</li><li><strong>Льготный период:</strong> Время для оплаты без процентных сборов</li></ul>',
+            },
+            {
+              id: 'question-1-cards-ru',
+              type: 'question',
+              name: 'Основы кредитных карт',
+              slide: '<p>Что происходит, если вы платите только минимальный платеж каждый месяц?</p>',
+              options: [
+                'Вы избегаете всех процентных сборов',
+                'Вы быстро погашаете баланс',
+                'Вы накапливаете проценты на оставшийся баланс',
+                'Ваш кредитный лимит автоматически увеличивается',
+              ],
+              inputRule: {
+                type: 'single',
+                correctOptions: [2],
+              },
+            },
+            {
+              id: 'slide-2-cards-ru',
+              type: 'slide',
+              name: 'Типы кредитных карт',
+              content: '<h2>Типы кредитных карт</h2><p>Разные кредитные карты служат разным целям:</p><ul><li><strong>Карты с вознаграждениями:</strong> Зарабатывайте баллы, мили или кэшбэк за покупки</li><li><strong>Карты для перевода баланса:</strong> Низкая или 0% ГПС для перевода существующего долга</li><li><strong>Обеспеченные карты:</strong> Требуют залога, хороши для построения кредитной истории</li><li><strong>Бизнес-карты:</strong> Предназначены для бизнес-расходов и отслеживания</li><li><strong>Студенческие карты:</strong> Более низкие кредитные лимиты, предназначены для студентов</li></ul>',
+            },
+          ],
+        },
+        {
+          id: 'section-2-cards-ru',
+          name: 'Разумное использование кредитных карт',
+          steps: [
+            {
+              id: 'slide-3-cards-ru',
+              type: 'slide',
+              name: 'Построение хорошей кредитной истории',
+              content: '<h2>Построение хорошей кредитной истории с помощью кредитных карт</h2><p>Кредитные карты могут помочь построить ваш кредитный рейтинг при ответственном использовании:</p><ul><li><strong>Платите вовремя:</strong> История платежей составляет 35% вашего кредитного рейтинга</li><li><strong>Держите баланс низким:</strong> Используйте менее 30% вашего кредитного лимита</li><li><strong>Не закрывайте старые счета:</strong> Длина кредитной истории имеет значение</li><li><strong>Следите за кредитом:</strong> Регулярно проверяйте отчеты на ошибки</li></ul>',
+            },
+            {
+              id: 'question-2-cards-ru',
+              type: 'question',
+              name: 'Использование кредита',
+              slide: '<p>Какое рекомендуемое соотношение использования кредита для поддержания хорошей кредитной истории?</p>',
+              options: [
+                'Менее 30%',
+                '50-70%',
+                '80-100%',
+                'Это не имеет значения',
+              ],
+              inputRule: {
+                type: 'single',
+                correctOptions: [0],
+              },
+            },
+            {
+              id: 'slide-4-cards-ru',
+              type: 'slide',
+              name: 'Избежание долга по кредитной карте',
+              content: '<h2>Избежание долга по кредитной карте</h2><p>Предотвратите накопление долга с помощью этих стратегий:</p><ul><li><strong>Платите полностью:</strong> Погашайте весь баланс каждый месяц</li><li><strong>Установите бюджет:</strong> Тратьте только то, что можете позволить себе заплатить</li><li><strong>Отслеживайте расходы:</strong> Регулярно контролируйте покупки</li><li><strong>Только для чрезвычайных ситуаций:</strong> Резервируйте для настоящих чрезвычайных ситуаций при необходимости</li><li><strong>Понимайте комиссии:</strong> Знайте комиссии за просрочку, превышение лимита и годовую комиссию</li></ul>',
+            },
+            {
+              id: 'question-3-cards-ru',
+              type: 'question',
+              name: 'Предотвращение долга',
+              slide: '<p>Какие стратегии помогают избежать долга по кредитной карте? Выберите все подходящие варианты.</p>',
+              options: [
+                'Платить только минимальный платеж',
+                'Платить полный баланс каждый месяц',
+                'Установить бюджет расходов',
+                'Регулярно отслеживать покупки',
+              ],
+              inputRule: {
+                type: 'multiple',
+                correctOptions: [1, 2, 3],
+              },
+            },
+          ],
+        },
+      ],
       createdAt: nowIso(),
       updatedAt: nowIso(),
       deletedAt: null,
@@ -459,7 +1110,92 @@ const ruSamples: SampleData = {
       author: 'Банковская Академия',
       fullName: 'Управление кредитным риском',
       description: 'Основы оценки кредитного риска, анализа и стратегий снижения рисков.',
-      structure: [],
+      structure: [
+        {
+          id: 'section-1-risk-ru',
+          name: 'Введение в кредитный риск',
+          steps: [
+            {
+              id: 'slide-1-risk-ru',
+              type: 'slide',
+              name: 'Что такое кредитный риск?',
+              content: '<h2>Что такое кредитный риск?</h2><p>Кредитный риск — это возможность потерь в результате неспособности заемщика погасить кредит или выполнить договорные обязательства. Это один из наиболее значительных рисков, с которыми сталкиваются банки.</p><p><strong>Типы кредитного риска:</strong></p><ul><li><strong>Риск дефолта:</strong> Заемщик не выполняет требуемые платежи</li><li><strong>Риск концентрации:</strong> Слишком большая подверженность одному заемщику или сектору</li><li><strong>Страновой риск:</strong> Риск от кредитования иностранных организаций</li><li><strong>Расчетный риск:</strong> Риск во время расчетов по транзакциям</li></ul>',
+            },
+            {
+              id: 'question-1-risk-ru',
+              type: 'question',
+              name: 'Типы кредитного риска',
+              slide: '<p>Какой тип кредитного риска возникает, когда банк имеет слишком большую подверженность одному заемщику?</p>',
+              options: [
+                'Риск дефолта',
+                'Риск концентрации',
+                'Страновой риск',
+                'Расчетный риск',
+              ],
+              inputRule: {
+                type: 'single',
+                correctOptions: [1],
+              },
+            },
+            {
+              id: 'slide-2-risk-ru',
+              type: 'slide',
+              name: 'Оценка кредитного риска',
+              content: '<h2>Оценка кредитного риска</h2><p>Банки используют различные методы для оценки кредитного риска:</p><ul><li><strong>Кредитное скоринг:</strong> Статистические модели для прогнозирования вероятности дефолта</li><li><strong>Финансовый анализ:</strong> Обзор финансовой отчетности и коэффициентов</li><li><strong>Оценка залога:</strong> Оценка заложенных активов</li><li><strong>Кредитная история:</strong> Анализ прошлого поведения по погашению</li><li><strong>Отраслевой анализ:</strong> Понимание отраслевых рисков</li></ul>',
+            },
+          ],
+        },
+        {
+          id: 'section-2-risk-ru',
+          name: 'Стратегии снижения риска',
+          steps: [
+            {
+              id: 'slide-3-risk-ru',
+              type: 'slide',
+              name: 'Диверсификация',
+              content: '<h2>Диверсификация как снижение риска</h2><p>Диверсификация распределяет риск между различными заемщиками, секторами и географическими регионами:</p><ul><li><strong>Диверсификация портфеля:</strong> Распределение кредитов по различным отраслям</li><li><strong>Географическая диверсификация:</strong> Избегание концентрации в одном регионе</li><li><strong>Диверсификация заемщиков:</strong> Ограничение подверженности отдельным заемщикам</li><li><strong>Диверсификация продуктов:</strong> Смесь обеспеченных и необеспеченных кредитов</li></ul>',
+            },
+            {
+              id: 'question-2-risk-ru',
+              type: 'question',
+              name: 'Диверсификация',
+              slide: '<p>Как диверсификация помогает снизить кредитный риск?</p>',
+              options: [
+                'Концентрируя кредиты в одном прибыльном секторе',
+                'Распределяя риск между различными заемщиками и секторами',
+                'Кредитуя только высокорисковых заемщиков',
+                'Избегая всех типов кредитов',
+              ],
+              inputRule: {
+                type: 'single',
+                correctOptions: [1],
+              },
+            },
+            {
+              id: 'slide-4-risk-ru',
+              type: 'slide',
+              name: 'Мониторинг кредитного риска',
+              content: '<h2>Мониторинг кредитного риска</h2><p>Постоянный мониторинг необходим для эффективного управления рисками:</p><ul><li><strong>Регулярные обзоры:</strong> Периодическая оценка финансового здоровья заемщика</li><li><strong>Системы раннего предупреждения:</strong> Индикаторы потенциального дефолта</li><li><strong>Стресс-тестирование:</strong> Сценарный анализ в неблагоприятных условиях</li><li><strong>Анализ портфеля:</strong> Совокупная оценка риска</li><li><strong>Соответствие нормативным требованиям:</strong> Соблюдение требований к капиталу</li></ul>',
+            },
+            {
+              id: 'question-3-risk-ru',
+              type: 'question',
+              name: 'Методы мониторинга',
+              slide: '<p>Какие методы используются для мониторинга кредитного риска? Выберите все подходящие варианты.</p>',
+              options: [
+                'Регулярные обзоры заемщиков',
+                'Системы раннего предупреждения',
+                'Стресс-тестирование',
+                'Игнорирование изменений портфеля',
+              ],
+              inputRule: {
+                type: 'multiple',
+                correctOptions: [0, 1, 2],
+              },
+            },
+          ],
+        },
+      ],
       createdAt: nowIso(),
       updatedAt: nowIso(),
       deletedAt: null,
