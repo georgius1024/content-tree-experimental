@@ -1,0 +1,112 @@
+/**
+ * Rich text styles for RichTextEditor and RichTextView components
+ * Uses Tailwind @apply directives with Tailwind utility classes
+ * This file defines all typography styles for rich text content
+ */
+
+@import "tailwindcss" reference;
+
+@layer components {
+  /* Base container */
+  .rich-text-content,
+  .rich-text-content.ProseMirror,
+  .ProseMirror.rich-text-content {
+    @apply max-w-none;
+  }
+
+  /* Headings */
+  .rich-text-content h1,
+  .ProseMirror.rich-text-content h1 {
+    @apply text-3xl font-bold my-4;
+  }
+
+  /* Headings - classes defined in typography.scss: $rt-h2-classes */
+  .rich-text-content h2,
+  .ProseMirror.rich-text-content h2 {
+    @apply text-2xl font-semibold my-3;
+  }
+
+  /* Headings - classes defined in typography.scss: $rt-h3-classes */
+  .rich-text-content h3,
+  .ProseMirror.rich-text-content h3 {
+    @apply text-xl font-semibold my-3;
+  }
+
+  /* Paragraphs */
+  .rich-text-content p,
+  .ProseMirror.rich-text-content p {
+    @apply my-2;
+  }
+
+  /* Lists */
+  .rich-text-content ul,
+  .ProseMirror.rich-text-content ul {
+    @apply pl-6 my-2;
+  }
+
+  /* Ordered lists */
+  .rich-text-content ol,
+  .ProseMirror.rich-text-content ol {
+    @apply pl-6 my-2;
+  }
+
+  /* List items */
+  .rich-text-content li,
+  .ProseMirror.rich-text-content li {
+    @apply my-1;
+  }
+
+  /* Blockquote */
+  .rich-text-content blockquote,
+  .ProseMirror.rich-text-content blockquote {
+    @apply border-l-4 border-gray-300 pl-4 my-2 italic text-gray-500;
+  }
+
+  /* Code */
+  .rich-text-content code,
+  .ProseMirror.rich-text-content code {
+    @apply bg-gray-100 px-1 py-0 rounded text-sm font-mono;
+  }
+
+  /* Code block */
+  .rich-text-content pre,
+  .ProseMirror.rich-text-content pre {
+    @apply bg-gray-100 p-3 rounded my-2 overflow-x-auto;
+  }
+
+  .rich-text-content pre code,
+  .ProseMirror.rich-text-content pre code {
+    @apply bg-transparent p-0;
+  }
+
+  /* Links */
+  .rich-text-content a,
+  .ProseMirror.rich-text-content a {
+    @apply text-blue-600 underline;
+  }
+
+  /* Text formatting - bold */
+  .rich-text-content strong,
+  .ProseMirror.rich-text-content strong {
+    @apply font-bold;
+  }
+
+  /* Text formatting - italic */
+  .rich-text-content em,
+  .ProseMirror.rich-text-content em {
+    @apply italic;
+  }
+
+  /* Text formatting - underline */
+  .rich-text-content u,
+  .ProseMirror.rich-text-content u {
+    @apply underline;
+  }
+
+  /* Text formatting - strikethrough */
+  .rich-text-content s,
+  .ProseMirror.rich-text-content s {
+    @apply line-through;
+  }
+}
+

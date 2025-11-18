@@ -179,7 +179,7 @@
     </div>
 
     <!-- Editor content -->
-    <EditorContent :editor="editor" class="prose prose-sm max-w-none" />
+    <EditorContent :editor="editor" class="rich-text-content" />
   </div>
 </template>
 
@@ -241,7 +241,7 @@ const editor = useEditor({
   editorProps: {
     attributes: {
       class:
-        'prose prose-sm max-w-none min-h-[150px] px-3 py-2 border-0 focus:outline-none focus:ring-0',
+        'rich-text-content min-h-[150px] px-3 py-2 border-0 focus:outline-none focus:ring-0',
       'data-placeholder': props.placeholder || '',
     },
   },
@@ -304,57 +304,6 @@ onBeforeUnmount(() => {
   height: 0;
 }
 
-.rich-text-editor :deep(.ProseMirror ul),
-.rich-text-editor :deep(.ProseMirror ol) {
-  padding-left: 1.5rem;
-  margin: 0.5rem 0;
-}
-
-.rich-text-editor :deep(.ProseMirror h1) {
-  font-size: 1.875rem;
-  font-weight: 700;
-  margin: 1rem 0;
-}
-
-.rich-text-editor :deep(.ProseMirror h2) {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin: 0.875rem 0;
-}
-
-.rich-text-editor :deep(.ProseMirror h3) {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin: 0.75rem 0;
-}
-
-.rich-text-editor :deep(.ProseMirror blockquote) {
-  border-left: 4px solid rgb(209 213 219);
-  padding-left: 1rem;
-  margin: 0.5rem 0;
-  font-style: italic;
-  color: rgb(107 114 128);
-}
-
-.rich-text-editor :deep(.ProseMirror code) {
-  background-color: rgb(243 244 246);
-  padding: 0.125rem 0.25rem;
-  border-radius: 0.25rem;
-  font-size: 0.875rem;
-  font-family: monospace;
-}
-
-.rich-text-editor :deep(.ProseMirror pre) {
-  background-color: rgb(243 244 246);
-  padding: 0.75rem;
-  border-radius: 0.375rem;
-  margin: 0.5rem 0;
-  overflow-x: auto;
-}
-
-.rich-text-editor :deep(.ProseMirror pre code) {
-  background-color: transparent;
-  padding: 0;
-}
+/* Content styles are now in shared rich-text.css */
 </style>
 

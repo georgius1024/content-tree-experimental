@@ -1,6 +1,7 @@
 import type { Preview } from '@storybook/vue3-vite'
 import { setup } from '@storybook/vue3'
 import '../src/style.css'
+import '../src/styles/rich-text.css'
 import i18n from '../src/i18n'
 import { resetAllTrees } from '../src/services/tree'
 import { resetAllCourses } from '../src/services/courses'

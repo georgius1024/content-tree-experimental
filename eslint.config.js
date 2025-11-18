@@ -6,11 +6,14 @@ import tseslint from 'typescript-eslint';
 import vuePlugin from 'eslint-plugin-vue';
 import eslintPluginImport from 'eslint-plugin-import';
 import eslintConfigPrettier from 'eslint-config-prettier';
+import tailwindcss from 'eslint-plugin-tailwindcss';
 
 export default tseslint.config({
   ignores: [
     '**/*.cjs',
     '**/*.mjs',
+    '**/*.scss',
+    '**/*.css',
     '**/tailwind.config.*',
     '**/postcss.config.*',
     '**/vite.config.*',
@@ -24,7 +27,8 @@ export default tseslint.config({
 vuePlugin.configs['flat/recommended'], {
   files: ['**/*.{ts,vue}'],
   plugins: {
-    import: eslintPluginImport
+    import: eslintPluginImport,
+    tailwindcss: tailwindcss
   },
   languageOptions: {
     parserOptions: {
@@ -33,6 +37,9 @@ vuePlugin.configs['flat/recommended'], {
     }
   },
   rules: {
+    // Tailwind CSS rules
+    ...tailwindcss.configs.recommended.rules,
+    
     // Import order (generic, adapted from a-fill)
     'import/order': [
       'error',
