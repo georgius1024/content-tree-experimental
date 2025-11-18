@@ -103,5 +103,28 @@ export default {
     addQuestion: 'Добавить вопрос',
     unnamedStep: 'Безымянный шаг',
   },
+  sectionAccordion: {
+    oneStep: '1 шаг',
+    multipleSteps: '{count} шагов',
+  },
+  courseStructureView: {
+    noSections: 'Пока нет разделов. Добавьте первый раздел.',
+    addSection: 'Добавить раздел',
+  },
+  sectionEditorModal: {
+    createTitle: 'Создать раздел',
+    editTitle: 'Редактировать раздел',
+    nameLabel: 'Название раздела',
+    namePlaceholder: 'Введите название раздела',
+    validation: {
+      nameRequired: 'Название раздела обязательно',
+    },
+  },
+  stepEditorModal: {
+    createTitle: 'Создать',
+    editTitle: 'Редактировать',
+    slide: 'Слайд',
+    question: 'Вопрос',
+  },
 }
 

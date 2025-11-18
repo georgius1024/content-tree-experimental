@@ -103,5 +103,28 @@ export default {
     addQuestion: 'Add Question',
     unnamedStep: 'Unnamed step',
   },
+  sectionAccordion: {
+    oneStep: '1 step',
+    multipleSteps: '{count} steps',
+  },
+  courseStructureView: {
+    noSections: 'No sections yet. Add your first section.',
+    addSection: 'Add Section',
+  },
+  sectionEditorModal: {
+    createTitle: 'Create Section',
+    editTitle: 'Edit Section',
+    nameLabel: 'Section name',
+    namePlaceholder: 'Enter section name',
+    validation: {
+      nameRequired: 'Section name is required',
+    },
+  },
+  stepEditorModal: {
+    createTitle: 'Create',
+    editTitle: 'Edit',
+    slide: 'Slide',
+    question: 'Question',
+  },
 }
 

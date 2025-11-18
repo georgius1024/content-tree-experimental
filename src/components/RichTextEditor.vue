@@ -242,7 +242,7 @@ const editor = useEditor({
   editable: !props.readonly,
   onUpdate: ({ editor }) => {
     if (!props.readonly) {
-      emit('update:modelValue', editor.getHTML())
+    emit('update:modelValue', editor.getHTML())
     }
   },
   editorProps: {

@@ -2,7 +2,12 @@
   <div>
     <button
       type="button"
-      class="flex w-full items-center justify-between gap-2 py-2"
+      :class="[
+        'flex w-full items-center justify-between gap-2 py-2',
+        caretPosition === 'left' ? 'pl-2' : '',
+        props.headerHover ? 'hover:bg-gray-50' : '',
+        props.headerGroup ? 'group' : ''
+      ]"
       :aria-expanded="isOpen"
       @click="toggle"
     >
@@ -66,6 +71,8 @@
     transition?: TransitionFunction
     caretPosition?: 'left' | 'right'
     indicatorType?: 'chevron' | 'folder'
+    headerHover?: boolean
+    headerGroup?: boolean
   }
   
   const props = withDefaults(defineProps<Props>(), {
@@ -74,7 +81,9 @@
     duration: 200,
     transition: 'linear',
     caretPosition: 'right',
-    indicatorType: 'chevron'
+    indicatorType: 'chevron',
+    headerHover: false,
+    headerGroup: false
   })
   
   const emit = defineEmits<{
