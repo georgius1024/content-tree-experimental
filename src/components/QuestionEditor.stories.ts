@@ -31,6 +31,7 @@ const createQuestion = (
 })
 
 export const Default: Story = {
+  args: {} as any,
   render: () => ({
     components: { QuestionEditor },
     setup() {
@@ -59,6 +60,7 @@ export const Default: Story = {
 }
 
 export const WithContent: Story = {
+  args: {} as any,
   render: () => ({
     components: { QuestionEditor },
     setup() {
@@ -84,6 +86,7 @@ export const WithContent: Story = {
 }
 
 export const MultipleChoice: Story = {
+  args: {} as any,
   render: () => ({
     components: { QuestionEditor },
     setup() {
@@ -109,6 +112,7 @@ export const MultipleChoice: Story = {
 }
 
 export const WithRichContent: Story = {
+  args: {} as any,
   render: () => ({
     components: { QuestionEditor },
     setup() {
