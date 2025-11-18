@@ -41,13 +41,13 @@
   /* Lists */
   .rich-text-content ul,
   .ProseMirror.rich-text-content ul {
-    @apply pl-6 my-2;
+    @apply pl-6 my-2 list-disc;
   }
 
   /* Ordered lists */
   .rich-text-content ol,
   .ProseMirror.rich-text-content ol {
-    @apply pl-6 my-2;
+    @apply pl-6 my-2 list-decimal;
   }
 
   /* List items */
