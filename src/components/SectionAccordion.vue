@@ -18,8 +18,8 @@
             <span class="font-medium text-gray-900 truncate">{{ section.name }}</span>
 
             <!-- Step count badge -->
-            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full shrink-0">
-              {{ stepCountText }}
+            <span class="text-xs font-semibold text-white bg-blue-600 px-2 py-0.5 rounded-full shrink-0">
+              {{ section.steps.length }}
             </span>
           </div>
 
@@ -97,14 +97,6 @@ const emit = defineEmits<{
 }>()
 
 const isOpen = ref(false)
-
-const stepCountText = computed(() => {
-  const count = props.section.steps.length
-  if (count === 1) {
-    return t('sectionAccordion.oneStep')
-  }
-  return t('sectionAccordion.multipleSteps', { count })
-})
 
 const handleEdit = () => {
   emit('edit-name')
