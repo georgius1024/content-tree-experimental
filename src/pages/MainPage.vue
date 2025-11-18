@@ -42,51 +42,17 @@
         </TreeBreadcrumb>
     </div>
     <div class="p-2">
-        <TreeList
+        <ContentList
           :items="children"
           :parent-id="currentParentId"
           :forest-id="forestId"
           class="pl-2 md:pl-4"
           @drop-node="onDropNode"
-          @drag-start="onDragStart"
-          @drag-end="onDragEnd"
+          @click="onItemClick"
+          @edit="onEditItem"
+          @delete="onDeleteItem"
           @drop-into="onDropInto"
-        >
-          <template #item="{ item }">
-            <button
-              type="button"
-              class="px-2 py-1 text-sm text-left w-full rounded transition hover:bg-gray-50 group"
-              :class="item.type !== 'leaf' ? 'cursor-pointer' : ''"
-              @click="item.type !== 'leaf' && goTo(item.path)"
-            >
-              <div class="flex items-center justify-between">
-                <span class="inline-flex items-center gap-2">
-                  <Folder v-if="item.type !== 'leaf'" :size="16" class="text-gray-500" aria-hidden="true" />
-                  <BookOpenCheck v-else :size="16" class="text-gray-500" aria-hidden="true" />
-                  <span :class="item.type !== 'leaf' ? 'group-hover:underline' : ''">{{ item.name }}</span>
-                </span>
-                <span class="inline-flex items-center gap-1 opacity-0 group-hover:opacity-100 transition">
-                  <button
-                    type="button"
-                    class="rounded p-1 hover:bg-gray-100"
-                    :aria-label="t('common.edit')"
-                    @click.stop="onEditItem(item.id)"
-                  >
-                    <Pencil :size="14" class="text-gray-500" aria-hidden="true" />
-                  </button>
-                  <button
-                    type="button"
-                    class="rounded p-1 hover:bg-gray-100"
-                    :aria-label="t('common.delete')"
-                    @click.stop="onDeleteItem(item.id)"
-                  >
-                    <Trash2 :size="14" class="text-gray-500" aria-hidden="true" />
-                  </button>
-                </span>
-              </div>
-            </button>
-          </template>
-        </TreeList>
+        />
       </div>
     </div>
 </template>
@@ -96,10 +62,10 @@ import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import Toolbar from '../components/Toolbar.vue'
 import TreeBreadcrumb from '../components/TreeBreadcrumb.vue'
-import TreeList from '../components/TreeList.vue'
-import { CONTENT_FOREST, getForest, moveNode, deleteNode, resetAllTrees, sortTreeItems } from '../services/tree'
+import ContentList from '../components/ContentList.vue'
+import { CONTENT_FOREST, getForest, moveNode, resetAllTrees } from '../services/tree'
+import { contentItemsByParent, moveContentItem, deleteContentItem } from '../stores/content'
 import type { TreeItem } from '../types'
-import { Folder, BookOpenCheck, Pencil, Trash2 } from 'lucide-vue-next'
 import { softDeleteCourse, resetAllCourses } from '../services/courses'
 
 const { t, locale } = useI18n()
@@ -127,10 +93,8 @@ const currentParentId = computed<number | null>(() => {
 })
 
 const children = computed<TreeItem[]>(() => {
-  return forest.value
-    .filter((n) => n.deletedAt === null)
-    .filter((n) => (n.parentId ?? null) === (currentParentId.value ?? null))
-    .sort(sortTreeItems)
+  void refreshKey.value // Track dependency
+  return contentItemsByParent.value(currentParentId.value)
 })
 
 const goTo = (nextPath: string) => {
@@ -142,16 +106,8 @@ const goTo = (nextPath: string) => {
 const onDropNode = (payload: { nodeId: number; newParentId: number | null; newPosition: number }) => {
   console.log('onDropNode', payload)
   if (currentParentId.value == null) return
-  moveNode(forestId, payload.nodeId, payload.newParentId, payload.newPosition)
+  moveContentItem(payload.nodeId, payload.newParentId, payload.newPosition)
   refreshKey.value++
-}
-
-const onDragStart = (payload: { nodeId: number }) => {
-  draggingNodeId.value = payload.nodeId
-}
-
-const onDragEnd = (_payload: { nodeId: number | null }) => {
-  draggingNodeId.value = null
 }
 
 const onBreadcrumbDrop = (payload: { newParentId: number | null; newPosition: number }) => {
@@ -170,8 +126,16 @@ const onDropInto = (payload: { nodeId: number; targetParentId: number }) => {
   refreshKey.value++
 }
 
-const onEditItem = (itemId: number) => {
-  const item = forest.value.find((n) => n.id === itemId && n.deletedAt === null)
+const onItemClick = (payload: { itemId: number }) => {
+  const item = forest.value.find((n) => n.id === payload.itemId && n.deletedAt === null)
+  if (!item) return
+  if (item.type !== 'leaf') {
+    goTo(item.path)
+  }
+}
+
+const onEditItem = (payload: { itemId: number }) => {
+  const item = forest.value.find((n) => n.id === payload.itemId && n.deletedAt === null)
   if (!item) return
   if (item.type === 'leaf') {
     router.push({ path: `/course${item.path}` })
@@ -180,7 +144,8 @@ const onEditItem = (itemId: number) => {
   router.push({ path: `/folder${item.path}` })
 }
 
-const onDeleteItem = (itemId: number) => {
+const onDeleteItem = (payload: { itemId: number }) => {
+  const itemId = payload.itemId
   const forest = getForest(forestId)
   const item = forest.find((n) => n.id === itemId && n.deletedAt === null)
   if (!item) return
@@ -201,7 +166,7 @@ const onDeleteItem = (itemId: number) => {
     softDeleteCourse(n.objectId as string)
   })
 
-  deleteNode(forestId, itemId)
+  deleteContentItem(itemId)
   refreshKey.value++
 }
 

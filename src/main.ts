@@ -6,10 +6,14 @@ import { router } from './router'
 import i18n from './i18n'
 import { resetAllTrees } from './services/tree'
 import { resetAllCourses } from './services/courses'
+import { initContentStore } from './stores/content'
 
 // Initialize services with default keys
 const initialLocale = i18n.global.locale.value as 'en' | 'ru'
 resetAllTrees(initialLocale)
 resetAllCourses(initialLocale)
+
+// Initialize content store
+initContentStore()
 
 createApp(App).use(router).use(i18n).mount('#app')

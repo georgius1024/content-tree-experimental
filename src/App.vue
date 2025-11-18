@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import Toolbar from './components/Toolbar.vue'
-import Container from './components/Container.vue'
-import LocalePicker from './components/LocalePicker.vue'
-import { BookOpen } from 'lucide-vue-next'
+import Toolbar from './components/Toolbar.vue';
+import Container from './components/Container.vue';
+import LocalePicker from './components/LocalePicker.vue';
+import { BookOpen } from 'lucide-vue-next';
 </script>
 
 <template>

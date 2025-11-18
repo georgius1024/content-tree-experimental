@@ -8,6 +8,7 @@
     :swap-threshold="0.5"
     chosen-class="opacity-60"
     ghost-class="drag-ghost"
+    :handle="props.handleClass"
     @start="onStart"
     @change="onChange"
   >
@@ -40,9 +41,12 @@ type Props = {
   items: TreeItem[];
   parentId: number | null;
   forestId: number;
+  handleClass?: string;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  handleClass: '.drag-handle'
+});
 
 const emit = defineEmits<{
   (
