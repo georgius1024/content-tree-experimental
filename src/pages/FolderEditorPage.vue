@@ -144,10 +144,16 @@ const goBack = () => {
       ? forest.value.find((n) => n.id === selectedParentId.value)?.path ?? '/'
       : '/'
     router.push({ path: parentPath })
-  } else if (node.value) {
-    router.push({ path: node.value.path })
   } else {
-    router.push({ path: '/' })
+    const currentNode = node.value
+    if (currentNode) {
+      const parentPath = currentNode.parentId
+        ? forest.value.find((n) => n.id === currentNode.parentId && n.deletedAt === null)?.path ?? '/'
+        : '/'
+      router.push({ path: parentPath })
+    } else {
+      router.push({ path: '/' })
+    }
   }
 }
 </script>
