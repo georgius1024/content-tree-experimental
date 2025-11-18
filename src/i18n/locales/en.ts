@@ -10,6 +10,7 @@ export default {
     folder: 'Folder',
     course: 'Course',
     root: 'Root',
+    drag: 'Drag to reorder',
   },
   mainPage: {
     title: 'Content',
@@ -76,6 +77,25 @@ export default {
     namePlaceholder: 'Enter slide name',
     content: 'Content',
     contentPlaceholder: 'Enter slide content',
+  },
+  questionEditor: {
+    name: 'Question name',
+    namePlaceholder: 'Enter question name',
+    questionText: 'Question text',
+    questionTextPlaceholder: 'Enter question text',
+    options: 'Answer options',
+    addOption: 'Add option',
+    optionPlaceholder: 'Enter option text',
+    inputRule: 'Answer type',
+    singleChoice: 'Single choice (1 correct answer)',
+    multipleChoice: 'Multiple choice (multiple correct answers)',
+    correctAnswers: 'Correct answers',
+    selectCorrect: 'Select correct answer(s)',
+    validation: {
+      nameRequired: 'Question name is required',
+      minOptionsRequired: 'At least 2 options are required',
+      optionRequired: 'Option text cannot be empty',
+    },
   },
 }
 

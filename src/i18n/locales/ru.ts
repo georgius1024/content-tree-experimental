@@ -10,6 +10,7 @@ export default {
     folder: 'Папка',
     course: 'Курс',
     root: 'Корень',
+    drag: 'Перетащите для изменения порядка',
   },
   mainPage: {
     title: 'Содержимое',
@@ -76,6 +77,25 @@ export default {
     namePlaceholder: 'Введите название слайда',
     content: 'Содержимое',
     contentPlaceholder: 'Введите содержимое слайда',
+  },
+  questionEditor: {
+    name: 'Название вопроса',
+    namePlaceholder: 'Введите название вопроса',
+    questionText: 'Текст вопроса',
+    questionTextPlaceholder: 'Введите текст вопроса',
+    options: 'Варианты ответов',
+    addOption: 'Добавить вариант',
+    optionPlaceholder: 'Введите текст варианта',
+    inputRule: 'Тип ответа',
+    singleChoice: 'Один правильный ответ',
+    multipleChoice: 'Несколько правильных ответов',
+    correctAnswers: 'Правильные ответы',
+    selectCorrect: 'Выберите правильный(е) ответ(ы)',
+    validation: {
+      nameRequired: 'Название вопроса обязательно',
+      minOptionsRequired: 'Требуется минимум 2 варианта ответа',
+      optionRequired: 'Текст варианта не может быть пустым',
+    },
   },
 }
 
