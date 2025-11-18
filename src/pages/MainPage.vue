@@ -63,8 +63,7 @@ import { useI18n } from 'vue-i18n'
 import Toolbar from '../components/Toolbar.vue'
 import TreeBreadcrumb from '../components/TreeBreadcrumb.vue'
 import ContentList from '../components/ContentList.vue'
-import { CONTENT_FOREST, getForest, moveNode, resetAllTrees } from '../services/tree'
-import { contentItemsByParent, moveContentItem, deleteContentItem } from '../stores/content'
+import { CONTENT_FOREST, getForest, moveNode, deleteNode, resetAllTrees, sortTreeItems } from '../services/tree'
 import type { TreeItem } from '../types'
 import { softDeleteCourse, resetAllCourses } from '../services/courses'
 
@@ -93,8 +92,11 @@ const currentParentId = computed<number | null>(() => {
 })
 
 const children = computed<TreeItem[]>(() => {
-  void refreshKey.value // Track dependency
-  return contentItemsByParent.value(currentParentId.value)
+  void refreshKey.value
+  return forest.value
+    .filter((n) => n.deletedAt === null)
+    .filter((n) => (n.parentId ?? null) === (currentParentId.value ?? null))
+    .sort(sortTreeItems)
 })
 
 const goTo = (nextPath: string) => {
@@ -106,7 +108,7 @@ const goTo = (nextPath: string) => {
 const onDropNode = (payload: { nodeId: number; newParentId: number | null; newPosition: number }) => {
   console.log('onDropNode', payload)
   if (currentParentId.value == null) return
-  moveContentItem(payload.nodeId, payload.newParentId, payload.newPosition)
+  moveNode(forestId, payload.nodeId, payload.newParentId, payload.newPosition)
   refreshKey.value++
 }
 
@@ -166,7 +168,7 @@ const onDeleteItem = (payload: { itemId: number }) => {
     softDeleteCourse(n.objectId as string)
   })
 
-  deleteContentItem(itemId)
+  deleteNode(forestId, itemId)
   refreshKey.value++
 }
 

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import FolderPicker from './FolderPicker.vue'
-import { CONTENT_FOREST } from '../../services/samples'
+import { CONTENT_FOREST } from '../../services/tree'
 import { ref } from 'vue'
 
 const meta = {
