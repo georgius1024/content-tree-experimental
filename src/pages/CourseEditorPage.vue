@@ -215,7 +215,9 @@ onMounted(async () => {
   } else {
     // Edit mode: load existing node
     const path = (route.params.path as string) || ''
-    const normalized = path.endsWith('/') ? path : `${path}/`
+    // Remove /edit suffix if present
+    const pathWithoutEdit = path.replace(/\/edit$/, '')
+    const normalized = pathWithoutEdit.endsWith('/') ? pathWithoutEdit : `${pathWithoutEdit}/`
     nodeId.value = getNodeIdFromPath(normalized)
     if (node.value && node.value.type === 'leaf') {
       name.value = node.value.name

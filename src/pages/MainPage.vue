@@ -174,14 +174,16 @@ const onItemClick = (payload: { itemId: number }) => {
   if (!item) return
   if (item.type !== 'leaf') {
     goTo(item.path)
+    return
   }
+  router.push({ path: `/course${item.path}` })
 }
 
 const onEditItem = (payload: { itemId: number }) => {
   const item = forest.value.find((n) => n.id === payload.itemId && n.deletedAt === null)
   if (!item) return
   if (item.type === 'leaf') {
-    router.push({ path: `/course${item.path}` })
+    router.push({ path: `/course${item.path}edit` })
     return
   }
   router.push({ path: `/folder${item.path}` })
