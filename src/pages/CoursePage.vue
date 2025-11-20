@@ -21,6 +21,20 @@
     <div class="p-4 mx-auto max-w-5xl">
       <h1 class="text-lg font-semibold mb-3">{{ courseTitle }}</h1>
       <RichTextView v-if="description" :content="description" />
+      <div v-if="sections.length > 0" class="mt-4 space-y-2">
+        <ul class="space-y-1">
+          <li
+            v-for="section in sections"
+            :key="section.id"
+            class="flex items-center justify-between px-0 py-2 rounded-md"
+          >
+            <span class="text-sm text-gray-900">{{ section.name }}</span>
+            <span class="text-xs font-semibold text-white bg-blue-600 px-2 py-0.5 rounded-full shrink-0">
+              {{ section.steps.length }}
+            </span>
+          </li>
+        </ul>
+      </div>
       <div class="flex gap-2 justify-end mt-4">
         <button
           type="button"
@@ -45,7 +59,7 @@
 import { computed, onMounted, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { CONTENT_FOREST, getForest } from '../services/tree'
-import type { TreeItem } from '../types'
+import type { TreeItem, Section } from '../types'
 import { getCourse } from '../services/courses'
 import RichTextView from '../components/RichTextView.vue'
 import TreeBreadcrumb from '../components/TreeBreadcrumb.vue'
@@ -69,6 +83,7 @@ const breadcrumbLength = computed(() =>
 const courseTitle = ref('')
 const description = ref('')
 const nodePath = ref<string>('')
+const sections = ref<Section[]>([])
 
 const getNodeIdFromPath = (path: string): number | null => {
   const ids = path.split('/').filter(Boolean).map((s) => Number(s)).filter(Number.isFinite)
@@ -110,6 +125,7 @@ onMounted(async () => {
     if (c && c.deletedAt === null) {
       courseTitle.value = c.fullName || node.name
       description.value = c.description || ''
+      sections.value = c.structure || []
     }
   }
 })
