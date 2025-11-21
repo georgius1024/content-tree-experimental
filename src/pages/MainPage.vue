@@ -50,6 +50,25 @@
           @delete="onDeleteItem"
           @drop-into="onDropInto"
         />
+        <div v-if="!isLoading" class="px-2 pt-2 flex gap-2 border-t border-gray-100">
+          <button
+            type="button"
+            class="px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+            @click="onAddFolder"
+            :title="t('mainPage.addSubFolderTitle')"
+          >
+            {{ t('mainPage.addFolder') }}
+          </button>
+          <button
+            type="button"
+            class="px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            :disabled="currentParentId == null"
+            @click="onAddObject"
+            :title="currentParentId == null ? t('mainPage.selectFolderFirst') : t('mainPage.addCourseTitle')"
+          >
+            {{ t('mainPage.addCourse') }}
+          </button>
+        </div>
       </div>
     </div>
 </template>
