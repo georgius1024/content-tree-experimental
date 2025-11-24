@@ -55,7 +55,7 @@ import { useI18n } from 'vue-i18n';
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue';
 import { ChevronDown, Check } from 'lucide-vue-next';
 
-const { locale, t } = useI18n();
+const { locale } = useI18n();
 
 const locales = [
   { code: 'en', label: 'English', flag: '🇬🇧' },

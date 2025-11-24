@@ -13,6 +13,7 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
+  args: {} as any,
   render: () => ({
     components: { FolderPicker },
     setup() {
@@ -35,6 +36,7 @@ export const Default: Story = {
 }
 
 export const WithCurrentFolder: Story = {
+  args: {} as any,
   render: () => ({
     components: { FolderPicker },
     setup() {
@@ -57,6 +59,7 @@ export const WithCurrentFolder: Story = {
 }
 
 export const AllowRoot: Story = {
+  args: {} as any,
   render: () => ({
     components: { FolderPicker },
     setup() {

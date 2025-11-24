@@ -20,6 +20,7 @@ const createSlide = (name: string, content: string): Slide => ({
 })
 
 export const Default: Story = {
+  args: {} as any,
   render: () => ({
     components: { SlideEditor },
     setup() {
@@ -35,6 +36,7 @@ export const Default: Story = {
 }
 
 export const WithContent: Story = {
+  args: {} as any,
   render: () => ({
     components: { SlideEditor },
     setup() {
@@ -53,6 +55,7 @@ export const WithContent: Story = {
 }
 
 export const WithRichContent: Story = {
+  args: {} as any,
   render: () => ({
     components: { SlideEditor },
     setup() {

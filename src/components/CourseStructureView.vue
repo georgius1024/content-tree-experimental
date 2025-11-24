@@ -53,7 +53,7 @@ import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { VueDraggableNext as Draggable } from 'vue-draggable-next'
 import { Plus } from 'lucide-vue-next'
-import type { Section, Step } from '../types'
+import type { Section } from '../types'
 import SectionAccordion from './SectionAccordion.vue'
 
 const { t } = useI18n()

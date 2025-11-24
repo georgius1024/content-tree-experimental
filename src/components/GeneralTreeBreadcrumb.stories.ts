@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import GeneralTreeBreadcrumb from './GeneralTreeBreadcrumb.vue'
-import type { TreeItem } from '../../types'
+import type { TreeItem } from '../types'
 
 const meta = {
   title: 'UI/GeneralTreeBreadcrumb',
@@ -33,6 +33,7 @@ const createTreeItem = (
 })
 
 export const RootOnly: Story = {
+  args: {} as any,
   render: () => {
     const items: TreeItem[] = []
     
@@ -66,6 +67,7 @@ export const RootOnly: Story = {
 }
 
 export const SingleLevel: Story = {
+  args: {} as any,
   render: () => {
     const items: TreeItem[] = [
       createTreeItem(1, null, 0, 'Documents', 'branch'),
@@ -104,6 +106,7 @@ export const SingleLevel: Story = {
 }
 
 export const MultipleLevels: Story = {
+  args: {} as any,
   render: () => {
     const items: TreeItem[] = [
       createTreeItem(1, null, 0, 'Root', 'tree'),
@@ -150,6 +153,7 @@ export const MultipleLevels: Story = {
 }
 
 export const CustomItemSlot: Story = {
+  args: {} as any,
   render: () => {
     const items: TreeItem[] = [
       createTreeItem(1, null, 0, 'Documents', 'branch'),

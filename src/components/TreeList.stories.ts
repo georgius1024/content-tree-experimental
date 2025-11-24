@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import TreeList from './TreeList.vue'
-import type { TreeItem } from '../../types'
+import type { TreeItem } from '../types'
 
 const meta = {
   title: 'UI/TreeList',
@@ -35,6 +35,7 @@ const createTreeItem = (
 })
 
 export const Default: Story = {
+  args: {} as any,
   render: () => {
     const forestId = 1
     const items: TreeItem[] = [
@@ -62,6 +63,7 @@ export const Default: Story = {
 }
 
 export const WithNestedItems: Story = {
+  args: {} as any,
   render: () => {
     const forestId = 1
     const items: TreeItem[] = [
@@ -90,6 +92,7 @@ export const WithNestedItems: Story = {
 }
 
 export const CustomItemSlot: Story = {
+  args: {} as any,
   render: () => {
     const forestId = 1
     const items: TreeItem[] = [

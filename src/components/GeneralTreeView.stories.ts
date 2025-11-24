@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3'
 import GeneralTreeView from './GeneralTreeView.vue'
 import Accordion from './Accordion.vue'
 import TreeList from './TreeList.vue'
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import type { TreeItem } from '../types'
 import { Folder, BookOpenCheck } from 'lucide-vue-next'
 import { getForest, putForest, moveNode, sortTreeItems } from '../services/tree'
@@ -82,13 +82,12 @@ const createDraggableTreeView = (
       // Initialize forest with initial items
       putForest(CONTENT_FOREST, initialItems)
       
-      // Reactive reference to trigger updates
-      const refreshKey = ref(0)
+      // Reactive reference to forest items
+      const forest = ref<TreeItem[]>(initialItems)
       
-      // Get forest items reactively
-      const forest = computed<TreeItem[]>(() => {
-        void refreshKey.value // Trigger reactivity
-        return getForest(CONTENT_FOREST)
+      // Load forest items on mount
+      onMounted(async () => {
+        forest.value = await getForest(CONTENT_FOREST)
       })
       
       const getChildren = (parentId: number | null) => {
@@ -104,30 +103,30 @@ const createDraggableTreeView = (
         )
       }
       
-      const handleDropNode = (payload: {
+      const handleDropNode = async (payload: {
         nodeId: number
         newParentId: number | null
         newPosition: number
       }) => {
         try {
-          moveNode(CONTENT_FOREST, payload.nodeId, payload.newParentId, payload.newPosition)
-          refreshKey.value++
+          await moveNode(CONTENT_FOREST, payload.nodeId, payload.newParentId, payload.newPosition)
+          forest.value = await getForest(CONTENT_FOREST)
         } catch (error) {
           console.error('Move failed:', error)
         }
       }
       
-      const handleDropInto = (payload: {
+      const handleDropInto = async (payload: {
         nodeId: number
         targetParentId: number
       }) => {
         try {
-          const forestItems = getForest(CONTENT_FOREST)
+          const forestItems = await getForest(CONTENT_FOREST)
           const childrenCount = forestItems
             .filter((item) => item.deletedAt === null)
             .filter((item) => (item.parentId ?? null) === payload.targetParentId).length
-          moveNode(CONTENT_FOREST, payload.nodeId, payload.targetParentId, childrenCount)
-          refreshKey.value++
+          await moveNode(CONTENT_FOREST, payload.nodeId, payload.targetParentId, childrenCount)
+          forest.value = await getForest(CONTENT_FOREST)
         } catch (error) {
           console.error('Move into failed:', error)
         }

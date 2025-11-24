@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import GeneralFolderPicker from './GeneralFolderPicker.vue'
 import { ref } from 'vue'
-import type { TreeItem } from '../../types'
+import type { TreeItem } from '../types'
 
 const meta = {
   title: 'UI/GeneralFolderPicker',
@@ -34,6 +34,7 @@ const createTreeItem = (
 })
 
 export const Default: Story = {
+  args: {} as any,
   render: () => {
     const folders: TreeItem[] = [
       createTreeItem(1, null, 0, 'Root', 'tree'),
@@ -89,6 +90,7 @@ export const Default: Story = {
 }
 
 export const WithSelectedFolder: Story = {
+  args: {} as any,
   render: () => {
     const folders: TreeItem[] = [
       createTreeItem(1, null, 0, 'Root', 'tree'),
@@ -128,6 +130,7 @@ export const WithSelectedFolder: Story = {
 }
 
 export const WithoutRoot: Story = {
+  args: {} as any,
   render: () => {
     const folders: TreeItem[] = [
       createTreeItem(2, 1, 0, 'Documents', 'branch'),
@@ -163,6 +166,7 @@ export const WithoutRoot: Story = {
 }
 
 export const CustomTexts: Story = {
+  args: {} as any,
   render: () => {
     const folders: TreeItem[] = [
       createTreeItem(1, null, 0, 'Root', 'tree'),
@@ -208,6 +212,7 @@ export const CustomTexts: Story = {
 }
 
 export const EmptyFolders: Story = {
+  args: {} as any,
   render: () => {
     const folders: TreeItem[] = []
     const selectedFolderId = ref<number | null>(null)

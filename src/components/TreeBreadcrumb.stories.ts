@@ -12,6 +12,7 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Root: Story = {
+  args: {} as any,
   render: () => ({
     components: { TreeBreadcrumb },
     setup() {
@@ -26,6 +27,7 @@ export const Root: Story = {
 }
 
 export const SingleLevel: Story = {
+  args: {} as any,
   render: () => ({
     components: { TreeBreadcrumb },
     setup() {
@@ -40,6 +42,7 @@ export const SingleLevel: Story = {
 }
 
 export const MultipleLevels: Story = {
+  args: {} as any,
   render: () => ({
     components: { TreeBreadcrumb },
     setup() {
