@@ -1,0 +1,1 @@
+import{d as n,y as t,z as c}from"./vue-vendor-DSdsonjH.js";const o=["innerHTML"],i=n({__name:"RichTextView",props:{content:{}},setup(e){return(r,s)=>(c(),t("article",{class:"rich-text-content",innerHTML:e.content},null,8,o))}});export{i as _};
