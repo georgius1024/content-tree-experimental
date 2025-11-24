@@ -270,7 +270,86 @@ const enSamples: SampleData = {
       author: 'Banking Academy',
       fullName: 'Savings Accounts Guide',
       description: 'Comprehensive guide to savings accounts, interest rates, and savings strategies.',
-      structure: [],
+      structure: [
+        {
+          id: 'section-1-savings-en',
+          name: 'Introduction to Savings Accounts',
+          steps: [
+            {
+              id: 'slide-1-savings-en',
+              type: 'slide',
+              name: 'What is a Savings Account?',
+              content: '<h2>What is a Savings Account?</h2><p>A savings account is a deposit account held at a bank that earns interest on the money you deposit. Unlike checking accounts, savings accounts are designed for accumulating funds over time rather than frequent transactions.</p><p><strong>Key Features:</strong></p><ul><li>Earns interest on your balance</li><li>Limited number of withdrawals per month (typically 6)</li><li>Higher interest rates than checking accounts</li><li>Safe place to store money for future goals</li></ul>',
+            },
+            {
+              id: 'question-1-savings-en',
+              type: 'question',
+              name: 'Savings Account Basics',
+              slide: '<p>What is the primary purpose of a savings account?</p>',
+              options: [
+                'Frequent daily transactions',
+                'Accumulating funds and earning interest over time',
+                'Writing checks for payments',
+                'Investing in stocks',
+              ],
+              inputRule: {
+                type: 'single',
+                correctOptions: [1],
+              },
+            },
+            {
+              id: 'slide-2-savings-en',
+              type: 'slide',
+              name: 'Types of Savings Accounts',
+              content: '<h2>Types of Savings Accounts</h2><p>Banks offer various savings account options:</p><ul><li><strong>Traditional Savings:</strong> Basic account with standard interest rates</li><li><strong>High-Yield Savings:</strong> Higher interest rates, often online-only</li><li><strong>Money Market Accounts:</strong> Higher rates with check-writing privileges</li><li><strong>Certificate of Deposit (CD):</strong> Fixed term with guaranteed interest rate</li></ul>',
+            },
+            {
+              id: 'question-2-savings-en',
+              type: 'question',
+              name: 'Account Types',
+              slide: '<p>Which savings account type typically offers the highest interest rates?</p>',
+              options: [
+                'Traditional Savings',
+                'High-Yield Savings',
+                'Money Market Accounts',
+                'All offer the same rates',
+              ],
+              inputRule: {
+                type: 'single',
+                correctOptions: [1],
+              },
+            },
+          ],
+        },
+        {
+          id: 'section-2-savings-en',
+          name: 'Interest Rates and Growth',
+          steps: [
+            {
+              id: 'slide-3-savings-en',
+              type: 'slide',
+              name: 'Understanding Interest Rates',
+              content: '<h2>Understanding Interest Rates</h2><p>Interest rates determine how much your savings will grow:</p><ul><li><strong>Annual Percentage Yield (APY):</strong> The actual rate you earn, including compound interest</li><li><strong>Compound Interest:</strong> Interest earned on both principal and previously earned interest</li><li><strong>Variable vs Fixed:</strong> Rates can change or remain fixed for a term</li><li><strong>Minimum Balance:</strong> Some accounts require minimum balance to earn interest</li></ul>',
+            },
+            {
+              id: 'question-3-savings-en',
+              type: 'question',
+              name: 'Interest Concepts',
+              slide: '<p>What does APY (Annual Percentage Yield) represent? Select all that apply.</p>',
+              options: [
+                'The actual rate you earn including compound interest',
+                'The simple interest rate only',
+                'The rate that determines your savings growth',
+                'A marketing term with no real meaning',
+              ],
+              inputRule: {
+                type: 'multiple',
+                correctOptions: [0, 2],
+              },
+            },
+          ],
+        },
+      ],
       createdAt: nowIso(),
       updatedAt: nowIso(),
       deletedAt: null,
@@ -498,7 +577,86 @@ const enSamples: SampleData = {
       author: 'Banking Academy',
       fullName: 'Wire Transfers and International Payments',
       description: 'Learn about wire transfers, international payments, and transfer procedures.',
-      structure: [],
+      structure: [
+        {
+          id: 'section-1-wire-en',
+          name: 'Understanding Wire Transfers',
+          steps: [
+            {
+              id: 'slide-1-wire-en',
+              type: 'slide',
+              name: 'What is a Wire Transfer?',
+              content: '<h2>What is a Wire Transfer?</h2><p>A wire transfer is an electronic transfer of funds from one bank account to another, either domestically or internationally. It\'s one of the fastest and most secure methods of sending money.</p><p><strong>Key Characteristics:</strong></p><ul><li>Electronic transfer via secure networks</li><li>Typically completed within 1-3 business days</li><li>Irreversible once completed</li><li>Requires recipient bank details</li><li>Fees apply for both domestic and international transfers</li></ul>',
+            },
+            {
+              id: 'question-1-wire-en',
+              type: 'question',
+              name: 'Wire Transfer Basics',
+              slide: '<p>What is a key characteristic of wire transfers?</p>',
+              options: [
+                'They are free of charge',
+                'They are typically irreversible once completed',
+                'They take weeks to process',
+                'They don\'t require recipient bank details',
+              ],
+              inputRule: {
+                type: 'single',
+                correctOptions: [1],
+              },
+            },
+            {
+              id: 'slide-2-wire-en',
+              type: 'slide',
+              name: 'Types of Wire Transfers',
+              content: '<h2>Types of Wire Transfers</h2><p>There are two main types of wire transfers:</p><ul><li><strong>Domestic Wire Transfers:</strong> Transfers within the same country, typically processed same day or next business day</li><li><strong>International Wire Transfers:</strong> Cross-border transfers using SWIFT network, may take 1-5 business days</li></ul><p>Both types require specific information including account numbers, routing numbers (domestic), or SWIFT codes (international).</p>',
+            },
+            {
+              id: 'question-2-wire-en',
+              type: 'question',
+              name: 'Transfer Types',
+              slide: '<p>What information is typically required for international wire transfers? Select all that apply.</p>',
+              options: [
+                'SWIFT code',
+                'Account number',
+                'Routing number only',
+                'Recipient name and address',
+              ],
+              inputRule: {
+                type: 'multiple',
+                correctOptions: [0, 1, 3],
+              },
+            },
+          ],
+        },
+        {
+          id: 'section-2-wire-en',
+          name: 'Transfer Procedures',
+          steps: [
+            {
+              id: 'slide-3-wire-en',
+              type: 'slide',
+              name: 'How to Initiate a Wire Transfer',
+              content: '<h2>How to Initiate a Wire Transfer</h2><p>The process for initiating a wire transfer:</p><ol><li><strong>Gather Information:</strong> Collect recipient bank details, account number, and transfer amount</li><li><strong>Contact Your Bank:</strong> Visit branch, call, or use online banking</li><li><strong>Provide Details:</strong> Submit all required information and verify accuracy</li><li><strong>Pay Fees:</strong> Wire transfer fees are typically deducted from your account</li><li><strong>Confirm:</strong> Receive confirmation number for tracking</li></ol>',
+            },
+            {
+              id: 'question-3-wire-en',
+              type: 'question',
+              name: 'Transfer Process',
+              slide: '<p>What should you do before initiating a wire transfer?</p>',
+              options: [
+                'Skip verifying recipient details',
+                'Gather all required information including recipient bank details',
+                'Assume the bank will find the information',
+                'Send without confirmation',
+              ],
+              inputRule: {
+                type: 'single',
+                correctOptions: [1],
+              },
+            },
+          ],
+        },
+      ],
       createdAt: nowIso(),
       updatedAt: nowIso(),
       deletedAt: null,
@@ -603,7 +761,86 @@ const enSamples: SampleData = {
       author: 'Banking Academy',
       fullName: 'AML and KYC Compliance',
       description: 'Anti-Money Laundering and Know Your Customer procedures and best practices.',
-      structure: [],
+      structure: [
+        {
+          id: 'section-1-aml-en',
+          name: 'Introduction to AML and KYC',
+          steps: [
+            {
+              id: 'slide-1-aml-en',
+              type: 'slide',
+              name: 'What is AML?',
+              content: '<h2>What is Anti-Money Laundering (AML)?</h2><p>Anti-Money Laundering refers to laws, regulations, and procedures designed to prevent criminals from disguising illegally obtained funds as legitimate income. Banks must implement AML programs to detect and report suspicious activities.</p><p><strong>Key Objectives:</strong></p><ul><li>Detect suspicious transactions</li><li>Report to regulatory authorities</li><li>Maintain customer due diligence</li><li>Comply with financial regulations</li></ul>',
+            },
+            {
+              id: 'question-1-aml-en',
+              type: 'question',
+              name: 'AML Basics',
+              slide: '<p>What is the primary purpose of AML regulations?</p>',
+              options: [
+                'To increase bank profits',
+                'To prevent criminals from disguising illegal funds as legitimate',
+                'To reduce customer service',
+                'To simplify banking procedures',
+              ],
+              inputRule: {
+                type: 'single',
+                correctOptions: [1],
+              },
+            },
+            {
+              id: 'slide-2-aml-en',
+              type: 'slide',
+              name: 'What is KYC?',
+              content: '<h2>What is Know Your Customer (KYC)?</h2><p>KYC is the process of verifying the identity of customers and assessing their suitability for banking services. It\'s a critical component of AML compliance.</p><p><strong>KYC Requirements:</strong></p><ul><li>Identity verification (government-issued ID)</li><li>Address verification</li><li>Understanding customer\'s business or occupation</li><li>Assessing risk profile</li><li>Ongoing monitoring of transactions</li></ul>',
+            },
+            {
+              id: 'question-2-aml-en',
+              type: 'question',
+              name: 'KYC Requirements',
+              slide: '<p>What information is typically required for KYC? Select all that apply.</p>',
+              options: [
+                'Government-issued ID',
+                'Address verification',
+                'Customer\'s business or occupation',
+                'Social media passwords',
+              ],
+              inputRule: {
+                type: 'multiple',
+                correctOptions: [0, 1, 2],
+              },
+            },
+          ],
+        },
+        {
+          id: 'section-2-aml-en',
+          name: 'Compliance Procedures',
+          steps: [
+            {
+              id: 'slide-3-aml-en',
+              type: 'slide',
+              name: 'Suspicious Activity Reporting',
+              content: '<h2>Suspicious Activity Reporting (SAR)</h2><p>Banks must file SARs when they detect potentially suspicious transactions:</p><ul><li><strong>Unusual Patterns:</strong> Transactions inconsistent with customer profile</li><li><strong>Large Cash Transactions:</strong> Above reporting thresholds</li><li><strong>Structuring:</strong> Breaking large transactions into smaller ones</li><li><strong>High-Risk Activities:</strong> Transactions with high-risk countries or entities</li></ul><p>SARs are confidential and filed with financial intelligence units.</p>',
+            },
+            {
+              id: 'question-3-aml-en',
+              type: 'question',
+              name: 'SAR Filing',
+              slide: '<p>When should a bank file a Suspicious Activity Report?</p>',
+              options: [
+                'Only for confirmed criminal activity',
+                'When detecting potentially suspicious transactions',
+                'Never, to protect customer privacy',
+                'Only for large transactions',
+              ],
+              inputRule: {
+                type: 'single',
+                correctOptions: [1],
+              },
+            },
+          ],
+        },
+      ],
       createdAt: nowIso(),
       updatedAt: nowIso(),
       deletedAt: null,
@@ -872,7 +1109,86 @@ const ruSamples: SampleData = {
       author: 'Банковская Академия',
       fullName: 'Руководство по сберегательным счетам',
       description: 'Подробное руководство по сберегательным счетам, процентным ставкам и стратегиям сбережений.',
-      structure: [],
+      structure: [
+        {
+          id: 'section-1-savings-ru',
+          name: 'Введение в сберегательные счета',
+          steps: [
+            {
+              id: 'slide-1-savings-ru',
+              type: 'slide',
+              name: 'Что такое сберегательный счет?',
+              content: '<h2>Что такое сберегательный счет?</h2><p>Сберегательный счет — это депозитный счет в банке, который приносит проценты на внесенные вами деньги. В отличие от текущих счетов, сберегательные счета предназначены для накопления средств с течением времени, а не для частых транзакций.</p><p><strong>Ключевые особенности:</strong></p><ul><li>Приносит проценты на ваш баланс</li><li>Ограниченное количество снятий в месяц (обычно 6)</li><li>Более высокие процентные ставки, чем у текущих счетов</li><li>Безопасное место для хранения денег для будущих целей</li></ul>',
+            },
+            {
+              id: 'question-1-savings-ru',
+              type: 'question',
+              name: 'Основы сберегательных счетов',
+              slide: '<p>Какова основная цель сберегательного счета?</p>',
+              options: [
+                'Частые ежедневные транзакции',
+                'Накопление средств и получение процентов с течением времени',
+                'Выписка чеков для платежей',
+                'Инвестиции в акции',
+              ],
+              inputRule: {
+                type: 'single',
+                correctOptions: [1],
+              },
+            },
+            {
+              id: 'slide-2-savings-ru',
+              type: 'slide',
+              name: 'Типы сберегательных счетов',
+              content: '<h2>Типы сберегательных счетов</h2><p>Банки предлагают различные варианты сберегательных счетов:</p><ul><li><strong>Традиционный сберегательный:</strong> Базовый счет со стандартными процентными ставками</li><li><strong>Высокодоходный сберегательный:</strong> Более высокие процентные ставки, часто только онлайн</li><li><strong>Денежный рынок:</strong> Более высокие ставки с привилегиями выписки чеков</li><li><strong>Депозитный сертификат (ДС):</strong> Фиксированный срок с гарантированной процентной ставкой</li></ul>',
+            },
+            {
+              id: 'question-2-savings-ru',
+              type: 'question',
+              name: 'Типы счетов',
+              slide: '<p>Какой тип сберегательного счета обычно предлагает самые высокие процентные ставки?</p>',
+              options: [
+                'Традиционный сберегательный',
+                'Высокодоходный сберегательный',
+                'Денежный рынок',
+                'Все предлагают одинаковые ставки',
+              ],
+              inputRule: {
+                type: 'single',
+                correctOptions: [1],
+              },
+            },
+          ],
+        },
+        {
+          id: 'section-2-savings-ru',
+          name: 'Процентные ставки и рост',
+          steps: [
+            {
+              id: 'slide-3-savings-ru',
+              type: 'slide',
+              name: 'Понимание процентных ставок',
+              content: '<h2>Понимание процентных ставок</h2><p>Процентные ставки определяют, насколько вырастут ваши сбережения:</p><ul><li><strong>Годовая процентная доходность (ГПД):</strong> Фактическая ставка, которую вы получаете, включая сложные проценты</li><li><strong>Сложные проценты:</strong> Проценты, заработанные как на основную сумму, так и на ранее заработанные проценты</li><li><strong>Переменная vs Фиксированная:</strong> Ставки могут изменяться или оставаться фиксированными на срок</li><li><strong>Минимальный баланс:</strong> Некоторые счета требуют минимальный баланс для получения процентов</li></ul>',
+            },
+            {
+              id: 'question-3-savings-ru',
+              type: 'question',
+              name: 'Концепции процентов',
+              slide: '<p>Что представляет ГПД (Годовая процентная доходность)? Выберите все подходящие варианты.</p>',
+              options: [
+                'Фактическая ставка, которую вы получаете, включая сложные проценты',
+                'Только простая процентная ставка',
+                'Ставка, которая определяет рост ваших сбережений',
+                'Маркетинговый термин без реального значения',
+              ],
+              inputRule: {
+                type: 'multiple',
+                correctOptions: [0, 2],
+              },
+            },
+          ],
+        },
+      ],
       createdAt: nowIso(),
       updatedAt: nowIso(),
       deletedAt: null,
@@ -1100,7 +1416,86 @@ const ruSamples: SampleData = {
       author: 'Банковская Академия',
       fullName: 'Банковские переводы и международные платежи',
       description: 'Узнайте о банковских переводах, международных платежах и процедурах перевода.',
-      structure: [],
+      structure: [
+        {
+          id: 'section-1-wire-ru',
+          name: 'Понимание банковских переводов',
+          steps: [
+            {
+              id: 'slide-1-wire-ru',
+              type: 'slide',
+              name: 'Что такое банковский перевод?',
+              content: '<h2>Что такое банковский перевод?</h2><p>Банковский перевод — это электронный перевод средств с одного банковского счета на другой, внутри страны или международный. Это один из самых быстрых и безопасных методов отправки денег.</p><p><strong>Ключевые характеристики:</strong></p><ul><li>Электронный перевод через защищенные сети</li><li>Обычно выполняется в течение 1-3 рабочих дней</li><li>Необратим после завершения</li><li>Требует реквизитов банка получателя</li><li>Комиссии применяются как для внутренних, так и для международных переводов</li></ul>',
+            },
+            {
+              id: 'question-1-wire-ru',
+              type: 'question',
+              name: 'Основы банковских переводов',
+              slide: '<p>Какая ключевая характеристика банковских переводов?</p>',
+              options: [
+                'Они бесплатны',
+                'Они обычно необратимы после завершения',
+                'Они обрабатываются неделями',
+                'Они не требуют реквизитов банка получателя',
+              ],
+              inputRule: {
+                type: 'single',
+                correctOptions: [1],
+              },
+            },
+            {
+              id: 'slide-2-wire-ru',
+              type: 'slide',
+              name: 'Типы банковских переводов',
+              content: '<h2>Типы банковских переводов</h2><p>Существует два основных типа банковских переводов:</p><ul><li><strong>Внутренние банковские переводы:</strong> Переводы в пределах одной страны, обычно обрабатываются в тот же день или на следующий рабочий день</li><li><strong>Международные банковские переводы:</strong> Межгосударственные переводы с использованием сети SWIFT, могут занять 1-5 рабочих дней</li></ul><p>Оба типа требуют конкретной информации, включая номера счетов, маршрутные номера (внутренние) или коды SWIFT (международные).</p>',
+            },
+            {
+              id: 'question-2-wire-ru',
+              type: 'question',
+              name: 'Типы переводов',
+              slide: '<p>Какая информация обычно требуется для международных банковских переводов? Выберите все подходящие варианты.</p>',
+              options: [
+                'Код SWIFT',
+                'Номер счета',
+                'Только маршрутный номер',
+                'Имя и адрес получателя',
+              ],
+              inputRule: {
+                type: 'multiple',
+                correctOptions: [0, 1, 3],
+              },
+            },
+          ],
+        },
+        {
+          id: 'section-2-wire-ru',
+          name: 'Процедуры перевода',
+          steps: [
+            {
+              id: 'slide-3-wire-ru',
+              type: 'slide',
+              name: 'Как инициировать банковский перевод',
+              content: '<h2>Как инициировать банковский перевод</h2><p>Процесс инициирования банковского перевода:</p><ol><li><strong>Соберите информацию:</strong> Соберите реквизиты банка получателя, номер счета и сумму перевода</li><li><strong>Свяжитесь с вашим банком:</strong> Посетите отделение, позвоните или используйте онлайн-банкинг</li><li><strong>Предоставьте данные:</strong> Предоставьте всю необходимую информацию и проверьте точность</li><li><strong>Оплатите комиссии:</strong> Комиссии за банковский перевод обычно списываются с вашего счета</li><li><strong>Подтвердите:</strong> Получите номер подтверждения для отслеживания</li></ol>',
+            },
+            {
+              id: 'question-3-wire-ru',
+              type: 'question',
+              name: 'Процесс перевода',
+              slide: '<p>Что нужно сделать перед инициированием банковского перевода?</p>',
+              options: [
+                'Пропустить проверку реквизитов получателя',
+                'Собрать всю необходимую информацию, включая реквизиты банка получателя',
+                'Предположить, что банк найдет информацию',
+                'Отправить без подтверждения',
+              ],
+              inputRule: {
+                type: 'single',
+                correctOptions: [1],
+              },
+            },
+          ],
+        },
+      ],
       createdAt: nowIso(),
       updatedAt: nowIso(),
       deletedAt: null,
@@ -1205,7 +1600,86 @@ const ruSamples: SampleData = {
       author: 'Банковская Академия',
       fullName: 'Соответствие требованиям ПОД и KYC',
       description: 'Процедуры противодействия отмыванию денег и идентификации клиентов, а также лучшие практики.',
-      structure: [],
+      structure: [
+        {
+          id: 'section-1-aml-ru',
+          name: 'Введение в ПОД и KYC',
+          steps: [
+            {
+              id: 'slide-1-aml-ru',
+              type: 'slide',
+              name: 'Что такое ПОД?',
+              content: '<h2>Что такое противодействие отмыванию денег (ПОД)?</h2><p>Противодействие отмыванию денег относится к законам, нормативным актам и процедурам, предназначенным для предотвращения того, чтобы преступники маскировали незаконно полученные средства как законный доход. Банки должны внедрять программы ПОД для обнаружения и сообщения о подозрительной деятельности.</p><p><strong>Ключевые цели:</strong></p><ul><li>Обнаружение подозрительных транзакций</li><li>Сообщение в регулирующие органы</li><li>Поддержание должной осмотрительности в отношении клиентов</li><li>Соблюдение финансовых нормативов</li></ul>',
+            },
+            {
+              id: 'question-1-aml-ru',
+              type: 'question',
+              name: 'Основы ПОД',
+              slide: '<p>Какова основная цель нормативов ПОД?</p>',
+              options: [
+                'Увеличить прибыль банков',
+                'Предотвратить маскировку незаконных средств преступниками как законных',
+                'Снизить качество обслуживания клиентов',
+                'Упростить банковские процедуры',
+              ],
+              inputRule: {
+                type: 'single',
+                correctOptions: [1],
+              },
+            },
+            {
+              id: 'slide-2-aml-ru',
+              type: 'slide',
+              name: 'Что такое KYC?',
+              content: '<h2>Что такое идентификация клиента (KYC)?</h2><p>KYC — это процесс проверки личности клиентов и оценки их пригодности для банковских услуг. Это критический компонент соответствия требованиям ПОД.</p><p><strong>Требования KYC:</strong></p><ul><li>Проверка личности (удостоверение личности государственного образца)</li><li>Проверка адреса</li><li>Понимание бизнеса или профессии клиента</li><li>Оценка профиля риска</li><li>Постоянный мониторинг транзакций</li></ul>',
+            },
+            {
+              id: 'question-2-aml-ru',
+              type: 'question',
+              name: 'Требования KYC',
+              slide: '<p>Какая информация обычно требуется для KYC? Выберите все подходящие варианты.</p>',
+              options: [
+                'Удостоверение личности государственного образца',
+                'Проверка адреса',
+                'Бизнес или профессия клиента',
+                'Пароли от социальных сетей',
+              ],
+              inputRule: {
+                type: 'multiple',
+                correctOptions: [0, 1, 2],
+              },
+            },
+          ],
+        },
+        {
+          id: 'section-2-aml-ru',
+          name: 'Процедуры соответствия',
+          steps: [
+            {
+              id: 'slide-3-aml-ru',
+              type: 'slide',
+              name: 'Сообщение о подозрительной деятельности',
+              content: '<h2>Сообщение о подозрительной деятельности (СПД)</h2><p>Банки должны подавать СПД, когда обнаруживают потенциально подозрительные транзакции:</p><ul><li><strong>Необычные паттерны:</strong> Транзакции, не соответствующие профилю клиента</li><li><strong>Крупные наличные транзакции:</strong> Выше пороговых значений отчетности</li><li><strong>Структурирование:</strong> Разделение крупных транзакций на более мелкие</li><li><strong>Высокорисковая деятельность:</strong> Транзакции со странами или организациями высокого риска</li></ul><p>СПД являются конфиденциальными и подаются в финансовые разведывательные подразделения.</p>',
+            },
+            {
+              id: 'question-3-aml-ru',
+              type: 'question',
+              name: 'Подача СПД',
+              slide: '<p>Когда банк должен подать Сообщение о подозрительной деятельности?</p>',
+              options: [
+                'Только для подтвержденной преступной деятельности',
+                'При обнаружении потенциально подозрительных транзакций',
+                'Никогда, чтобы защитить конфиденциальность клиента',
+                'Только для крупных транзакций',
+              ],
+              inputRule: {
+                type: 'single',
+                correctOptions: [1],
+              },
+            },
+          ],
+        },
+      ],
       createdAt: nowIso(),
       updatedAt: nowIso(),
       deletedAt: null,
