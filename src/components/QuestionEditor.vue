@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col h-full space-y-4 min-h-0">
     <!-- Name input -->
-    <div class="flex-shrink-0">
+    <div class="shrink-0">
       <label class="block text-sm font-medium text-gray-700 mb-1">
         {{ t('questionEditor.name') }}
         <span class="text-red-500">*</span>
@@ -29,7 +29,7 @@
 
     <!-- Question text (rich text editor) -->
     <div class="flex flex-col flex-1 min-h-0">
-      <label class="block text-sm font-medium text-gray-700 mb-1 flex-shrink-0">{{ t('questionEditor.questionText') }}</label>
+      <label class="block text-sm font-medium text-gray-700 mb-1 shrink-0">{{ t('questionEditor.questionText') }}</label>
       <div class="flex flex-col flex-1 min-h-0 border rounded-md border-gray-300">
         <RichTextEditor
           :model-value="localQuestion.slide"
@@ -41,7 +41,7 @@
     </div>
 
     <!-- Input rule type selector -->
-    <div class="flex-shrink-0">
+    <div class="shrink-0">
       <label class="block text-sm font-medium text-gray-700 mb-2">{{ t('questionEditor.inputRule') }}</label>
       <div class="flex gap-4">
         <label class="flex items-center gap-2" :class="props.readonly ? '' : 'cursor-pointer'">

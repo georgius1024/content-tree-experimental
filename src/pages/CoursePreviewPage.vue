@@ -328,7 +328,7 @@ const getStepNavClass = (sectionId: string, stepId: string, globalIndex: number)
   if (isViewingResults.value) {
     return visited ? 'text-gray-700 hover:bg-gray-50' : 'text-gray-400 opacity-60 cursor-not-allowed'
   }
-
+  
   if (isCurrent) {
     return 'bg-blue-50 text-blue-700 font-medium'
   }

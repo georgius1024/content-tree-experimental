@@ -1,9 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import MainPage from './pages/MainPage.vue'
-import FolderEditorPage from './pages/FolderEditorPage.vue'
-import CourseEditorPage from './pages/CourseEditorPage.vue'
-import CoursePage from './pages/CoursePage.vue'
-import CoursePreviewPage from './pages/CoursePreviewPage.vue'
+
+// Lazy load all page components for code splitting
+const MainPage = () => import('./pages/MainPage.vue')
+const FolderEditorPage = () => import('./pages/FolderEditorPage.vue')
+const CourseEditorPage = () => import('./pages/CourseEditorPage.vue')
+const CoursePage = () => import('./pages/CoursePage.vue')
+const CoursePreviewPage = () => import('./pages/CoursePreviewPage.vue')
 
 export const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
