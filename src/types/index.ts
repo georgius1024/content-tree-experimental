@@ -64,3 +64,38 @@ export type Course = {
   updatedAt: string;
   deletedAt: string | null;
 };
+
+// Preview runtime types
+export type PreviewAnswer = {
+  selected: readonly number[]; // chosen option indices
+  score: number;               // 0..1
+  submittedAt: string;          // ISO timestamp
+};
+
+export type PreviewStep = {
+  section: Section;
+  step: Step;
+  sectionIndex: number;
+  stepIndex: number;
+  globalIndex: number;
+  answer?: PreviewAnswer; // if present => submitted/locked
+};
+
+export type PreviewState = {
+  steps: readonly PreviewStep[]; // flattened course steps (order of play)
+  position: number;              // 0-based current index in steps
+};
+
+export type SectionSummary = {
+  section: Section;
+  questions: number;
+  correct: number;
+  accuracy: number; // 0..1
+};
+
+export type PreviewResults = {
+  totalQuestions: number;
+  totalCorrect: number;
+  totalAccuracy: number; // 0..1
+  bySection: SectionSummary[];
+};

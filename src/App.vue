@@ -25,10 +25,14 @@ const onResetTree = async () => {
   <div class="min-h-screen bg-gray-50">
     <Toolbar>
       <template #start>
-        <div class="flex items-center gap-2">
+        <button
+          type="button"
+          class="flex items-center gap-2 hover:opacity-80 transition-opacity cursor-pointer"
+          @click="router.push({ path: '/' })"
+        >
           <BookOpen :size="20" class="text-blue-600" />
           <h1 class="text-lg font-semibold text-gray-900">Tree UX</h1>
-        </div>
+        </button>
       </template>
       <template #end>
         <button

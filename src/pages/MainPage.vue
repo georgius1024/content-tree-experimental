@@ -1,25 +1,5 @@
 <template>
   <div class="rounded-lg border border-gray-200 bg-white shadow-sm">
-    <!-- <Toolbar :title="t('mainPage.title')">
-      <template #end>
-            <button
-              type="button"
-              class="rounded border border-gray-200 px-2 py-1 text-xs text-gray-700 hover:bg-gray-50"
-              @click="onAddFolder"
-              :title="t('mainPage.addSubFolderTitle')"
-            >
-              {{ t('mainPage.addFolder') }}
-            </button>
-            <button
-              type="button"
-              class="rounded border border-gray-200 px-2 py-1 text-xs text-gray-700 hover:bg-gray-50"
-              @click="onAddObject"
-              :title="t('mainPage.addCourseTitle')"
-            >
-              {{ t('mainPage.addCourse') }}
-            </button>
-      </template>
-    </Toolbar> -->
     <div class="px-4 py-2 border-b border-gray-200">
       <TreeBreadcrumb
           :forest-id="forestId"
@@ -76,7 +56,6 @@
 import { computed, ref, watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import Toolbar from '../components/Toolbar.vue'
 import TreeBreadcrumb from '../components/TreeBreadcrumb.vue'
 import ContentList from '../components/ContentList.vue'
 import { CONTENT_FOREST, getForest, moveNode, deleteNode, sortTreeItems } from '../services/tree'

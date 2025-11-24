@@ -75,6 +75,7 @@
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">{{ t('courseEditor.description') }}</label>
               <RichTextEditor
+                class="min-h-[180px]"
                 key="description-editor"
                 v-model="description"
                 :placeholder="t('courseEditor.descriptionPlaceholder')"
@@ -84,6 +85,7 @@
           <TabPanel v-if="!isNew && courseId">
             <CourseStructureView
               :structure="courseStructure"
+              class="min-h-full"
               @update:structure="handleStructureUpdate"
               @add-section="handleAddSection"
               @edit-section-name="handleEditSectionName"

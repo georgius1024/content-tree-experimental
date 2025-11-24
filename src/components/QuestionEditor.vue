@@ -68,7 +68,7 @@
     </div>
 
     <!-- Answers section -->
-    <div class="flex-shrink-0">
+    <div class="shrink-0">
       <label class="block text-sm font-medium text-gray-700 mb-2">
         {{ t('questionEditor.options') }}
         <span class="text-red-500">*</span>
@@ -83,7 +83,7 @@
           v-model="localOptions"
           item-key="id"
           tag="div"
-          class="space-y-6"
+          class="space-y-2"
           :animation="200"
           :disabled="props.readonly"
           :handle="props.readonly ? '' : '.drag-handle'"
@@ -92,7 +92,7 @@
           <div
             v-for="(option, index) in localOptions"
             :key="option.id"
-            class="relative flex items-center gap-2 p-2 border border-gray-200 rounded-md hover:bg-gray-50"
+            class="relative flex items-center gap-2 px-2 py-1 border border-gray-200 rounded-md hover:bg-gray-50"
           >
             <!-- Drag handle -->
             <button

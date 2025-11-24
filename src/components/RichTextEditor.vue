@@ -181,7 +181,7 @@
     <!-- Editor content -->
     <EditorContent 
       :editor="editor" 
-      class="rich-text-content"
+      class="rich-text-content-wrapper"
     />
   </div>
 </template>
@@ -248,7 +248,7 @@ const editor = useEditor({
   editorProps: {
     attributes: {
       class:
-        'rich-text-content min-h-[150px] px-3 py-2 border-0 focus:outline-none focus:ring-0',
+        'rich-text-content px-3 py-2 border-0 focus:outline-none focus:ring-0',
       'data-placeholder': props.placeholder || '',
     },
   },
@@ -302,20 +302,40 @@ onBeforeUnmount(() => {
 .rich-text-editor {
   display: flex;
   flex-direction: column;
-  flex: 1;
-  min-height: 0;
+  flex: 1 1 0;
+  height: 100%;
+  .rich-text-content-wrapper {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+    .rich-text-content {
+      flex: 1 1 0;
+      display: flex;
+      flex-direction: column;
+    }
+  }
 }
 
 .rich-text-editor :deep(.ProseMirror) {
-  min-height: 150px;
-  flex: 1;
+  flex: 1 1 0;
+  min-height: 0;
   padding: 0.5rem 0.75rem;
   border: 1px solid rgb(209 213 219);
   border-top: none;
   border-radius: 0 0 0.375rem 0.375rem;
   outline: none;
   overflow-y: auto;
+  overflow-x: hidden;
   box-sizing: border-box;
+  cursor: text;
+  user-select: text;
+}
+
+.rich-text-editor :deep(.ProseMirror[contenteditable="false"]) {
+  cursor: default;
+  user-select: none;
 }
 
 .rich-text-editor.readonly-mode :deep(.ProseMirror) {
