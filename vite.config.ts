@@ -5,8 +5,7 @@ import tailwind from '@tailwindcss/vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [vue(), tailwind()],
-  // For GitHub Pages: set GH_PAGES_BASE to '/<repo-name>/' in CI
-  base: process.env.GH_PAGES_BASE ?? '/content-tree-experimental/',
+  base: '/content-tree-experimental/',
   resolve: {
     alias: {
       '@': new URL('./src', import.meta.url).pathname,
