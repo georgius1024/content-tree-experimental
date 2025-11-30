@@ -276,10 +276,15 @@ const onSave = async () => {
       await attachObjectId(forestId, newNode.id, course.id)
     }
 
-    const parentPath = selectedParentId.value
-      ? forest.value.find((n) => n.id === selectedParentId.value)?.path ?? '/'
-      : '/'
-    router.push({ path: parentPath })
+    // Navigate to the newly created course page
+    if (newNode && typeof course.id === 'string') {
+      router.push({ path: `/course${newNode.path}` })
+    } else {
+      const parentPath = selectedParentId.value
+        ? forest.value.find((n) => n.id === selectedParentId.value)?.path ?? '/'
+        : '/'
+      router.push({ path: parentPath })
+    }
   } else {
     // Update existing course
     if (!nodeId.value) return
@@ -306,10 +311,16 @@ const onSave = async () => {
     // Update tree (name + parent)
     await updateNode(forestId, nodeId.value, name.value.trim(), selectedParentId.value)
 
-    const parentPath = selectedParentId.value
-      ? forest.value.find((n) => n.id === selectedParentId.value)?.path ?? '/'
-      : '/'
-    router.push({ path: parentPath })
+    // Navigate to the course page
+    const currentNode = node.value
+    if (currentNode) {
+      router.push({ path: `/course${currentNode.path}` })
+    } else {
+      const parentPath = selectedParentId.value
+        ? forest.value.find((n) => n.id === selectedParentId.value)?.path ?? '/'
+        : '/'
+      router.push({ path: parentPath })
+    }
   }
 }
 
@@ -322,10 +333,7 @@ const goBack = () => {
   } else {
     const currentNode = node.value
     if (currentNode) {
-      const parentPath = currentNode.parentId
-        ? forest.value.find((n) => n.id === currentNode.parentId && n.deletedAt === null)?.path ?? '/'
-        : '/'
-      router.push({ path: parentPath })
+      router.push({ path: `/course${currentNode.path}` })
     } else {
       router.push({ path: '/' })
     }

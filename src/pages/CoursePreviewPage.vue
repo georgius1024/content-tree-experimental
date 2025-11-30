@@ -3,9 +3,18 @@
     <!-- Header -->
     <header class="border-b border-gray-200 px-4 py-2 flex items-center justify-between shrink-0">
       <h1 class="text-sm font-medium truncate">{{ courseTitle }}</h1>
-      <span class="text-xs text-gray-600 shrink-0 ml-4">
-        {{ progressLabel }}
-      </span>
+      <div class="flex items-center gap-3 shrink-0 ml-4">
+        <span class="text-xs text-gray-600">
+          {{ progressLabel }}
+        </span>
+        <button
+          type="button"
+          class="px-3 py-1.5 text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+          @click="goToCoursePage"
+        >
+          {{ t('coursePreview.backToCourse') }}
+        </button>
+      </div>
     </header>
 
     <!-- Main content area -->
@@ -297,6 +306,15 @@ const progressLabel = computed(() =>
 )
 
 const formatPercent = (value: number): string => `${Math.round((value ?? 0) * 100)}%`
+
+// Exit to course page
+const coursePath = computed(() => {
+  const raw = (route.params.path as string) || ''
+  return raw.endsWith('/') ? `/${raw}` : `/${raw}/`
+})
+const goToCoursePage = () => {
+  router.push({ path: `/course${coursePath.value}` })
+}
 
 // Track visited steps
 watch(currentPosition, (pos) => {

@@ -5,6 +5,7 @@ export default {
     create: 'Create',
     delete: 'Delete',
     edit: 'Edit',
+    preview: 'Preview',
     name: 'Name',
     parent: 'Parent',
     folder: 'Folder',
@@ -150,6 +151,7 @@ export default {
     feedbackCorrect: 'Correct!',
     feedbackIncorrect: 'Incorrect',
     progress: '{current} / {total}',
+    backToCourse: 'Back to course',
   },
   module: {
     backButton: 'Back',

@@ -41,14 +41,14 @@
           class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
           @click="goToEdit"
         >
-          Edit
+          {{ t('common.edit') }}
         </button>
         <button
           type="button"
           class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
           @click="goToPreview"
         >
-          Preview
+          {{ t('common.preview') }}
         </button>
       </div>
     </div>
@@ -57,12 +57,15 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useRouter, useRoute } from 'vue-router'
 import { CONTENT_FOREST, getForest } from '../services/tree'
 import type { TreeItem, Section } from '../types'
 import { getCourse } from '../services/courses'
 import RichTextView from '../components/RichTextView.vue'
 import TreeBreadcrumb from '../components/TreeBreadcrumb.vue'
+
+const { t } = useI18n()
 
 const router = useRouter()
 const route = useRoute()

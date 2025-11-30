@@ -5,6 +5,7 @@ export default {
     create: 'Создать',
     delete: 'Удалить',
     edit: 'Редактировать',
+    preview: 'Просмотр',
     name: 'Название',
     parent: 'Родитель',
     folder: 'Папка',
@@ -150,6 +151,7 @@ export default {
     feedbackCorrect: 'Верно!',
     feedbackIncorrect: 'Неверно',
     progress: '{current} / {total}',
+    backToCourse: 'Назад к курсу',
   },
   module: {
     backButton: 'Назад',
