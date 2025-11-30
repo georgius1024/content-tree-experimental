@@ -38,6 +38,13 @@ const onResetTree = async () => {
         <button
           type="button"
           class="rounded border border-gray-200 px-2 py-1 text-xs text-gray-700 hover:bg-gray-50"
+          @click="router.push({ path: '/module' })"
+        >
+          {{ t('header.moduleDemo') }}
+        </button>
+        <button
+          type="button"
+          class="rounded border border-gray-200 px-2 py-1 text-xs text-gray-700 hover:bg-gray-50"
           @click="onResetTree"
         >
           {{ t('mainPage.resetTree') }}

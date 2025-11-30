@@ -13,6 +13,9 @@ export default {
     root: 'Root',
     drag: 'Drag to reorder',
   },
+  header: {
+    moduleDemo: 'Module demo',
+  },
   mainPage: {
     title: 'Content',
     addFolder: 'Add folder',

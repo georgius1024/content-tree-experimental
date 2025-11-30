@@ -13,6 +13,9 @@ export default {
     root: 'Начало',
     drag: 'Перетащите для изменения порядка',
   },
+  header: {
+    moduleDemo: 'Демо модуля',
+  },
   mainPage: {
     title: 'Содержимое',
     addFolder: 'Добавить папку',
