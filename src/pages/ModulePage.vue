@@ -124,6 +124,66 @@
             </div>
           </div>
 
+          <!-- Case (test-case player) -->
+          <div v-else-if="current.type === 'case'" class="space-y-4">
+            <h2 class="text-lg font-semibold text-gray-900">
+              {{ current.title }}
+            </h2>
+            <div v-if="current.description" class="text-sm text-gray-700" v-html="current.description" />
+
+            <div v-if="activeCaseNode" class="mt-4 space-y-3">
+              <div
+                class="rounded-lg border p-4"
+                :class="activeCaseNode.success === 'success'
+                  ? 'bg-green-50 border-green-200'
+                  : activeCaseNode.success === 'fail'
+                    ? 'bg-red-50 border-red-200'
+                    : 'bg-white border-gray-200'"
+              >
+                <h3 class="text-base font-semibold"
+                  :class="activeCaseNode.success === 'success'
+                    ? 'text-green-900'
+                    : activeCaseNode.success === 'fail'
+                      ? 'text-red-900'
+                      : 'text-gray-900'"
+                >
+                  {{ activeCaseNode.title }}
+                </h3>
+                <div v-if="activeCaseNode.description" class="mt-2 text-sm"
+                  :class="activeCaseNode.success === 'success'
+                    ? 'text-green-800'
+                    : activeCaseNode.success === 'fail'
+                      ? 'text-red-800'
+                      : 'text-gray-700'"
+                  v-html="activeCaseNode.description"
+                />
+              </div>
+
+              <!-- Failure controls: show only restart button -->
+              <div v-if="activeCaseNode.success === 'fail'">
+                <button
+                  type="button"
+                  class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700"
+                  @click="restartCase"
+                >
+                  {{ t('module.caseRestart') }}
+                </button>
+              </div>
+
+              <div v-if="activeCaseNode.children && activeCaseNode.children.length > 0" class="flex flex-col gap-2">
+                <button
+                  v-for="edge in activeCaseNode.children"
+                  :key="edge.id"
+                  type="button"
+                  class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 text-left"
+                  @click="onCaseGo(edge.id)"
+                >
+                  {{ edge.label ?? t('module.nextButton') }}
+                </button>
+              </div>
+            </div>
+          </div>
+
           <!-- Video -->
           <div v-else-if="current.type === 'video'" class="space-y-4">
             <h2 class="text-lg font-semibold text-gray-900">
@@ -179,24 +239,59 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import RichTextView from '../components/RichTextView.vue'
 import moduleJson from '../data/next-bank-module.json'
-import type { Module, ModuleStep, VideoStep } from '../types'
+import type { Module, ModuleStep, VideoStep, CaseStep, CaseNode } from '../types'
 
 const { t } = useI18n()
 
 // Load module data
 const moduleData = moduleJson as Module
 
-// Build linear steps by skipping 'case'
-const linearSteps = (moduleData.steps ?? []).filter((s: ModuleStep) => s.type !== 'case') as ModuleStep[]
+// Build steps (include case) and place case before questions
+const stepsRaw = (moduleData.steps ?? []) as ModuleStep[]
+const nonQuestionsExceptCase = stepsRaw.filter(s => s.type !== 'question' && s.type !== 'case')
+const caseSteps = stepsRaw.filter(s => s.type === 'case')
+const questionSteps = stepsRaw.filter(s => s.type === 'question')
+// Case after slides/video and before questions
+const linearSteps = [...nonQuestionsExceptCase, ...caseSteps, ...questionSteps] as ModuleStep[]
 
 const position = ref(0)
 const isDone = computed(() => position.value >= linearSteps.length)
 const current = computed<ModuleStep | null>(() => (isDone.value ? null : linearSteps[position.value] ?? null))
 const progressCurrent = computed(() => Math.min(position.value + 1, linearSteps.length))
+
+// Case state (per current step)
+const caseNodeId = ref<string | null>(null)
+const activeCaseNode = computed<CaseNode | null>(() => {
+  if (current.value?.type !== 'case') return null
+  const step = current.value as CaseStep
+  const startId = step.nodes[0]?.id ?? null
+  const id = caseNodeId.value ?? startId
+  return step.nodes.find(n => n.id === id) ?? (startId ? step.nodes.find(n => n.id === startId) ?? null : null)
+})
+
+watch(current, (step) => {
+  if (step?.type === 'case') {
+    const s = step as CaseStep
+    caseNodeId.value = s.nodes[0]?.id ?? null
+  } else {
+    caseNodeId.value = null
+  }
+})
+
+const onCaseGo = (nextId: string) => {
+  if (current.value?.type !== 'case') return
+  caseNodeId.value = nextId
+}
+
+const restartCase = () => {
+  if (current.value?.type !== 'case') return
+  const step = current.value as CaseStep
+  caseNodeId.value = step.nodes[0]?.id ?? null
+}
 
 // Errors tracking
 type ModuleError = { stepId: string; stepName: string; message: string }
@@ -322,6 +417,10 @@ const canGoNext = computed(() => {
   if (step.type === 'slide') return true
   if (step.type === 'video') return (step.required ? watched.value : true)
   if (step.type === 'question') return submitted.value
+  if (step.type === 'case') {
+    // Only allow Next on success, not on fail
+    return activeCaseNode.value?.success === 'success'
+  }
   return false
 })
 
@@ -332,6 +431,10 @@ const onNext = () => {
     selected.value = []
     submitted.value = false
   }
+  // reset case state when leaving case
+  if (current.value?.type === 'case') {
+    caseNodeId.value = null
+  }
   position.value += 1
 }
 
@@ -341,6 +444,7 @@ const onPrev = () => {
   // reset question state for new position
   selected.value = []
   submitted.value = false
+  caseNodeId.value = null
 }
 
 const onRetry = () => {

@@ -168,6 +168,8 @@ export default {
     failText: 'Some answers were incorrect. Review the errors and try again.',
     errorsHeading: 'Errors:',
     incorrectAnswer: 'Incorrect answer',
+    caseFailText: 'This path is incorrect. Please return to the start and try a different decision.',
+    caseRestart: 'Restart case',
   },
 }
 
