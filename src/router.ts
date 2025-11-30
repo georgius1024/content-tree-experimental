@@ -6,6 +6,7 @@ const FolderEditorPage = () => import('./pages/FolderEditorPage.vue')
 const CourseEditorPage = () => import('./pages/CourseEditorPage.vue')
 const CoursePage = () => import('./pages/CoursePage.vue')
 const CoursePreviewPage = () => import('./pages/CoursePreviewPage.vue')
+const ModulePage = () => import('./pages/ModulePage.vue')
 
 export const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,6 +16,11 @@ export const router = createRouter({
       name: 'home',
       component: MainPage,
       props: () => ({ path: '/' })
+    },
+    {
+      path: '/module',
+      name: 'module-demo',
+      component: ModulePage,
     },
     {
       path: '/folder/new',

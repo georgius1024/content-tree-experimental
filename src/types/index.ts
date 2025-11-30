@@ -99,3 +99,60 @@ export type PreviewResults = {
   totalAccuracy: number; // 0..1
   bySection: SectionSummary[];
 };
+
+// -------------------------
+// Module Player (demo) types
+// -------------------------
+
+// Video step rendered via YouTube iframe (or similar)
+export type VideoStep = {
+  id: string;                // UUID
+  type: 'video';
+  name: string;              // short name for sidebar lists
+  title: string;             // page/player heading
+  description?: string;      // optional HTML/markdown
+  youtubeId: string;         // e.g. "G-je901NYtM"
+  required?: boolean;        // require "watched" before allowing Next
+  duration?: string;         // e.g. "02:10"
+};
+
+// Single case graph node (state machine node)
+export type CaseNode = {
+  id: string;                                       // node id (unique within case)
+  name: string;                                     // short name for lists/navigation
+  title: string;                                    // screen title
+  description?: string;                             // rich content/explanation
+  children?: Array<{ id: string; label?: string }>; // navigation edges (to node.id)
+  success: 'unknown' | 'success' | 'fail';          // terminal flag; unknown = intermediate
+};
+
+// Case step: nodes[0] is always the start node
+export type CaseStep = {
+  id: string;             // UUID
+  type: 'case';
+  name: string;           // step label in sidebar
+  title: string;          // case heading
+  description?: string;   // optional case intro
+  nodes: CaseNode[];      // first element is the start node
+};
+
+// Module step is compatible with existing course steps plus new types
+export type ModuleStep = Step | VideoStep | CaseStep;
+
+// Minimal module container for demo player
+export type Module = {
+  id: string;                       // UUID
+  meta: {
+    title: string;                  // module/player title
+    description?: string;           // HTML/markdown description
+    version?: string;
+    status?: 'active' | 'draft' | 'deprecated';
+    tags?: {
+      subject?: string[];
+      regulatory?: string[];
+      roles?: string[];
+      risk?: string[];
+    };
+  };
+  steps: ModuleStep[];              // ordered steps (slides, questions, video, case)
+};

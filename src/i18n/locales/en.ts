@@ -151,5 +151,23 @@ export default {
     feedbackIncorrect: 'Incorrect',
     progress: '{current} / {total}',
   },
+  module: {
+    backButton: 'Back',
+    nextButton: 'Next',
+    submitButton: 'Submit',
+    markWatched: 'Mark as watched',
+    watched: 'Watched',
+    progress: 'Step {current} of {total}',
+    video: 'Video',
+    slide: 'Slide',
+    question: 'Question',
+    congratsTitle: 'Congratulations!',
+    congratsText: 'You have completed the module.',
+    tryAgain: 'Try again',
+    failTitle: 'Not passed',
+    failText: 'Some answers were incorrect. Review the errors and try again.',
+    errorsHeading: 'Errors:',
+    incorrectAnswer: 'Incorrect answer',
+  },
 }
 

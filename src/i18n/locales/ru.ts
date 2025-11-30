@@ -151,5 +151,23 @@ export default {
     feedbackIncorrect: 'Неверно',
     progress: '{current} / {total}',
   },
+  module: {
+    backButton: 'Назад',
+    nextButton: 'Далее',
+    submitButton: 'Ответить',
+    markWatched: 'Отметить просмотренным',
+    watched: 'Просмотрено',
+    progress: 'Шаг {current} из {total}',
+    video: 'Видео',
+    slide: 'Слайд',
+    question: 'Вопрос',
+    congratsTitle: 'Поздравляем!',
+    congratsText: 'Вы успешно завершили модуль.',
+    tryAgain: 'Пройти снова',
+    failTitle: 'Не пройдено',
+    failText: 'Есть ошибки в ответах. Ознакомьтесь со списком и попробуйте снова.',
+    errorsHeading: 'Ошибки:',
+    incorrectAnswer: 'Неверный ответ',
+  },
 }
 
